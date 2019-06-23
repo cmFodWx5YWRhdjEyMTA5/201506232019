@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">RydeShare</string>
+    <string name="title_activity_dashboard_pass">Dashboard</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_dashboard_driver">DashboardDriver</string>
+    <string name="title_activity_start_ride">Start Ride</string>
+    <string name="title_activity_add_funds">Add Funds</string>
+    <string name="title_activity_transaction_history">Transaction History</string>
+    <string name="title_activity_register_route1">Route 1</string>
+    <string name="title_activity_register_route2">Route 2</string>
+    <string name="title_activity_help_support">Help &amp; Support</string>
+    <string name="API_KEY">AIzaSyBBENhEE_gGgOxGoz6Z7NgLmhXWoBy-owI</string>
+    <string name="title_location_permission">Checking Permission</string>
+    <string name="text_location_permission">Check if there is permission</string>
+    <string name="ok">OK</string>
+    <string name="GEOCODEING_API_KEY">AIzaSyBBENhEE_gGgOxGoz6Z7NgLmhXWoBy-owI</string>
+    <string name="GEO_CODEING_API_KEY">AIzaSyBBENhEE_gGgOxGoz6Z7NgLmhXWoBy-owI</string>
+
+    <array name="menu">
+        <item>Select Menu</item>
+        <item>Menu 1</item>
+        <item>Menu 2</item>
+        <item>Menu 3</item>
+    </array>
+
+    <array name="source">
+        <item>Select Source</item>
+        <item>Source 1</item>
+        <item>Source 2</item>
+        <item>Source 3</item>
+    </array>
+
+    <array name="source_details">
+        <item>Select Source Details</item>
+        <item>Source Details 1</item>
+        <item>Source Details 2</item>
+        <item>Source Details 3</item>
+    </array>
+
+    <array name="destination_details">
+        <item>Select Destination Details</item>
+        <item>Destination Details 1</item>
+        <item>Destination Details 2</item>
+        <item>Destination Details 3</item>
+    </array>
+
+    <array name="destination">
+        <item>Select Destination</item>
+        <item>Destination 1</item>
+        <item>Destination 2</item>
+        <item>Destination 3</item>
+    </array>
+
+</resources>

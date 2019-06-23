@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "794326497757",
+    "firebase_url": "https://rideshare-80b7d.firebaseio.com",
+    "project_id": "rideshare-80b7d",
+    "storage_bucket": "rideshare-80b7d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794326497757:android:1c827ee18424e535",
+        "android_client_info": {
+          "package_name": "com.techline.rideshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794326497757-lsa7lsndbcrq26m6pgussh76t2k932lq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techline.rideshare",
+            "certificate_hash": "eab733e17b74acbffe2afdf247e4234e3ae4517f"
+          }
+        },
+        {
+          "client_id": "794326497757-spva7a76l0ksidoeblt00j8p81gc5ue4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBENhEE_gGgOxGoz6Z7NgLmhXWoBy-owI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794326497757-spva7a76l0ksidoeblt00j8p81gc5ue4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
