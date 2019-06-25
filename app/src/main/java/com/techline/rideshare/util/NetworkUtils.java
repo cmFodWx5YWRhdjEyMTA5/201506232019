@@ -50,6 +50,7 @@ public class NetworkUtils {
     final static String BASE_INSERT_CONTACT_US_URL = BASE_URL + "android_api/v1/contact_us.php";
     final static String BASE_CHANGE_PASS_URL = BASE_URL + "android_api/v1/change_pass.php";
     final static String BASE_CHECK_PAY_CODE_URL = BASE_URL + "android_api/v1/chek_pay_code.php";
+    final static String BASE_ADD_ROUTE_URL = BASE_URL + "android_api/v1/add_route.php";
     final static String BASE_GEO_CODE_ONE_URL = BASE_GEODODE_URL+ "/api/geocode/json";
 
     final static String PARAM_QUERY = "q";
@@ -90,6 +91,19 @@ public class NetworkUtils {
     private static final String PARAM_FIRST_NAME = "firstname";
     private static final String PARAM_LAST_NAME = "lastname";
     private static final String PARAM_BALANCE = "balance";
+    private static final String PARAM_PICKUP_PLACE_ID = "pickUpPlaceId";
+    private static final String PARAM_PICKUP_GEOMETRY = "pickUpGeometry";
+    private static final String PARAM_PICKUP_LOCATION_TYPE = "pickUpLocation_type";
+    private static final String PARAM_PICKUP_LOCATION = "pickUpLocation";
+    private static final String PARAM_PICKUP_LAT = "pickUpLat";
+    private static final String PARAM_PICKUP_LNG = "pickUpLng";
+    private static final String PARAM_WHERETO_PLACE_ID = "whereToPlaceId";
+    private static final String PARAM_WHERETO_GEOMETRY = "whereToGeometry";
+    private static final String PARAM_WHERETO_LOCATION_TYPE = "whereToLocation_type";
+    private static final String PARAM_WHERETO_LAT = "whereToLat";
+    private static final String PARAM_WHERETO_LOCATION = "whereToLocation";
+    private static final String PARAM_WHERETO_LNG = "whereToLng";
+
     // Message Constants
     // used Write a message to the database
     private static SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyyMMddmmss");
@@ -315,4 +329,37 @@ public class NetworkUtils {
         return url;
     }
 
+    public static URL buildInsertRouteUrl(String pickUpPlaceIdValue, String pickUpGeometryValue, String pickUpLocation_typeValue,
+                                          String pickUpLocationValue, String pickUpLatValue, String pickUpLngValue,
+                                          String whereToPlaceIdValue, String whereToGeometryValue,
+                                          String whereToLocation_typeValue, String whereToLatValue,
+                                          String whereToLocationValue, String whereToLngValue, String accountNoValue) {
+
+        Uri builtUri = Uri.parse(BASE_ADD_ROUTE_URL).buildUpon()
+                .appendQueryParameter(PARAM_PICKUP_PLACE_ID, pickUpPlaceIdValue)
+                .appendQueryParameter(PARAM_PICKUP_GEOMETRY, pickUpGeometryValue)
+                .appendQueryParameter(PARAM_PICKUP_LOCATION_TYPE, pickUpLocation_typeValue)
+                .appendQueryParameter(PARAM_PICKUP_LOCATION, pickUpLocationValue)
+                .appendQueryParameter(PARAM_PICKUP_LAT, pickUpLatValue)
+                .appendQueryParameter(PARAM_PICKUP_LNG, pickUpLngValue)
+                .appendQueryParameter(PARAM_WHERETO_PLACE_ID, whereToPlaceIdValue)
+                .appendQueryParameter(PARAM_WHERETO_GEOMETRY, whereToGeometryValue)
+                .appendQueryParameter(PARAM_WHERETO_LOCATION_TYPE, whereToLocation_typeValue)
+                .appendQueryParameter(PARAM_WHERETO_LAT, whereToLatValue)
+                .appendQueryParameter(PARAM_WHERETO_LOCATION, whereToLocationValue)
+                .appendQueryParameter(PARAM_WHERETO_LNG, whereToLngValue)
+                .appendQueryParameter(PARAM_ACCT_NO, accountNoValue)
+
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+
+    }
 }

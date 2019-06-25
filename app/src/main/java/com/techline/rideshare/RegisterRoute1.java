@@ -182,8 +182,25 @@ public class RegisterRoute1 extends AppCompatActivity
         //--------------------------------
         //save route data
         // --------------------------------
+        makeRideSharemakeSaveDataQuery(pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
+                pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
+                whereToLat, whereToLocation, whereToLng, accountNumber);
 
         Log.d(TAG, "after makeSaveDataQuery");
+    }
+
+    private void makeRideSharemakeSaveDataQuery(String pickUpPlaceIdValue, String pickUpGeometryValue, String pickUpLocation_typeValue,
+                                                 String pickUpLocationValue, String pickUpLatValue, String pickUpLngValue,
+                                                String whereToPlaceIdValue, String whereToGeometryValue, String whereToLocation_typeValue,
+                                                String whereToLatValue,  String whereToLocationValue, String whereToLngValue,
+                                                String accountNo) {
+        URL RideShareSelectUserURl = NetworkUtils.buildInsertRouteUrl(pickUpPlaceIdValue, pickUpGeometryValue, pickUpLocation_typeValue,
+                pickUpLocationValue, pickUpLatValue, pickUpLngValue, whereToPlaceIdValue, whereToGeometryValue, whereToLocation_typeValue,
+                whereToLatValue, whereToLocationValue, whereToLngValue, accountNo);
+        Log.d(TAG, "RideShare insert Rout Url is: " + RideShareSelectUserURl.toString());
+        // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
+        new RegisterRoute1.RideShareInsertRouteTask().execute(RideShareSelectUserURl);
+
     }
 
     private void continuePickupPutExtra() {
@@ -687,5 +704,30 @@ public class RegisterRoute1 extends AppCompatActivity
         CameraPosition target = CameraPosition.builder().target(myCurrentLocation).zoom(14).build();
         m_map.moveCamera(CameraUpdateFactory.newCameraPosition(target));
         m_map.addMarker(myLocationMarker);
+    }
+
+    public class RideShareInsertRouteTask extends AsyncTask<URL, Void, String> {
+
+        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String RideShareInsertRouteResults = null;
+            try {
+                RideShareInsertRouteResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return RideShareInsertRouteResults;
+        }
+
+        // COMPLETED (3) Override onPostExecute to display the results
+        @Override
+        protected void onPostExecute(String RideShareInsertRouteResults) {
+            if (RideShareInsertRouteResults != null && !RideShareInsertRouteResults.equals("")) {
+                Log.d(TAG, "RideShareInsertRouteResults is :" + RideShareInsertRouteResults);
+                // put valeus in intent and fire intent
+            }
+        }
     }
 }
