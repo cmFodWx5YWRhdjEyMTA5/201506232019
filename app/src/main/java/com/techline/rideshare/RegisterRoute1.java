@@ -40,6 +40,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -73,7 +75,7 @@ public class RegisterRoute1 extends AppCompatActivity
     private String pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
             pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
             whereToLat, whereToLocation, whereToLng;
-    private MarkerOptions myLocationMarker;
+    private MarkerOptions myLocationMarker, myPLocationMarker, myWLocationMarker;
     private LatLng pickUp,whereTo;
 
 
@@ -160,24 +162,34 @@ public class RegisterRoute1 extends AppCompatActivity
         Log.d(TAG, "whereToLat >> " + whereToLat);
         Log.d(TAG, "whereToLng >> " + whereToLng);
 
-        myLocationMarker = new MarkerOptions()
+        myPLocationMarker = new MarkerOptions()
                 .position(new LatLng(lat_val, long_val))
                 .title("Here");
 
-        myLocationMarker = new MarkerOptions()
+        myWLocationMarker = new MarkerOptions()
                 .position(new LatLng(Double.parseDouble(whereToLat), Double.parseDouble(whereToLng)))
                 .title("WhereTo");
         whereTo = new LatLng(Double.parseDouble(whereToLat),Double.parseDouble(whereToLng));
         pickUp = new LatLng(Double.parseDouble(pickUpLat),Double.parseDouble(pickUpLng));
+        LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
 
+        boundsBuilder.include(myPLocationMarker.getPosition());
+        boundsBuilder.include(myWLocationMarker.getPosition());
 
+        LatLngBounds bounds = boundsBuilder.build();
+
+        m_map.setLatLngBoundsForCameraTarget(bounds);
 //        m_map.moveCamera(CameraUpdateFactory.newCameraPosition(target));
         m_map.addPolyline(new PolylineOptions().geodesic(true)
                 .add(pickUp)
                 .add(whereTo));
         onMapReady(m_map);
+        float[] result = new float[1];
+        Location.distanceBetween(Double.parseDouble(pickUpLat),
+                Double.parseDouble(pickUpLng),Double.parseDouble(whereToLat),
+                Double.parseDouble(whereToLng), result);
 
-
+        Log.d(TAG, "Distance >> "+ (double) result[0]);
         Log.d(TAG, "before makeSaveDataQuery");
         //--------------------------------
         //save route data
