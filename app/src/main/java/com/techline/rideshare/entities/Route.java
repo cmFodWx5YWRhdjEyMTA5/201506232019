@@ -1,7 +1,9 @@
 package com.techline.rideshare.entities;
 
 public class Route {
-    private String routeId;
+    private String pickUpDesc;
+    private String whereToDesc;
+    private String distance;
     private String pickUpPlaceId;
     private String pickUpGeometry;
     private String pickUpLocation_type;
@@ -19,11 +21,13 @@ public class Route {
     public Route() {
     }
 
-    public Route(String routeId, String pickUpPlaceId, String pickUpGeometry, String pickUpLocation_type,
-                 String pickUpLocation, String pickUpLat, String pickUpLng, String whereToPlaceId,
-                 String whereToGeometry, String whereToLocation_type, String whereToLat, String whereToLocation,
-                 String whereToLng, String accountNumber) {
-        this.routeId = routeId;
+    public Route(String pickUpDesc, String whereToDesc, String distance, String pickUpPlaceId, String pickUpGeometry,
+                 String pickUpLocation_type, String pickUpLocation, String pickUpLat, String pickUpLng,
+                 String whereToPlaceId, String whereToGeometry, String whereToLocation_type, String whereToLat,
+                 String whereToLocation, String whereToLng, String accountNumber) {
+        this.pickUpDesc = pickUpDesc;
+        this.whereToDesc = whereToDesc;
+        this.distance = distance;
         this.pickUpPlaceId = pickUpPlaceId;
         this.pickUpGeometry = pickUpGeometry;
         this.pickUpLocation_type = pickUpLocation_type;
@@ -39,12 +43,28 @@ public class Route {
         this.accountNumber = accountNumber;
     }
 
-    public String getRouteId() {
-        return routeId;
+    public String getPickUpDesc() {
+        return pickUpDesc;
     }
 
-    public void setRouteId(String routeId) {
-        this.routeId = routeId;
+    public void setPickUpDesc(String pickUpDesc) {
+        this.pickUpDesc = pickUpDesc;
+    }
+
+    public String getWhereToDesc() {
+        return whereToDesc;
+    }
+
+    public void setWhereToDesc(String whereToDesc) {
+        this.whereToDesc = whereToDesc;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
     }
 
     public String getPickUpPlaceId() {

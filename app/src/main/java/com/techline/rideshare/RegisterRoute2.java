@@ -75,8 +75,8 @@ public class RegisterRoute2 extends AppCompatActivity
     TextView btnContinue;
     private String pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
             pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
-            whereToLat, whereToLocation, whereToLng;
-    private MarkerOptions myLocationMarker, myPLocationMarker, myWLocationMarker;
+            whereToLat, whereToLocation, whereToLng,distanceOfRoute, pickUpDesc, whereToDesc;
+    private MarkerOptions  myPLocationMarker, myWLocationMarker;
     private LatLng pickUp,whereTo;
 
 
@@ -84,7 +84,7 @@ public class RegisterRoute2 extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_route2);
-        myLocationMarker = new MarkerOptions()
+        myPLocationMarker = new MarkerOptions()
                 .position(new LatLng(lat_val, long_val))
                 .title("Here");
         mGoogleApiClient = new GoogleApiClient.Builder(context)
@@ -135,6 +135,8 @@ public class RegisterRoute2 extends AppCompatActivity
                 WhereTo = clean(WhereTo);
                 Log.d(TAG, "second PickupLocation >>" + PickupLocation);
                 Log.d(TAG, "second WhereTo >>" + WhereTo);
+                pickUpDesc = PickupLocation;
+                whereToDesc= WhereTo;
                 Log.d(TAG, "before makePickupLocationGeoCodingQuery");
                 makePickupLocationGeoCodingQuery(PickupLocation);
                 Log.d(TAG, "after makePickupLocationGeoCodingQuery");
@@ -189,15 +191,16 @@ public class RegisterRoute2 extends AppCompatActivity
         Location.distanceBetween(Double.parseDouble(pickUpLat),
                 Double.parseDouble(pickUpLng),Double.parseDouble(whereToLat),
                 Double.parseDouble(whereToLng), result);
-
-        Log.d(TAG, "Distance >> "+ (double) result[0]);
+        distanceOfRoute = String.valueOf(result[0]);
+        Log.d(TAG, "Distance >> "+distanceOfRoute);
+        Log.d(TAG, "Distance double >> "+ (double) result[0]);
         Log.d(TAG, "before makeSaveDataQuery");
         //--------------------------------
         //save route data
         // --------------------------------
         makeRideSharemakeSaveDataQuery(pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
                 pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
-                whereToLat, whereToLocation, whereToLng, accountNumber);
+                whereToLat, whereToLocation, whereToLng, accountNumber, distanceOfRoute, pickUpDesc, whereToDesc);
 
         Log.d(TAG, "after makeSaveDataQuery");
     }
@@ -206,10 +209,10 @@ public class RegisterRoute2 extends AppCompatActivity
                                                 String pickUpLocationValue, String pickUpLatValue, String pickUpLngValue,
                                                 String whereToPlaceIdValue, String whereToGeometryValue, String whereToLocation_typeValue,
                                                 String whereToLatValue,  String whereToLocationValue, String whereToLngValue,
-                                                String accountNo) {
+                                                String accountNo,String distanceValue, String pickUpDescValue, String whereToDescValue) {
         URL RideShareSelectUserURl = NetworkUtils.buildInsertRouteUrl(pickUpPlaceIdValue, pickUpGeometryValue, pickUpLocation_typeValue,
                 pickUpLocationValue, pickUpLatValue, pickUpLngValue, whereToPlaceIdValue, whereToGeometryValue, whereToLocation_typeValue,
-                whereToLatValue, whereToLocationValue, whereToLngValue, accountNo);
+                whereToLatValue, whereToLocationValue, whereToLngValue, accountNo,distanceValue, pickUpDescValue, whereToDescValue);
         Log.d(TAG, "RideShare insert Rout Url is: " + RideShareSelectUserURl.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
         new RegisterRoute2.RideShareInsertRouteTask().execute(RideShareSelectUserURl);
@@ -333,7 +336,8 @@ public class RegisterRoute2 extends AppCompatActivity
         LatLng myCurrentLocation = new LatLng(lat_val, long_val);
         CameraPosition target = CameraPosition.builder().target(myCurrentLocation).zoom(14).build();
         m_map.moveCamera(CameraUpdateFactory.newCameraPosition(target));
-        m_map.addMarker(myLocationMarker);
+        m_map.addMarker(myPLocationMarker);
+        m_map.addMarker(myWLocationMarker);
     }
 
 

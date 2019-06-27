@@ -103,6 +103,9 @@ public class NetworkUtils {
     private static final String PARAM_WHERETO_LAT = "whereToLat";
     private static final String PARAM_WHERETO_LOCATION = "whereToLocation";
     private static final String PARAM_WHERETO_LNG = "whereToLng";
+    private static final String PARAM_DISTANCE = "distance";
+    private static final String PARAM_PICKUP_DESC = "pickUpDesc";
+    private static final String PARAM_WHERETO_DESC= "whereToDesc";
 
     // Message Constants
     // used Write a message to the database
@@ -333,7 +336,8 @@ public class NetworkUtils {
                                           String pickUpLocationValue, String pickUpLatValue, String pickUpLngValue,
                                           String whereToPlaceIdValue, String whereToGeometryValue,
                                           String whereToLocation_typeValue, String whereToLatValue,
-                                          String whereToLocationValue, String whereToLngValue, String accountNoValue) {
+                                          String whereToLocationValue, String whereToLngValue, String accountNoValue,
+                                          String distanceValue, String pickUpDescValue, String whereToDescValue) {
 
         Uri builtUri = Uri.parse(BASE_ADD_ROUTE_URL).buildUpon()
                 .appendQueryParameter(PARAM_PICKUP_PLACE_ID, pickUpPlaceIdValue)
@@ -349,6 +353,9 @@ public class NetworkUtils {
                 .appendQueryParameter(PARAM_WHERETO_LOCATION, whereToLocationValue)
                 .appendQueryParameter(PARAM_WHERETO_LNG, whereToLngValue)
                 .appendQueryParameter(PARAM_ACCT_NO, accountNoValue)
+                .appendQueryParameter(PARAM_DISTANCE, distanceValue)
+                .appendQueryParameter(PARAM_PICKUP_DESC, pickUpDescValue)
+                .appendQueryParameter(PARAM_WHERETO_DESC, whereToDescValue)
 
                 .build();
 
