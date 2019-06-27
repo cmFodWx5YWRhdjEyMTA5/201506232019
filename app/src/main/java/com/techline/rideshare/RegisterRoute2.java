@@ -119,31 +119,30 @@ public class RegisterRoute2 extends AppCompatActivity
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String PickupLocation = etPickupLocation.getText().toString();
-                String WhereTo = etWhereTo.getText().toString();
-                if (PickupLocation.trim().length() == 0) {
+                pickUpDesc = etPickupLocation.getText().toString();
+                whereToDesc = etWhereTo.getText().toString();
+                if (pickUpDesc.trim().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Pickup Location is missing.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (WhereTo.trim().length() == 0) {
+                if (whereToDesc.trim().length() == 0) {
                     Toast.makeText(getApplicationContext(), "Where To is missing.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Log.d(TAG, "first PickupLocation >>" + PickupLocation);
-                Log.d(TAG, "first WhereTo >>" + WhereTo);
-                PickupLocation = clean(PickupLocation);
-                WhereTo = clean(WhereTo);
-                Log.d(TAG, "second PickupLocation >>" + PickupLocation);
-                Log.d(TAG, "second WhereTo >>" + WhereTo);
-                pickUpDesc = PickupLocation;
-                whereToDesc= WhereTo;
+                Log.d(TAG, "first PickupLocation >>" + pickUpDesc);
+                Log.d(TAG, "first WhereTo >>" + whereToDesc);
+                pickUpDesc = clean(pickUpDesc);
+                whereToDesc = clean(whereToDesc);
+                Log.d(TAG, "second PickupLocation >>" + pickUpDesc);
+                Log.d(TAG, "second WhereTo >>" + whereToDesc);
                 Log.d(TAG, "before makePickupLocationGeoCodingQuery");
-                makePickupLocationGeoCodingQuery(PickupLocation);
+                makePickupLocationGeoCodingQuery(pickUpDesc);
                 Log.d(TAG, "after makePickupLocationGeoCodingQuery");
 
                 Log.d(TAG, "before makeWhereToGeoCodingQuery");
-                makeWhereToGeoCodingQuery(WhereTo);
+                makeWhereToGeoCodingQuery(whereToDesc);
                 Log.d(TAG, "after makeWhereToGeoCodingQuery");
+
 
 
             }
