@@ -83,22 +83,21 @@
                 android:text=""
                 android:layout_toEndOf="@id/divider_horizontal"/>
 
-            <Button
+
+            <TextView
                 android:id="@+id/button_perform_transaction"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/edit_expiry_year"
-                android:layout_centerHorizontal="true"
-                android:padding="8dp"
-                android:text="Charge card (init from server)"/>
-            <Button
-                android:id="@+id/button_perform_local_transaction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/button_perform_transaction"
-                android:layout_centerHorizontal="true"
-                android:padding="8dp"
-                android:text="Charge card (init from app)"/>
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/angle"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="Add"
+                android:textColor="#fff"
+                android:textSize="20dp" />
         </RelativeLayout>
 
 

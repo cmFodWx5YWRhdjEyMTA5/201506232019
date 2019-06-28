@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddFunds extends AppCompatActivity
@@ -26,6 +27,7 @@ public class AddFunds extends AppCompatActivity
     String strUser, strPass, globalSearchResult, strFullName, strEmail, strPhone, strFName,
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
     SharedPreferences SP;
+    TextView btnAddCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class AddFunds extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Log.d(TAG, "started Add Funds >> ");
-
+        btnAddCard = findViewById(R.id.btnAddCard);
 
         loadDataFromSharedPrefs();
 
@@ -49,7 +51,13 @@ public class AddFunds extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Log.d(TAG, "started Add Funds >> 6");
-
+        btnAddCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(AddFunds.this, AddCard.class);
+                startActivity(it);
+            }
+        });
     }
 
     @Override

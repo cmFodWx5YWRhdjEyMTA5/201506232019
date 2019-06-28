@@ -197,6 +197,9 @@ public class RegisterRoute1 extends AppCompatActivity
                 whereToLat, whereToLocation, whereToLng, accountNumber, distanceOfRoute, pickUpDesc, whereToDesc);
 
         Log.d(TAG, "after makeSaveDataQuery");
+        Toast.makeText(this, "Route Registered", Toast.LENGTH_SHORT).show();
+        Intent it = new Intent(RegisterRoute1.this, StartRide.class);
+        startActivity(it);
     }
 
     private void makeRideSharemakeSaveDataQuery(String pickUpPlaceIdValue, String pickUpGeometryValue, String pickUpLocation_typeValue,
