@@ -71,8 +71,8 @@ public class RegisterRoute1 extends AppCompatActivity
     private String pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
             pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
             whereToLat, whereToLocation, whereToLng, distanceOfRoute, pickUpDesc, whereToDesc;
-    private MarkerOptions  myPLocationMarker, myWLocationMarker;
-    private LatLng pickUp,whereTo;
+    private MarkerOptions myPLocationMarker, myWLocationMarker;
+    private LatLng pickUp, whereTo;
 
 
     @Override
@@ -165,8 +165,8 @@ public class RegisterRoute1 extends AppCompatActivity
         myWLocationMarker = new MarkerOptions()
                 .position(new LatLng(Double.parseDouble(whereToLat), Double.parseDouble(whereToLng)))
                 .title("WhereTo");
-        whereTo = new LatLng(Double.parseDouble(whereToLat),Double.parseDouble(whereToLng));
-        pickUp = new LatLng(Double.parseDouble(pickUpLat),Double.parseDouble(pickUpLng));
+        whereTo = new LatLng(Double.parseDouble(whereToLat), Double.parseDouble(whereToLng));
+        pickUp = new LatLng(Double.parseDouble(pickUpLat), Double.parseDouble(pickUpLng));
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
 
         boundsBuilder.include(myPLocationMarker.getPosition());
@@ -182,12 +182,12 @@ public class RegisterRoute1 extends AppCompatActivity
         onMapReady(m_map);
         float[] result = new float[1];
         Location.distanceBetween(Double.parseDouble(pickUpLat),
-                Double.parseDouble(pickUpLng),Double.parseDouble(whereToLat),
+                Double.parseDouble(pickUpLng), Double.parseDouble(whereToLat),
                 Double.parseDouble(whereToLng), result);
 
         distanceOfRoute = String.valueOf(result[0]);
-        Log.d(TAG, "Distance >> "+distanceOfRoute);
-        Log.d(TAG, "Distance double >> "+ (double) result[0]);
+        Log.d(TAG, "Distance >> " + distanceOfRoute);
+        Log.d(TAG, "Distance double >> " + (double) result[0]);
         Log.d(TAG, "before makeSaveDataQuery");
         //--------------------------------
         //save route data
@@ -200,13 +200,13 @@ public class RegisterRoute1 extends AppCompatActivity
     }
 
     private void makeRideSharemakeSaveDataQuery(String pickUpPlaceIdValue, String pickUpGeometryValue, String pickUpLocation_typeValue,
-                                                 String pickUpLocationValue, String pickUpLatValue, String pickUpLngValue,
+                                                String pickUpLocationValue, String pickUpLatValue, String pickUpLngValue,
                                                 String whereToPlaceIdValue, String whereToGeometryValue, String whereToLocation_typeValue,
-                                                String whereToLatValue,  String whereToLocationValue, String whereToLngValue,
-                                                String accountNo,String distanceValue, String pickUpDescValue, String whereToDescValue) {
+                                                String whereToLatValue, String whereToLocationValue, String whereToLngValue,
+                                                String accountNo, String distanceValue, String pickUpDescValue, String whereToDescValue) {
         URL RideShareSelectUserURl = NetworkUtils.buildInsertRouteUrl(pickUpPlaceIdValue, pickUpGeometryValue, pickUpLocation_typeValue,
                 pickUpLocationValue, pickUpLatValue, pickUpLngValue, whereToPlaceIdValue, whereToGeometryValue, whereToLocation_typeValue,
-                whereToLatValue, whereToLocationValue, whereToLngValue, accountNo,distanceValue, pickUpDescValue, whereToDescValue);
+                whereToLatValue, whereToLocationValue, whereToLngValue, accountNo, distanceValue, pickUpDescValue, whereToDescValue);
         Log.d(TAG, "RideShare insert Rout Url is: " + RideShareSelectUserURl.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
         new RegisterRoute1.RideShareInsertRouteTask().execute(RideShareSelectUserURl);
@@ -714,7 +714,11 @@ public class RegisterRoute1 extends AppCompatActivity
         CameraPosition target = CameraPosition.builder().target(myCurrentLocation).zoom(14).build();
         m_map.moveCamera(CameraUpdateFactory.newCameraPosition(target));
         m_map.addMarker(myPLocationMarker);
-        m_map.addMarker(myWLocationMarker);
+        if (myWLocationMarker == null) {
+            return;
+        } else {
+            m_map.addMarker(myWLocationMarker);
+        }
     }
 
     public class RideShareInsertRouteTask extends AsyncTask<URL, Void, String> {

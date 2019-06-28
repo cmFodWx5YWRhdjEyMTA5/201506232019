@@ -165,7 +165,7 @@
                                     android:background="@drawable/angle"
                                     android:gravity="center"
                                     android:padding="16dp"
-                                    android:text="Continue"
+                                    android:text="Save"
                                     android:textColor="#fff"
                                     android:textSize="16dp" />
                             </LinearLayout>

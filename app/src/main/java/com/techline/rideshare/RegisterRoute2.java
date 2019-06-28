@@ -336,7 +336,11 @@ public class RegisterRoute2 extends AppCompatActivity
         CameraPosition target = CameraPosition.builder().target(myCurrentLocation).zoom(14).build();
         m_map.moveCamera(CameraUpdateFactory.newCameraPosition(target));
         m_map.addMarker(myPLocationMarker);
-        m_map.addMarker(myWLocationMarker);
+        if (myWLocationMarker == null) {
+            return;
+        } else {
+            m_map.addMarker(myWLocationMarker);
+        }
     }
 
 

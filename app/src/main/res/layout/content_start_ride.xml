@@ -8,152 +8,263 @@
     tools:context=".StartRide"
     tools:showIn="@layout/content_start_ride">
 
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:src="@drawable/map_bg" />
+            android:layout_height="match_parent"
 
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/whiteColor">
-
-            <ImageView
-                android:id="@+id/a"
-                android:layout_width="@dimen/size_50db"
-                android:layout_height="@dimen/size_50db"
-                android:src="@drawable/moto" />
+            android:background="@color/whiteColor"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/abc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/a"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="visible">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="@dimen/margin_10db"
-                    android:layout_marginEnd="10dp"
-                    android:orientation="horizontal">
+                    android:layout_margin="1dp"
+                    android:backgroundTint="@color/whiteColor"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="5dp"
+                    app:cardUseCompatPadding="true">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:gravity="left"
-                        android:text="DESTINATION ETA\n 4 hrs 42 Min"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="start"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:text="FARE EST\n TK 300"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        <EditText
+                            android:id="@+id/etPickupLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_weight="1.0"
+                            android:background="@null"
+                            android:ems="10"
+                            android:fontFamily="sans-serif-light"
+                            android:gravity="center"
+                            android:hint="Pickup Location"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="6dp"
+                            tools:ignore="ExtraText">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:gravity="end"
-                        android:text="PROMO\n ---"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                            <requestFocus />
 
-                </LinearLayout>
+                        </EditText>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginBottom="@dimen/view_5db"
-                    android:background="#555555" />
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="@dimen/margin_10db"
-                    android:layout_marginEnd="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:gravity="left"
-                        android:maxLines="1"
-                        android:text="Cash"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:gravity="end"
-                        android:maxLines="1"
-                        android:text="1"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginBottom="@dimen/view_5db"
-                    android:background="#555555" />
-
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size_50db"
-                android:layout_below="@id/abc"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:background="@color/blackColor"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:visibility="visible">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:text="Request Ride"
-                    android:textColor="@color/whiteColor"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </RelativeLayout>
-    </RelativeLayout>
+                    android:layout_margin="1dp"
+                    android:backgroundTint="@color/whiteColor"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="5dp"
+                    app:cardUseCompatPadding="true">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="start"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/etWhereTo"
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_weight="1.0"
+                            android:background="@null"
+                            android:ems="10"
+                            android:fontFamily="sans-serif-light"
+                            android:gravity="center"
+                            android:hint="Where To?"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="6dp"
+                            tools:ignore="ExtraText">
+
+                            <requestFocus />
+
+                        </EditText>
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="550dp"
+                android:layout_marginTop="@dimen/margin_10db"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:backgroundTint="@color/whiteColor"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="5dp"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="start"
+                        android:orientation="vertical">
+
+                        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:id="@+id/map"
+                            android:name="com.google.android.gms.maps.MapFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="350dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="#ADCCE2" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="350dp"
+                        android:layout_marginEnd="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="left"
+                            android:text="DESTINATION ETA\n 4 hrs 42 Min"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:text="FARE EST\n TK 300"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="end"
+                            android:text="PROMO\n ---"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginBottom="@dimen/view_5db"
+                        android:background="#555555" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="360dp"
+                        android:layout_marginEnd="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="left"
+                            android:maxLines="1"
+                            android:text="Cash"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="end"
+                            android:maxLines="1"
+                            android:text="1"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="start"
+                        android:layout_marginTop="380dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/btnRequest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/angle"
+                            android:gravity="center"
+                            android:padding="16dp"
+                            android:text="Request Ride"
+                            android:textColor="#fff"
+                            android:textSize="20dp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginBottom="@dimen/view_5db"
+                        android:background="#555555" />
+
+
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+
+
+    </android.support.v4.widget.NestedScrollView>
 </android.support.constraint.ConstraintLayout>
