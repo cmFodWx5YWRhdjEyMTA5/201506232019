@@ -16,11 +16,17 @@
 package com.techline.rideshare.util;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.techline.rideshare.R;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -54,6 +60,7 @@ public class NetworkUtils {
     final static String BASE_GEO_CODE_ONE_URL = BASE_GEODODE_URL+ "/api/geocode/json";
 
     final static String PARAM_QUERY = "q";
+    final static  String BASE_ADD_CARD_URL = "https://api.paystack.co/transaction/initialize";
 
     /*
      * The sort field. One of stars, forks, or updated.
@@ -106,6 +113,19 @@ public class NetworkUtils {
     private static final String PARAM_DISTANCE = "distance";
     private static final String PARAM_PICKUP_DESC = "pickUpDesc";
     private static final String PARAM_WHERETO_DESC= "whereToDesc";
+    private static final String PARAM_NAME_ON_CARD = "";
+    private static final String PARAM_FULL_NUMBER_ON_CARD = "";
+    private static final String PARAM_TOKENISED_CARD = "";
+    private static final String PARAM_PIN_ON_CARD = "";
+    private static final String PARAM_OTP_ON_CARD = "";
+    private static final String PARAM_TOKENISATION_VERIFIEDONCARD = "";
+    private static final String PARAM_AUTHORIZATION_CODE_ON_CARD = "";
+    private static final String PARAM_BANK_ON_CARD = "";
+    private static final String PARAM_TYPE_ON_CARD = "";
+    private static final String PARAM_LAST_4DIGITS_ON_CARD = "";
+    private static final String PARAM_EMIL_ON_CARD = "";
+    private static final String PARAM_AUTHOBJ_ON_CARD = "";
+    private static final String PARAM_ACCOUNT_NUMBER = "";
 
     // Message Constants
     // used Write a message to the database
@@ -367,6 +387,90 @@ public class NetworkUtils {
         }
 
         return url;
+
+    }
+
+    public static URL buildInsertCardUrl(String nameOnCardValue, String fullNumberOnCardValue,
+                                         String tokenisedCardValue, String pinOnCardValue, String otpOnCardValue,
+                                         String tokenisationVerifiedOnCardValue, String authorizationCodeOnCardValue,
+                                         String bankOnCardValue, String typeOnCardValue, String last4DigitsOnCardValue,
+                                         String emilOnCardValue, String authObjOnCardValue, String accountNumberValue) {
+
+        Uri builtUri = Uri.parse(BASE_ADD_CARD_URL).buildUpon()
+                .appendQueryParameter(PARAM_NAME_ON_CARD, nameOnCardValue)
+                .appendQueryParameter(PARAM_FULL_NUMBER_ON_CARD, fullNumberOnCardValue)
+                .appendQueryParameter(PARAM_TOKENISED_CARD, tokenisedCardValue)
+                .appendQueryParameter(PARAM_PIN_ON_CARD, pinOnCardValue)
+                .appendQueryParameter(PARAM_OTP_ON_CARD, otpOnCardValue)
+                .appendQueryParameter(PARAM_TOKENISATION_VERIFIEDONCARD, tokenisationVerifiedOnCardValue)
+                .appendQueryParameter(PARAM_AUTHORIZATION_CODE_ON_CARD, authorizationCodeOnCardValue)
+                .appendQueryParameter(PARAM_BANK_ON_CARD, bankOnCardValue)
+                .appendQueryParameter(PARAM_TYPE_ON_CARD, typeOnCardValue)
+                .appendQueryParameter(PARAM_LAST_4DIGITS_ON_CARD, last4DigitsOnCardValue)
+                .appendQueryParameter(PARAM_EMIL_ON_CARD, emilOnCardValue)
+                .appendQueryParameter(PARAM_AUTHOBJ_ON_CARD, authObjOnCardValue)
+                .appendQueryParameter(PARAM_ACCOUNT_NUMBER, accountNumberValue)
+
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static String getResponseFromPaystackHttpUrl(URL searchUrl) {
+        StringBuffer response = new StringBuffer();
+        JSONObject POST_PARAMS = new JSONObject();
+
+        POST_PARAMS.put("userName", usernameValueStore);
+        POST_PARAMS.put("passWord", passwordValueStore);
+
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+        conn.setRequestProperty("Accept", "application/json");
+        conn.setDoOutput(true);
+        //conn.setDoInput(true);
+
+
+        try {
+            OutputStream os = conn.getOutputStream();
+            os.write(POST_PARAMS.toString().getBytes());
+            os.flush();
+            os.close();
+            int responseCode = conn.getResponseCode();
+            Log.d(TAG, "POST Response Code :  " + responseCode);
+            Log.d(TAG, "POST Response Message : " + conn.getResponseMessage());
+
+            if (responseCode == HttpURLConnection.HTTP_OK) { // success
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                // print result
+                Log.d(TAG, response.toString());
+
+                return response.toString();
+
+            } else {
+                return "ERROR";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "e.printStackTrace() >>" + e.toString());
+            Log.d(TAG, "POST DIDN'T WORK");
+
+        } finally {
+            return response.toString();
+
+        }
 
     }
 }

@@ -2,10 +2,19 @@ package com.techline.rideshare;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.techline.rideshare.util.NetworkUtils;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class AddCard extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
@@ -14,11 +23,81 @@ public class AddCard extends AppCompatActivity {
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status,
             globalPickupLocationSearchResult, globalwhereToSearchResult;
     SharedPreferences SP;
+    EditText edit_card_number, edit_cvc, edit_expiry_month, edit_expiry_year, edit_four_digit_pin;
+    TextView button_perform_transaction;
+    String nameOnCard, fullNumberOnCard, tokenisedCard, pinOnCard, otpOnCard, tokenisationVerifiedOnCard,
+            authorizationCodeOnCard, bankOnCard, typeOnCard, last4DigitsOnCard, emilOnCard, authObjOnCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_card);
+
+        edit_card_number = findViewById(R.id.edit_card_number);
+        edit_cvc = findViewById(R.id.edit_cvc);
+        edit_expiry_month = findViewById(R.id.edit_expiry_month);
+        edit_expiry_year = findViewById(R.id.edit_expiry_year);
+        edit_four_digit_pin = findViewById(R.id.edit_four_digit_pin);
+        button_perform_transaction = findViewById(R.id.button_perform_transaction);
+
+        loadDataFromSharedPrefs();
+        button_perform_transaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "before adding card");
+                //--------------------------------
+                //adding card data
+                // --------------------------------
+                makeRideSharemakeSaveCardQuery("", fullNumberOnCard, tokenisedCard, pinOnCard, "", "",
+                        "", "", "", last4DigitsOnCard, emilOnCard, "",
+                        accountNumber);
+
+                Log.d(TAG, "after adding card");
+
+                Intent it = new Intent(AddCard.this, AddCard.class);
+                startActivity(it);
+            }
+        });
+    }
+
+    private void makeRideSharemakeSaveCardQuery(String nameOnCardValue, String fullNumberOnCardValue,
+                                                String tokenisedCardValue, String pinOnCardValue, String otpOnCardValue,
+                                                String tokenisationVerifiedOnCardValue, String authorizationCodeOnCardValue,
+                                                String bankOnCardValue, String typeOnCardValue, String last4DigitsOnCardValue,
+                                                String emilOnCardValue, String authObjOnCardValue, String accountNumberValue) {
+
+        URL RideShareSelectUserURl = NetworkUtils.buildInsertCardUrl(nameOnCardValue, fullNumberOnCardValue, tokenisedCardValue,
+                pinOnCardValue, otpOnCardValue, tokenisationVerifiedOnCardValue, authorizationCodeOnCardValue, bankOnCardValue,
+                typeOnCardValue, last4DigitsOnCardValue, emilOnCardValue, authObjOnCardValue, accountNumberValue);
+        Log.d(TAG, "RideShare insert Rout Url is: " + RideShareSelectUserURl.toString());
+        // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
+        new AddCard.RideShareInsertCardTask().execute(RideShareSelectUserURl);
+    }
+
+    public class RideShareInsertCardTask extends AsyncTask<URL, Void, String> {
+
+        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String RideShareSearchResults = null;
+            try {
+                RideShareSearchResults = NetworkUtils.getResponseFromPaystackHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return RideShareSearchResults;
+        }
+
+        // COMPLETED (3) Override onPostExecute to display the results
+        @Override
+        protected void onPostExecute(String RideShareSearchResults) {
+            if (RideShareSearchResults != null && !RideShareSearchResults.equals("")) {
+                Log.d(TAG, "RideShareSearchResults is :" + RideShareSearchResults);
+                globalPickupLocationSearchResult = RideShareSearchResults;
+                //loadafterCardResultInView();
+            }
+        }
     }
 
     private void logoutUser() {
@@ -80,4 +159,6 @@ public class AddCard extends AppCompatActivity {
 
         Log.d(TAG, "after loadDataFromSharedPrefs");
     }
+
+
 }
