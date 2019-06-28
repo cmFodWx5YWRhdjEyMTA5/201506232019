@@ -68,7 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_span="2"
-                        android:text="DRIVER ID: 012345"
+                        android:text="PASSENGER ID: 012345"
                         android:textColor="#003057"
                         android:textSize="20dp" />
                 </TableRow>

@@ -128,7 +128,28 @@
                         android:layout_height="match_parent"
                         android:gravity="start"
                         android:orientation="vertical">
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="#ADCCE2" />
 
+                        <TextView
+                            android:id="@+id/btnRequest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/angle"
+                            android:gravity="center"
+                            android:padding="16dp"
+                            android:text="Save"
+                            android:textColor="#fff"
+                            android:textSize="16dp" />
                         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                             android:id="@+id/map"
                             android:name="com.google.android.gms.maps.MapFragment"
@@ -151,7 +172,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="350dp"
+                        android:layout_marginTop="450dp"
                         android:layout_marginEnd="10dp"
                         android:orientation="horizontal">
 
@@ -231,20 +252,6 @@
                         android:layout_marginTop="380dp"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/btnRequest"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginTop="30dp"
-                            android:layout_marginRight="40dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/angle"
-                            android:gravity="center"
-                            android:padding="16dp"
-                            android:text="Request Ride"
-                            android:textColor="#fff"
-                            android:textSize="20dp" />
 
                     </LinearLayout>
 
