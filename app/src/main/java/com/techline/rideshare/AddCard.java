@@ -50,7 +50,7 @@ public class AddCard extends AppCompatActivity {
                 // --------------------------------
                 makeRideSharemakeSaveCardQuery("", fullNumberOnCard, tokenisedCard, pinOnCard, "", "",
                         "", "", "", last4DigitsOnCard, emilOnCard, "",
-                        accountNumber);
+                        accountNumber, "@string/PAY_STACK_SECRET_KEY");
 
                 Log.d(TAG, "after adding card");
 
@@ -64,11 +64,12 @@ public class AddCard extends AppCompatActivity {
                                                 String tokenisedCardValue, String pinOnCardValue, String otpOnCardValue,
                                                 String tokenisationVerifiedOnCardValue, String authorizationCodeOnCardValue,
                                                 String bankOnCardValue, String typeOnCardValue, String last4DigitsOnCardValue,
-                                                String emilOnCardValue, String authObjOnCardValue, String accountNumberValue) {
+                                                String emilOnCardValue, String authObjOnCardValue, String accountNumberValue,
+                                                String token) {
 
         URL RideShareSelectUserURl = NetworkUtils.buildInsertCardUrl(nameOnCardValue, fullNumberOnCardValue, tokenisedCardValue,
                 pinOnCardValue, otpOnCardValue, tokenisationVerifiedOnCardValue, authorizationCodeOnCardValue, bankOnCardValue,
-                typeOnCardValue, last4DigitsOnCardValue, emilOnCardValue, authObjOnCardValue, accountNumberValue);
+                typeOnCardValue, last4DigitsOnCardValue, emilOnCardValue, authObjOnCardValue, accountNumberValue,token);
         Log.d(TAG, "RideShare insert Rout Url is: " + RideShareSelectUserURl.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
         new AddCard.RideShareInsertCardTask().execute(RideShareSelectUserURl);

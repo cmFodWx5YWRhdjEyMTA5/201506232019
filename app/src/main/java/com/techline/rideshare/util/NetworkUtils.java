@@ -57,10 +57,10 @@ public class NetworkUtils {
     final static String BASE_CHANGE_PASS_URL = BASE_URL + "android_api/v1/change_pass.php";
     final static String BASE_CHECK_PAY_CODE_URL = BASE_URL + "android_api/v1/chek_pay_code.php";
     final static String BASE_ADD_ROUTE_URL = BASE_URL + "android_api/v1/add_route.php";
-    final static String BASE_GEO_CODE_ONE_URL = BASE_GEODODE_URL+ "/api/geocode/json";
+    final static String BASE_GEO_CODE_ONE_URL = BASE_GEODODE_URL + "/api/geocode/json";
 
     final static String PARAM_QUERY = "q";
-    final static  String BASE_ADD_CARD_URL = "https://api.paystack.co/transaction/initialize";
+    final static String BASE_ADD_CARD_URL = "https://api.paystack.co/transaction/initialize";
 
     /*
      * The sort field. One of stars, forks, or updated.
@@ -112,20 +112,20 @@ public class NetworkUtils {
     private static final String PARAM_WHERETO_LNG = "whereToLng";
     private static final String PARAM_DISTANCE = "distance";
     private static final String PARAM_PICKUP_DESC = "pickUpDesc";
-    private static final String PARAM_WHERETO_DESC= "whereToDesc";
-    private static final String PARAM_NAME_ON_CARD = "";
-    private static final String PARAM_FULL_NUMBER_ON_CARD = "";
-    private static final String PARAM_TOKENISED_CARD = "";
-    private static final String PARAM_PIN_ON_CARD = "";
-    private static final String PARAM_OTP_ON_CARD = "";
-    private static final String PARAM_TOKENISATION_VERIFIEDONCARD = "";
-    private static final String PARAM_AUTHORIZATION_CODE_ON_CARD = "";
-    private static final String PARAM_BANK_ON_CARD = "";
-    private static final String PARAM_TYPE_ON_CARD = "";
-    private static final String PARAM_LAST_4DIGITS_ON_CARD = "";
-    private static final String PARAM_EMIL_ON_CARD = "";
-    private static final String PARAM_AUTHOBJ_ON_CARD = "";
-    private static final String PARAM_ACCOUNT_NUMBER = "";
+    private static final String PARAM_WHERETO_DESC = "whereToDesc";
+    private static final String PARAM_NAME_ON_CARD = "nameOnCard";
+    private static final String PARAM_FULL_NUMBER_ON_CARD = "fullNumberOnCard";
+    private static final String PARAM_TOKENISED_CARD = "tokenisedCard";
+    private static final String PARAM_PIN_ON_CARD = "pinOnCard";
+    private static final String PARAM_OTP_ON_CARD = "otpOnCard";
+    private static final String PARAM_TOKENISATION_VERIFIEDONCARD = "tokenisationVerifiedOnCard";
+    private static final String PARAM_AUTHORIZATION_CODE_ON_CARD = "authorizationCodeOnCard";
+    private static final String PARAM_BANK_ON_CARD = "bankOnCard";
+    private static final String PARAM_TYPE_ON_CARD = "typeOnCard";
+    private static final String PARAM_LAST_4DIGITS_ON_CARD = "last4DigitsOnCard";
+    private static final String PARAM_EMIL_ON_CARD = "emilOnCard";
+    private static final String PARAM_AUTHOBJ_ON_CARD = "authObjOnCard";
+    private static final String PARAM_ACCOUNT_NUMBER = "accountNumber";
 
     // Message Constants
     // used Write a message to the database
@@ -135,6 +135,7 @@ public class NetworkUtils {
 
     private static String PARAM_GEOCODE_ADDRESS = "address";
     private static String PARAM_GEOCODE_KEY = "key";
+    private static String tokenValueStore;
 
     /**
      * Builds the URL used to query Database.
@@ -394,8 +395,9 @@ public class NetworkUtils {
                                          String tokenisedCardValue, String pinOnCardValue, String otpOnCardValue,
                                          String tokenisationVerifiedOnCardValue, String authorizationCodeOnCardValue,
                                          String bankOnCardValue, String typeOnCardValue, String last4DigitsOnCardValue,
-                                         String emilOnCardValue, String authObjOnCardValue, String accountNumberValue) {
-
+                                         String emilOnCardValue, String authObjOnCardValue, String accountNumberValue,
+                                         String tokenValue) {
+        tokenValueStore = tokenValue;
         Uri builtUri = Uri.parse(BASE_ADD_CARD_URL).buildUpon()
                 .appendQueryParameter(PARAM_NAME_ON_CARD, nameOnCardValue)
                 .appendQueryParameter(PARAM_FULL_NUMBER_ON_CARD, fullNumberOnCardValue)
@@ -423,15 +425,20 @@ public class NetworkUtils {
         return url;
     }
 
-    public static String getResponseFromPaystackHttpUrl(URL searchUrl) {
+    public static String getResponseFromPaystackHttpUrl(URL url) throws IOException {
         StringBuffer response = new StringBuffer();
-        JSONObject POST_PARAMS = new JSONObject();
+  /*      JSONObject POST_PARAMS = new JSONObject();
 
         POST_PARAMS.put("userName", usernameValueStore);
-        POST_PARAMS.put("passWord", passwordValueStore);
+        POST_PARAMS.put("passWord", passwordValueStore);*/
+        Log.d(TAG, "tokenValueStore :  " + tokenValueStore);
 
+        String authorize_header = "Bearer " + tokenValueStore;
+        Log.d(TAG, "authorize_header :  " + authorize_header);
+        Log.d(TAG, "tokenValueStore :  " + tokenValueStore);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
+        conn.setRequestProperty("Authorization", authorize_header);
         conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
         conn.setRequestProperty("Accept", "application/json");
         conn.setDoOutput(true);
@@ -440,7 +447,7 @@ public class NetworkUtils {
 
         try {
             OutputStream os = conn.getOutputStream();
-            os.write(POST_PARAMS.toString().getBytes());
+            // os.write(POST_PARAMS.toString().getBytes());
             os.flush();
             os.close();
             int responseCode = conn.getResponseCode();
