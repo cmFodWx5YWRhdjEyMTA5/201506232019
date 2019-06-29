@@ -110,7 +110,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="550dp"
+                android:layout_height="650dp"
                 android:layout_marginTop="@dimen/margin_10db"
                 android:orientation="horizontal">
 
@@ -168,11 +168,12 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llTripData"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="450dp"
+                        android:layout_marginTop="20dp"
                         android:layout_marginEnd="10dp"
                         android:orientation="horizontal">
 
@@ -193,7 +194,7 @@
                             android:layout_weight="1"
                             android:ellipsize="end"
                             android:gravity="center"
-                            android:text="FARE EST\n NGN XXX.XX"
+                            android:text="FARE EST\n N XXX.XX"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -222,30 +223,50 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
                         android:layout_marginStart="10dp"
+                        android:layout_marginTop="430dp"
+                        android:layout_marginEnd="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/requestRideMain"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@color/forestGreen"
+                            android:gravity="center"
+                            android:padding="16dp"
+                            android:text="Request Ride"
+                            android:textColor="#fff"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="500dp"
                         android:layout_marginEnd="10dp"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/newRoute"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:gravity="left"
-                            android:maxLines="1"
-                            android:text="Cash"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/angle"
+                            android:gravity="center"
+                            android:padding="16dp"
+                            android:textColor="#fff"
+                            android:text="New Route"
                             android:textSize="16sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:gravity="end"
-                            android:maxLines="1"
-                            android:text="1"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"

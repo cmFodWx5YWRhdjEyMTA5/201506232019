@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 
+import static android.util.TypedValue.TYPE_NULL;
+
 public class StartRide extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapReadyCallback {
@@ -68,12 +71,13 @@ public class StartRide extends AppCompatActivity
             globalPickupLocationSearchResult, globalwhereToSearchResult;
     SharedPreferences SP;
     EditText etPickupLocation, etWhereTo;
-    TextView btnRequest,fare, distance;
+    TextView btnRequest, fare, distance, newRoute,requestRideMain;
     private String pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
             pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
             whereToLat, whereToLocation, whereToLng, distanceOfRoute, pickUpDesc, whereToDesc;
     private MarkerOptions myPLocationMarker, myWLocationMarker;
     private LatLng pickUp, whereTo;
+    LinearLayout llTripData;
 
 
     @Override
@@ -113,6 +117,21 @@ public class StartRide extends AppCompatActivity
         btnRequest = findViewById(R.id.btnRequest);
         fare = findViewById(R.id.fare);
         distance = findViewById(R.id.distance);
+        newRoute = findViewById(R.id.newRoute);
+        llTripData = findViewById(R.id.llTripData);
+        requestRideMain = findViewById(R.id.requestRideMain);
+
+        llTripData.setVisibility(View.INVISIBLE);
+        newRoute.setVisibility(View.INVISIBLE);
+        requestRideMain.setVisibility(View.INVISIBLE);
+
+        newRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(StartRide.this, StartRide.class);
+                startActivity(it);
+            }
+        });
 
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +161,11 @@ public class StartRide extends AppCompatActivity
                 Log.d(TAG, "after makeWhereToGeoCodingQuery");
 
                 btnRequest.setVisibility(View.INVISIBLE);
+                llTripData.setVisibility(View.VISIBLE);
+                newRoute.setVisibility(View.VISIBLE);
+                requestRideMain.setVisibility(View.VISIBLE);
+                etPickupLocation.setEnabled(false);
+                etWhereTo.setEnabled(false);
             }
         });
     }
@@ -189,13 +213,15 @@ public class StartRide extends AppCompatActivity
                 Double.parseDouble(whereToLng), result);
 
         int distanceOfRouteint = (int) result[0];
+        Log.d(TAG, "result.toString() >> " + result.toString());
+
         distanceOfRoute = String.valueOf(distanceOfRouteint);
         Log.d(TAG, "Distance >> " + distanceOfRoute);
         distanceOfRoute = GeneralMethods.toCommaAmount(distanceOfRoute);
         Log.d(TAG, "Distance >> " + distanceOfRoute);
 
         //fare.setText("FARE EST\n"+distanceOfRoute + "M");
-        distance.setText("FARE EST\n"+distanceOfRoute + "M");
+        distance.setText("DISTANCE \n" + distanceOfRoute + " M");
         Log.d(TAG, "Distance double >> " + (double) result[0]);
         Log.d(TAG, "Distance int >> " + (int) result[0]);
         Log.d(TAG, "before makeSaveDataQuery");

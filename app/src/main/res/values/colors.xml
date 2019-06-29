@@ -11,4 +11,5 @@
     <color name="blackColor">#0E0E0E</color>
     <color name="grayColor">#ECECEC</color>
     <color name="ashColor">#6B6A6A</color>
+    <color name="forestGreen">#228B22</color>
 </resources>
