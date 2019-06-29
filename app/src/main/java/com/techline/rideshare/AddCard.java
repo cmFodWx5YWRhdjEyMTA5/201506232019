@@ -37,7 +37,7 @@ public class AddCard extends AppCompatActivity {
         edit_cvc = findViewById(R.id.edit_cvc);
         edit_expiry_month = findViewById(R.id.edit_expiry_month);
         edit_expiry_year = findViewById(R.id.edit_expiry_year);
-        edit_four_digit_pin = findViewById(R.id.edit_four_digit_pin);
+        edit_four_digit_pin = findViewById(R.id.edit_pin);
         button_perform_transaction = findViewById(R.id.button_perform_transaction);
 
         loadDataFromSharedPrefs();

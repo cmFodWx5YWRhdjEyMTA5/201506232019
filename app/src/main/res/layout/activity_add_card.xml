@@ -84,14 +84,14 @@
                 android:layout_toEndOf="@id/divider_horizontal"/>
 
             <EditText
-                android:id="@+id/edit_four_digit_pin"
+                android:id="@+id/edit_pin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/edit_expiry_year"
                 android:layout_toEndOf="@id/divider_horizontal"
                 android:gravity="left"
                 android:hint="XXXX"
-                android:inputType="number"
+                android:inputType="numberPassword"
                 android:maxEms="4"
                 android:maxLength="4"
                 android:text="" />

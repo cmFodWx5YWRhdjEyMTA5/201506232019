@@ -61,7 +61,7 @@ public class StartRide extends AppCompatActivity
     private GoogleMap m_map;
     private Context context = this;
     public static final String MyPREFERENCES = "MyPrefs";
-    private static final String TAG = "REG_ROUTE_1";
+    private static final String TAG = "START_RIDE";
     String strUser, strPass, globalSearchResult, strFullName, strEmail, strPhone, strFName,
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status,
             globalPickupLocationSearchResult, globalwhereToSearchResult;
@@ -78,7 +78,7 @@ public class StartRide extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_route1);
+        setContentView(R.layout.activity_start_ride);
         myPLocationMarker = new MarkerOptions()
                 .position(new LatLng(lat_val, long_val))
                 .title("Here");
@@ -138,7 +138,7 @@ public class StartRide extends AppCompatActivity
                 makeWhereToGeoCodingQuery(whereToDesc);
                 Log.d(TAG, "after makeWhereToGeoCodingQuery");
 
-
+                btnRequest.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -198,8 +198,7 @@ public class StartRide extends AppCompatActivity
 
         Log.d(TAG, "after makeSaveDataQuery");
         Toast.makeText(this, "Requesting Your Ride", Toast.LENGTH_SHORT).show();
-        Intent it = new Intent(StartRide.this, StartRide.class);
-        startActivity(it);
+
     }
 
     private void makeRideSharemakeSaveDataQuery(String pickUpPlaceIdValue, String pickUpGeometryValue, String pickUpLocation_typeValue,

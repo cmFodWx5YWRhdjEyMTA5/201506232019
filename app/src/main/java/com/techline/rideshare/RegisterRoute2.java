@@ -143,7 +143,7 @@ public class RegisterRoute2 extends AppCompatActivity
                 makeWhereToGeoCodingQuery(whereToDesc);
                 Log.d(TAG, "after makeWhereToGeoCodingQuery");
 
-
+                btnContinue.setVisibility(View.INVISIBLE);
 
             }
         });
