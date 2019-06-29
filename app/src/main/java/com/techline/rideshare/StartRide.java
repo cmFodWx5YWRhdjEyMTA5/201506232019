@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.techline.rideshare.util.GeneralMethods;
 import com.techline.rideshare.util.NetworkUtils;
 
 import org.json.JSONException;
@@ -67,7 +68,7 @@ public class StartRide extends AppCompatActivity
             globalPickupLocationSearchResult, globalwhereToSearchResult;
     SharedPreferences SP;
     EditText etPickupLocation, etWhereTo;
-    TextView btnRequest;
+    TextView btnRequest,fare, distance;
     private String pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
             pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
             whereToLat, whereToLocation, whereToLng, distanceOfRoute, pickUpDesc, whereToDesc;
@@ -110,6 +111,8 @@ public class StartRide extends AppCompatActivity
         etPickupLocation = findViewById(R.id.etPickupLocation);
         etWhereTo = findViewById(R.id.etWhereTo);
         btnRequest = findViewById(R.id.btnRequest);
+        fare = findViewById(R.id.fare);
+        distance = findViewById(R.id.distance);
 
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,9 +188,16 @@ public class StartRide extends AppCompatActivity
                 Double.parseDouble(pickUpLng), Double.parseDouble(whereToLat),
                 Double.parseDouble(whereToLng), result);
 
-        distanceOfRoute = String.valueOf(result[0]);
+        int distanceOfRouteint = (int) result[0];
+        distanceOfRoute = String.valueOf(distanceOfRouteint);
         Log.d(TAG, "Distance >> " + distanceOfRoute);
+        distanceOfRoute = GeneralMethods.toCommaAmount(distanceOfRoute);
+        Log.d(TAG, "Distance >> " + distanceOfRoute);
+
+        //fare.setText("FARE EST\n"+distanceOfRoute + "M");
+        distance.setText("FARE EST\n"+distanceOfRoute + "M");
         Log.d(TAG, "Distance double >> " + (double) result[0]);
+        Log.d(TAG, "Distance int >> " + (int) result[0]);
         Log.d(TAG, "before makeSaveDataQuery");
         //--------------------------------
         //save route data
@@ -560,7 +570,7 @@ public class StartRide extends AppCompatActivity
             Intent it = new Intent(StartRide.this, AddFunds.class);
             startActivity(it);
         } else if (id == R.id.nav_register_route1) {
-            Intent it = new Intent(StartRide.this, StartRide.class);
+            Intent it = new Intent(StartRide.this, RegisterRoute1.class);
             startActivity(it);
         } else if (id == R.id.nav_register_route2) {
             Intent it = new Intent(StartRide.this, RegisterRoute2.class);

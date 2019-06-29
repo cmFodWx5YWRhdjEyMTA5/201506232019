@@ -28,7 +28,7 @@ public class DashboardDriver extends AppCompatActivity
     ImageView imgStartRide, imgAddFunds, imgTransactionHistory, imageRoute1,
             imageRoute2, imgHelpSupport;
     TextView tvStartRide, tvAddFunds, tvTransactionHistory, tvRegRoute1,
-            tvRegRoute2, tvHelpSupport;
+            tvRegRoute2, tvHelpSupport, tvEditProfile;
     String strUser, strPass, globalSearchResult, strFullName, strEmail, strPhone, strFName,
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
     SharedPreferences SP;
@@ -63,7 +63,15 @@ public class DashboardDriver extends AppCompatActivity
         tvRegRoute1 = findViewById(R.id.tvRegRoute1);
         tvRegRoute2 = findViewById(R.id.tvRegRoute2);
         tvHelpSupport = findViewById(R.id.tvHelpSupport);
+        tvEditProfile = findViewById(R.id.tvEditProfile);
 
+        tvEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(DashboardDriver.this, EditProfileDriver.class);
+                startActivity(it);
+            }
+        });
         imgStartRide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

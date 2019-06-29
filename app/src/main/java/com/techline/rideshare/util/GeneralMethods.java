@@ -3,7 +3,7 @@ package com.techline.rideshare.util;
 public class GeneralMethods {
 
 
-    public String toCommaAmount(String strTotal) {
+    public static String toCommaAmount(String strTotal) {
         int strLen = strTotal.length();
         StringBuilder builder;
         String newamt = "";

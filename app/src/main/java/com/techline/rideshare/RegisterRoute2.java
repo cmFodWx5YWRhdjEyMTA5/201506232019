@@ -651,7 +651,7 @@ public class RegisterRoute2 extends AppCompatActivity
             Intent it = new Intent(RegisterRoute2.this, AddFunds.class);
             startActivity(it);
         } else if (id == R.id.nav_register_route1) {
-            Intent it = new Intent(RegisterRoute2.this, RegisterRoute2.class);
+            Intent it = new Intent(RegisterRoute2.this, RegisterRoute1.class);
             startActivity(it);
         } else if (id == R.id.nav_register_route2) {
             Intent it = new Intent(RegisterRoute2.this, RegisterRoute2.class);
