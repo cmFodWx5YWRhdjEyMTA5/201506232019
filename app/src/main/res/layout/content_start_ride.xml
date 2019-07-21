@@ -194,7 +194,7 @@
                             android:layout_weight="1"
                             android:ellipsize="end"
                             android:gravity="center"
-                            android:text="FARE EST\n N XXX.XX"
+                            android:text="FARE EST\"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 

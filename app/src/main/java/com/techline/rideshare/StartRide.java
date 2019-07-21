@@ -74,10 +74,12 @@ public class StartRide extends AppCompatActivity
     TextView btnRequest, fare, distance, newRoute,requestRideMain;
     private String pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
             pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
-            whereToLat, whereToLocation, whereToLng, distanceOfRoute, pickUpDesc, whereToDesc;
+            whereToLat, whereToLocation, whereToLng, distanceOfRoute, pickUpDesc,
+            whereToDesc, strFare;
     private MarkerOptions myPLocationMarker, myWLocationMarker;
     private LatLng pickUp, whereTo;
     LinearLayout llTripData;
+    private int fareEstimate;
 
 
     @Override
@@ -215,13 +217,19 @@ public class StartRide extends AppCompatActivity
         int distanceOfRouteint = (int) result[0];
         Log.d(TAG, "result.toString() >> " + result.toString());
 
+        calculateAmounts(distanceOfRouteint);
+
         distanceOfRoute = String.valueOf(distanceOfRouteint);
         Log.d(TAG, "Distance >> " + distanceOfRoute);
         distanceOfRoute = GeneralMethods.toCommaAmount(distanceOfRoute);
         Log.d(TAG, "Distance >> " + distanceOfRoute);
 
-        //fare.setText("FARE EST\n"+distanceOfRoute + "M");
+
         distance.setText("DISTANCE \n" + distanceOfRoute + " M");
+        strFare = String.valueOf(fareEstimate);
+        strFare = GeneralMethods.toCommaAmount(strFare);
+
+        fare.setText("FARE EST \n" + "N" +strFare);
         Log.d(TAG, "Distance double >> " + (double) result[0]);
         Log.d(TAG, "Distance int >> " + (int) result[0]);
         Log.d(TAG, "before makeSaveDataQuery");
@@ -235,6 +243,11 @@ public class StartRide extends AppCompatActivity
         Log.d(TAG, "after makeSaveDataQuery");
         Toast.makeText(this, "Requesting Your Ride", Toast.LENGTH_SHORT).show();
 
+    }
+
+    private void calculateAmounts(int distanceOfRouteint) {
+        int distanceCost = distanceOfRouteint/7;
+        fareEstimate = 200 + distanceCost;
     }
 
     private void makeRideSharemakeSaveDataQuery(String pickUpPlaceIdValue, String pickUpGeometryValue, String pickUpLocation_typeValue,

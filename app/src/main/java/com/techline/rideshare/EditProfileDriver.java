@@ -25,14 +25,15 @@ public class EditProfileDriver extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
     private static final String TAG = "EDIT_PROFILE_DRIVER";
     //declare controls
-    Spinner spinner_currency;
-    Switch  active_switch;
+    Spinner spinnerCurrency;
+    Switch active_switch;
     EditText eTxtFullName, eTxtEmail, eTxtPhone, eTxtPassword, eTxtFirstName, eTxtLastName, eTxtCity;
     String strUser, strPass, strFullName, strEmail, strPhone, strFName, strLName, strCity, strBalance,
-            strUserType, strCurrentCity, accountNumber, status;
+            strUserType, strCurrentCity, accountNumber, status, strCurrency;
     TextView txtBalValue, btnContinue;
     SharedPreferences SP;
     private Bundle extras;
+    private ArrayList<String> currencyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +48,12 @@ public class EditProfileDriver extends AppCompatActivity {
         eTxtCity = findViewById(R.id.eTxtCity);
         txtBalValue = findViewById(R.id.txtBalValue);
         btnContinue = findViewById(R.id.btnContinue);
+        spinnerCurrency = findViewById(R.id.spinnerCurrency);
 
 
         extras = getIntent().getExtras();
         if (extras != null) {
-            Log.d(TAG, "<< EXTRAS NOT NULL >> " );
+            Log.d(TAG, "<< EXTRAS NOT NULL >> ");
 
             strUser = extras.getString("strUser");
             Log.d(TAG, "strUser >> " + strUser);
@@ -81,11 +83,11 @@ public class EditProfileDriver extends AppCompatActivity {
             Log.d(TAG, "strBalance >> " + strBalance);
 
 
-
         } else {
-            Log.d(TAG, "<< EXTRAS IS NULLLLLLLLLLLLLLLLLL >> " );
+            Log.d(TAG, "<< EXTRAS IS NULLLLLLLLLLLLLLLLLL >> ");
 
         }
+        loadCurrencySelectMenu();
 
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +96,6 @@ public class EditProfileDriver extends AppCompatActivity {
                 startActivity(it);
             }
         });
-        loadCurrencySelectMenu();
 
         loadDataFromSharedPrefs();
 
@@ -130,11 +131,15 @@ public class EditProfileDriver extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "City is missing.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                  active_switch =  findViewById(R.id.active_switch);
+                active_switch = findViewById(R.id.active_switch);
+                spinnerCurrency = findViewById(R.id.spinnerCurrency);
 
-                strFName= eTxtFirstName.getText().toString();
-                strLName= eTxtLastName.getText().toString();
-                strEmail= eTxtEmail.getText().toString();
+                strCurrency = spinnerCurrency.getSelectedItem().toString();
+                Log.d(TAG, "strCurrency >> " + strCurrency);
+
+                strFName = eTxtFirstName.getText().toString();
+                strLName = eTxtLastName.getText().toString();
+                strEmail = eTxtEmail.getText().toString();
                 strPhone = eTxtPhone.getText().toString();
                 strPass = eTxtPassword.getText().toString();
                 strCity = eTxtCity.getText().toString();
@@ -148,27 +153,43 @@ public class EditProfileDriver extends AppCompatActivity {
                 //pass values
                 Log.d(TAG, "before fetching from open Users Table");
                 makeRideShareEditDriverProfileQuery(strFName, strLName, strUser, strPhone,
-                        strPass, strCity, strFullName, status);
-                Log.d(TAG, "after fetching from open Users Table");
+                        strPass, strCity, strFullName, status, strCurrency);
+                Log.d(TAG, "after makeRideShareEditDriverProfileQuery");
+
+                populatePreferences();
 
             }
         });
     }
 
+    private void populatePreferences() {
+        SP = getApplicationContext().getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = SP.edit();
+        editor.putString("strPass", strPass);
+        editor.putString("strFName", strFName);
+        editor.putString("strLName", strLName);
+        editor.putString("strPhone", strPhone);
+        editor.putString("strFullName", strFullName);
+        editor.putString("strCurrency", strCurrency);
+        editor.putString("status", status);
+        editor.putString("strCity", strCity);
+        editor.commit(); // commit changes
+    }
+
     private void makeRideShareEditDriverProfileQuery(String strFNameValue, String strLNameValue, String strUserValue,
                                                      String strPhoneValue, String strPassValue, String strCityValue,
-                                                     String strFullNameValue, String statusValue) {
+                                                     String strFullNameValue, String statusValue, String strCurrencyValue) {
         URL RideShareSelectUserURl = NetworkUtils.buildEditDriverUrl(strFNameValue, strLNameValue, strFullNameValue,
-                strUserValue, strPhoneValue,  strPassValue, strCityValue, statusValue);
+                strUserValue, strPhoneValue, strPassValue, strCityValue, statusValue, strCurrencyValue);
         Log.d(TAG, "RideShareSearchUrl is: " + RideShareSelectUserURl.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
         new EditProfileDriver.RideShareEditDriverQueryTask().execute(RideShareSelectUserURl);
     }
 
     private void loadCurrencySelectMenu() {
-        spinner_currency = (Spinner) findViewById(R.id.currency);
+        spinnerCurrency = (Spinner) findViewById(R.id.spinnerCurrency);
         //category_Spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-        List<String> currencyList = new ArrayList<String>();
+        currencyList = new ArrayList<String>();
         currencyList.add("NGN");
         currencyList.add("EUR");
         currencyList.add("GBP");
@@ -326,10 +347,9 @@ public class EditProfileDriver extends AppCompatActivity {
         currencyList.add("ZWL");
 
 
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, currencyList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_currency.setAdapter(adapter);
+        spinnerCurrency.setAdapter(adapter);
 
     }
 
@@ -373,8 +393,11 @@ public class EditProfileDriver extends AppCompatActivity {
             strUserType = SP.getString("strUserType", null);
             Log.d(TAG, "strUserType >> " + strUserType);
 
-            strCurrentCity = SP.getString("strCurrentCity", null);
-            Log.d(TAG, "strCurrentCity >> " + strCurrentCity);
+            strCity = SP.getString("strCity", null);
+            Log.d(TAG, "strCity >> " + strCity);
+
+            strCurrency = SP.getString("strCurrency", null);
+            Log.d(TAG, "strCurrency >> " + strCurrency);
 
         } else {
             Toast.makeText(this, "An error occurred", Toast.LENGTH_SHORT).show();
@@ -386,6 +409,20 @@ public class EditProfileDriver extends AppCompatActivity {
         eTxtPassword.setText(strPass);
         eTxtCity.setText(strCity);
         txtBalValue.setText(strBalance);
+        if (strCurrency != null) {
+            spinnerCurrency.setSelection(currencyList.indexOf(strCurrency));
+        } else {
+            Log.d(TAG, "strCurrency is null");
+        }
+        if (status != null && status == "ACTIVE") {
+            active_switch.setChecked(true);
+        } else if (status != null && status == "INACTIVE") {
+            active_switch.setChecked(false);
+        } else if (status == null) {
+            Log.d(TAG, "status == null ");
+        }else{
+            Log.d(TAG, "doing nothing ");
+        }
 
         Log.d(TAG, "after loadDataFromSharedPrefs");
     }

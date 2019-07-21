@@ -278,7 +278,7 @@
                 android:textSize="14dp" />
 
             <Spinner
-                android:id="@+id/currency"
+                android:id="@+id/spinnerCurrency"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="65dp"

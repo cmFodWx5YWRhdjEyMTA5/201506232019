@@ -25,16 +25,18 @@ import java.util.List;
 public class EditProfilePass extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
     //declare controls
-    Spinner spinner_currency;
+    Spinner spinnerCurrency;
     Switch active_switch;
 
     private static final String TAG = "EDIT_PROFILE_PASS";
     EditText eTxtFullName, eTxtEmail, eTxtPhone, eTxtPassword, eTxtFirstName, eTxtLastName;
-    String strUser, strPass, strFullName, strEmail, strPhone, strFName, strLName, strCity, strBalance, strUserType, strCurrentCity, accountNumber, status;
+    String strUser, strPass, strFullName, strEmail, strPhone, strFName, strLName, strCity, strBalance,
+            strUserType, strCurrentCity, accountNumber, status, strCurrency;
 
     TextView txtBalValue, btnContinue;
     SharedPreferences SP;
     private Bundle extras;
+    private ArrayList<String> currencyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +100,8 @@ public class EditProfilePass extends AppCompatActivity {
     }
 
     private void loadCurrencySelectMenu() {
-        spinner_currency = (Spinner) findViewById(R.id.currency);
-        //category_Spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-        List<String> currencyList = new ArrayList<String>();
+        spinnerCurrency = (Spinner) findViewById(R.id.spinnerCurrency);
+       currencyList = new ArrayList<String>();
         currencyList.add("NGN");
         currencyList.add("EUR");
         currencyList.add("GBP");
@@ -261,7 +262,7 @@ public class EditProfilePass extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, currencyList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_currency.setAdapter(adapter);
+        spinnerCurrency.setAdapter(adapter);
     }
 
     private void loadDataFromSharedPrefs() {
@@ -307,6 +308,9 @@ public class EditProfilePass extends AppCompatActivity {
             strCurrentCity = SP.getString("strCurrentCity", null);
             Log.d(TAG, "strCurrentCity >> " + strCurrentCity);
 
+            strCurrency = SP.getString("strCurrency", null);
+            Log.d(TAG, "strCurrency >> " + strCurrency);
+
         } else {
             Toast.makeText(this, "An error occurred", Toast.LENGTH_SHORT).show();
         }
@@ -316,6 +320,20 @@ public class EditProfilePass extends AppCompatActivity {
         eTxtPhone.setText(strPhone);
         eTxtPassword.setText(strPass);
         txtBalValue.setText(strBalance);
+        if (strCurrency != null){
+            spinnerCurrency.setSelection(currencyList.indexOf(strCurrency));
+        }else{
+            Log.d(TAG, "astrCurrency is null");
+        }
+        if (status != null && status == "ACTIVE") {
+            active_switch.setChecked(true);
+        } else if (status != null && status == "INACTIVE") {
+            active_switch.setChecked(false);
+        } else if (status == null) {
+            Log.d(TAG, "status == null ");
+        }else{
+            Log.d(TAG, "doing nothing ");
+        }
         Log.d(TAG, "after loadDataFromSharedPrefs");
 
         btnContinue.setOnClickListener(new View.OnClickListener() {
@@ -346,6 +364,10 @@ public class EditProfilePass extends AppCompatActivity {
                     return;
                 }
                 active_switch =  findViewById(R.id.active_switch);
+                spinnerCurrency =  findViewById(R.id.spinnerCurrency);
+
+                strCurrency = spinnerCurrency.getSelectedItem().toString();
+                Log.d(TAG, "strCurrency >> " + strCurrency);
 
                 strFName= eTxtFirstName.getText().toString();
                 strLName= eTxtLastName.getText().toString();
@@ -362,19 +384,34 @@ public class EditProfilePass extends AppCompatActivity {
                 //pass values
                 Log.d(TAG, "before fetching from open Users Table");
                 makeRideShareEditPassProfileQuery(strFName, strLName, strUser, strPhone,
-                        strPass, strFullName, status);
-                Log.d(TAG, "after fetching from open Users Table");
+                        strPass, strFullName, status, strCurrency);
+                Log.d(TAG, "after makeRideShareEditDriverProfileQuery");
 
+               populatePreferences() ;
             }
         });
 
     }
 
+    private void populatePreferences() {
+            SP = getApplicationContext().getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+            SharedPreferences.Editor editor = SP.edit();
+            editor.putString("strPass", strPass);
+            editor.putString("strFName", strFName);
+            editor.putString("strLName", strLName);
+            editor.putString("strPhone", strPhone);
+            editor.putString("strFullName", strFullName);
+             editor.putString("strCurrency", strCurrency);
+            editor.putString("status", status);
+            editor.commit(); // commit changes
+
+    }
+
     private void makeRideShareEditPassProfileQuery(String strFNameVal, String strLNameVal, String strUserVal,
                                                    String strPhoneVal, String strPassVal, String strFullNameVal,
-    String strStatusVal) {
+    String strStatusVal, String strCurrencyVal) {
         URL RideShareSelectUserURl = NetworkUtils.buildEditPassUrl(strFNameVal, strLNameVal, strFullNameVal,
-                strUserVal, strPhoneVal,  strPassVal, strStatusVal);
+                strUserVal, strPhoneVal,  strPassVal, strStatusVal, strCurrencyVal);
         Log.d(TAG, "RideShareSearchUrl is: " + RideShareSelectUserURl.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
         new EditProfilePass.RideShareEditPassQueryTask().execute(RideShareSelectUserURl);

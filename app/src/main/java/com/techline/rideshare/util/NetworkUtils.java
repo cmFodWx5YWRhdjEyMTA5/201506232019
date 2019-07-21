@@ -130,6 +130,7 @@ public class NetworkUtils {
     private static final String PARAM_EMIL_ON_CARD = "emilOnCard";
     private static final String PARAM_AUTHOBJ_ON_CARD = "authObjOnCard";
     private static final String PARAM_ACCOUNT_NUMBER = "accountNumber";
+    private static final String PARAM_CURRENCY = "currency";
 
     // Message Constants
     // used Write a message to the database
@@ -487,7 +488,7 @@ public class NetworkUtils {
 
     public static URL buildEditPassUrl(String strFNameVal, String strLNameVal, String strFullNameVal,
                                        String strUserVal, String strPhoneVal, String strPassVal,
-                                       String strStatusVal) {
+                                       String strStatusVal, String strCurrencyVal) {
         Uri builtUri = Uri.parse(BASE_EDIT_PROFILE_PASS_URL).buildUpon()
                 .appendQueryParameter(PARAM_FIRST_NAME, strFNameVal)
                 .appendQueryParameter(PARAM_LAST_NAME, strLNameVal)
@@ -496,6 +497,7 @@ public class NetworkUtils {
                 .appendQueryParameter(PARAM_PHONE, strPhoneVal)
                 .appendQueryParameter(PARAM_PASSWORD, strPassVal)
                 .appendQueryParameter(PARAM_STATUS, strStatusVal)
+                .appendQueryParameter(PARAM_CURRENCY, strCurrencyVal)
 
 //                .appendQueryParameter(PARAM_SORT, sortBy)
                 .build();
@@ -513,7 +515,7 @@ public class NetworkUtils {
 
     public static URL buildEditDriverUrl(String strFNameValue, String strLNameValue, String strFullNameValue,
                                          String strUserValue, String strPhoneValue, String strPassValue,
-                                         String strCityValue, String statusValue) {
+                                         String strCityValue, String statusValue, String strCurrencyValue) {
         Uri builtUri = Uri.parse(BASE_EDIT_PROFILE_DRIVER_URL).buildUpon()
                 .appendQueryParameter(PARAM_FIRST_NAME, strFNameValue)
                 .appendQueryParameter(PARAM_LAST_NAME, strLNameValue)
@@ -523,6 +525,7 @@ public class NetworkUtils {
                 .appendQueryParameter(PARAM_PASSWORD, strPassValue)
                 .appendQueryParameter(PARAM_CURRENT_CITY, strCityValue)
                 .appendQueryParameter(PARAM_STATUS, statusValue)
+                .appendQueryParameter(PARAM_CURRENCY, strCurrencyValue)
 
 //                .appendQueryParameter(PARAM_SORT, sortBy)
                 .build();
