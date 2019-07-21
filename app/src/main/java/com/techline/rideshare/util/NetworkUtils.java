@@ -57,6 +57,10 @@ public class NetworkUtils {
     final static String BASE_CHANGE_PASS_URL = BASE_URL + "android_api/v1/change_pass.php";
     final static String BASE_CHECK_PAY_CODE_URL = BASE_URL + "android_api/v1/chek_pay_code.php";
     final static String BASE_ADD_ROUTE_URL = BASE_URL + "android_api/v1/add_route.php";
+    final static String BASE_EDIT_PROFILE_PASS_URL = BASE_URL + "android_api/v1/edit_profile_pass.php";
+    final static String BASE_EDIT_PROFILE_DRIVER_URL = BASE_URL + "android_api/v1/edit_profile_driver.php";
+
+
     final static String BASE_GEO_CODE_ONE_URL = BASE_GEODODE_URL + "/api/geocode/json";
 
     final static String PARAM_QUERY = "q";
@@ -479,5 +483,57 @@ public class NetworkUtils {
 
         }
 
+    }
+
+    public static URL buildEditPassUrl(String strFNameVal, String strLNameVal, String strFullNameVal,
+                                       String strEmailVal, String strPhoneVal, String strPassVal,
+                                       String strStatusVal) {
+        Uri builtUri = Uri.parse(BASE_EDIT_PROFILE_PASS_URL).buildUpon()
+                .appendQueryParameter(PARAM_FIRST_NAME, strFNameVal)
+                .appendQueryParameter(PARAM_LAST_NAME, strLNameVal)
+                .appendQueryParameter(PARAM_FULLNAME, strFullNameVal)
+                .appendQueryParameter(PARAM_EMAIL, strEmailVal)
+                .appendQueryParameter(PARAM_PHONE, strPhoneVal)
+                .appendQueryParameter(PARAM_PASSWORD, strPassVal)
+                .appendQueryParameter(PARAM_STATUS, strStatusVal)
+
+//                .appendQueryParameter(PARAM_SORT, sortBy)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+
+    }
+
+    public static URL buildEditDriverUrl(String strFNameValue, String strLNameValue, String strFullNameValue,
+                                         String strEmailValue, String strPhoneValue, String strPassValue,
+                                         String strCityValue, String statusValue) {
+        Uri builtUri = Uri.parse(BASE_EDIT_PROFILE_DRIVER_URL).buildUpon()
+                .appendQueryParameter(PARAM_FIRST_NAME, strFNameValue)
+                .appendQueryParameter(PARAM_LAST_NAME, strLNameValue)
+                .appendQueryParameter(PARAM_FULLNAME, strFullNameValue)
+                .appendQueryParameter(PARAM_EMAIL, strEmailValue)
+                .appendQueryParameter(PARAM_PHONE, strPhoneValue)
+                .appendQueryParameter(PARAM_PASSWORD, strPassValue)
+                .appendQueryParameter(PARAM_CURRENT_CITY, strCityValue)
+                .appendQueryParameter(PARAM_STATUS, statusValue)
+
+//                .appendQueryParameter(PARAM_SORT, sortBy)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
     }
 }
