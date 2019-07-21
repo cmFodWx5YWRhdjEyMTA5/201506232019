@@ -486,13 +486,13 @@ public class NetworkUtils {
     }
 
     public static URL buildEditPassUrl(String strFNameVal, String strLNameVal, String strFullNameVal,
-                                       String strEmailVal, String strPhoneVal, String strPassVal,
+                                       String strUserVal, String strPhoneVal, String strPassVal,
                                        String strStatusVal) {
         Uri builtUri = Uri.parse(BASE_EDIT_PROFILE_PASS_URL).buildUpon()
                 .appendQueryParameter(PARAM_FIRST_NAME, strFNameVal)
                 .appendQueryParameter(PARAM_LAST_NAME, strLNameVal)
                 .appendQueryParameter(PARAM_FULLNAME, strFullNameVal)
-                .appendQueryParameter(PARAM_EMAIL, strEmailVal)
+                .appendQueryParameter(PARAM_USERNAME, strUserVal)
                 .appendQueryParameter(PARAM_PHONE, strPhoneVal)
                 .appendQueryParameter(PARAM_PASSWORD, strPassVal)
                 .appendQueryParameter(PARAM_STATUS, strStatusVal)
@@ -512,13 +512,13 @@ public class NetworkUtils {
     }
 
     public static URL buildEditDriverUrl(String strFNameValue, String strLNameValue, String strFullNameValue,
-                                         String strEmailValue, String strPhoneValue, String strPassValue,
+                                         String strUserValue, String strPhoneValue, String strPassValue,
                                          String strCityValue, String statusValue) {
         Uri builtUri = Uri.parse(BASE_EDIT_PROFILE_DRIVER_URL).buildUpon()
                 .appendQueryParameter(PARAM_FIRST_NAME, strFNameValue)
                 .appendQueryParameter(PARAM_LAST_NAME, strLNameValue)
                 .appendQueryParameter(PARAM_FULLNAME, strFullNameValue)
-                .appendQueryParameter(PARAM_EMAIL, strEmailValue)
+                .appendQueryParameter(PARAM_USERNAME, strUserValue)
                 .appendQueryParameter(PARAM_PHONE, strPhoneValue)
                 .appendQueryParameter(PARAM_PASSWORD, strPassValue)
                 .appendQueryParameter(PARAM_CURRENT_CITY, strCityValue)

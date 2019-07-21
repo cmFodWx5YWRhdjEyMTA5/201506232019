@@ -147,7 +147,7 @@ public class EditProfileDriver extends AppCompatActivity {
 
                 //pass values
                 Log.d(TAG, "before fetching from open Users Table");
-                makeRideShareEditDriverProfileQuery(strFName, strLName, strEmail, strPhone,
+                makeRideShareEditDriverProfileQuery(strFName, strLName, strUser, strPhone,
                         strPass, strCity, strFullName, status);
                 Log.d(TAG, "after fetching from open Users Table");
 
@@ -155,11 +155,11 @@ public class EditProfileDriver extends AppCompatActivity {
         });
     }
 
-    private void makeRideShareEditDriverProfileQuery(String strFNameValue, String strLNameValue, String strEmailValue,
+    private void makeRideShareEditDriverProfileQuery(String strFNameValue, String strLNameValue, String strUserValue,
                                                      String strPhoneValue, String strPassValue, String strCityValue,
                                                      String strFullNameValue, String statusValue) {
         URL RideShareSelectUserURl = NetworkUtils.buildEditDriverUrl(strFNameValue, strLNameValue, strFullNameValue,
-                strEmailValue, strPhoneValue,  strPassValue, strCityValue, statusValue);
+                strUserValue, strPhoneValue,  strPassValue, strCityValue, statusValue);
         Log.d(TAG, "RideShareSearchUrl is: " + RideShareSelectUserURl.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
         new EditProfileDriver.RideShareEditDriverQueryTask().execute(RideShareSelectUserURl);

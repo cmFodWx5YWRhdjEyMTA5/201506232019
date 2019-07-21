@@ -361,7 +361,7 @@ public class EditProfilePass extends AppCompatActivity {
 
                 //pass values
                 Log.d(TAG, "before fetching from open Users Table");
-                makeRideShareEditPassProfileQuery(strFName, strLName, strEmail, strPhone,
+                makeRideShareEditPassProfileQuery(strFName, strLName, strUser, strPhone,
                         strPass, strFullName, status);
                 Log.d(TAG, "after fetching from open Users Table");
 
@@ -370,11 +370,11 @@ public class EditProfilePass extends AppCompatActivity {
 
     }
 
-    private void makeRideShareEditPassProfileQuery(String strFNameVal, String strLNameVal, String strEmailVal,
+    private void makeRideShareEditPassProfileQuery(String strFNameVal, String strLNameVal, String strUserVal,
                                                    String strPhoneVal, String strPassVal, String strFullNameVal,
     String strStatusVal) {
         URL RideShareSelectUserURl = NetworkUtils.buildEditPassUrl(strFNameVal, strLNameVal, strFullNameVal,
-                strEmailVal, strPhoneVal,  strPassVal, strStatusVal);
+                strUserVal, strPhoneVal,  strPassVal, strStatusVal);
         Log.d(TAG, "RideShareSearchUrl is: " + RideShareSelectUserURl.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
         new EditProfilePass.RideShareEditPassQueryTask().execute(RideShareSelectUserURl);
