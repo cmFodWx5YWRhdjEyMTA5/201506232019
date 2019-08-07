@@ -551,8 +551,10 @@ public class NetworkUtils {
     public static URL buildTomTomRouteTimeUrl(String language, String vehicleHeading, String sectionType,
                                               String report, String routeType, String traffic,
                                               String avoid, String travelMode, String vehicleMaxSpeed,
-                                              String vehicleCommercial, String vehicleEngineType, String key) {
-        Uri builtUri = Uri.parse(BASE_TOMTOM_URL).buildUpon()
+                                              String vehicleCommercial, String vehicleEngineType, String key, String routeString) {
+        String dynamicTomTomUrl = BASE_TOMTOM_URL.replace("<<LATLONGDATA>>", routeString);
+
+        Uri builtUri = Uri.parse(dynamicTomTomUrl).buildUpon()
                 .appendQueryParameter(PARAM_LANGUAGE, language)
                 .appendQueryParameter(PARAM_VEHICLEHEADING, vehicleHeading)
                 .appendQueryParameter(PARAM_SECTIONTYPE, sectionType)

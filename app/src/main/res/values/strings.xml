@@ -34,4 +34,5 @@
     <string name="PAY_STACK_SECRET_KEY">sk_live_72cd3be08f1025a6312867f75964fdf16793ead9</string>
     <string name="no_transaction_yet">No transaction yet</string>
     <string name="amount_in_kobo">Amount in Kobo</string>
+    <string name="TOM_TOM_KEY">rOAA4Dlo5LqDgDkstUT90s3JLHF8QGG6</string>
 </resources>

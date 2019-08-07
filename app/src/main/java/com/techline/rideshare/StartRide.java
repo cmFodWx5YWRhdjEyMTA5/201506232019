@@ -78,6 +78,7 @@ public class StartRide extends AppCompatActivity
     private LatLng pickUp, whereTo;
     LinearLayout llTripData;
     private int fareEstimate;
+    private String routeString;
 
 
     @Override
@@ -254,24 +255,52 @@ public class StartRide extends AppCompatActivity
         Log.d(TAG, "pickUpLat >> " + whereToLat);
         Log.d(TAG, "pickUpLat >> " + whereToLng);
 
+        routeString = pickUpLat + "," + pickUpLng + ":" + whereToLat + "," + whereToLng;
+        Log.d(TAG, "routeString >> " + routeString);
+
         makeCalculateTimeInSecondsQuery("en-US", "90", "traffic",
                 "effectiveSettings", "eco", "true",
-                "unpavedRoads", "car", "120",
-                "false", "combustion", "@string/TOM_TOM_KEY");
+                "unpavedRoads", "car", "60",
+                "false", "combustion", getString(R.string.TOM_TOM_KEY), routeString);
     }
 
     private void makeCalculateTimeInSecondsQuery(String languageValue, String vehicleHeadingValue, String sectionTypeValue,
                                                  String reportValue, String routeTypeValue, String trafficValue,
                                                  String avoidValue, String travelModeValue, String vehicleMaxSpeedValue,
-                                                 String vehicleCommercialValue, String vehicleEngineTypeValue, String keyValue) {
+                                                 String vehicleCommercialValue, String vehicleEngineTypeValue, String keyValue, String routeStringValue) {
 
         URL TomTomURl = NetworkUtils.buildTomTomRouteTimeUrl(languageValue, vehicleHeadingValue, sectionTypeValue,
                 reportValue, routeTypeValue, trafficValue,
                 avoidValue, travelModeValue, vehicleMaxSpeedValue,
-                vehicleCommercialValue, vehicleEngineTypeValue, keyValue);
+                vehicleCommercialValue, vehicleEngineTypeValue, keyValue, routeStringValue);
         Log.d(TAG, "TomTomURl Route Url is: " + TomTomURl.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
         new StartRide.TomTomURlTask().execute(TomTomURl);
+    }
+
+    public class TomTomURlTask extends AsyncTask<URL, Void, String> {
+
+        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String TomTomRouteResults = null;
+            try {
+                TomTomRouteResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return TomTomRouteResults;
+        }
+
+        // COMPLETED (3) Override onPostExecute to display the results
+        @Override
+        protected void onPostExecute(String TomTomRouteResults) {
+            if (TomTomRouteResults != null && !TomTomRouteResults.equals("")) {
+                Log.d(TAG, "RideShareInsertRouteResults is :" + TomTomRouteResults);
+                // put valeus in intent and fire intent
+            }
+        }
     }
 
     private void calculateAmounts(int distanceOfRouteint) {
@@ -826,28 +855,5 @@ public class StartRide extends AppCompatActivity
         }
     }
 
-    public class TomTomURlTask extends AsyncTask<URL, Void, String> {
 
-        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
-        @Override
-        protected String doInBackground(URL... params) {
-            URL searchUrl = params[0];
-            String RideShareInsertRouteResults = null;
-            try {
-                RideShareInsertRouteResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return RideShareInsertRouteResults;
-        }
-
-        // COMPLETED (3) Override onPostExecute to display the results
-        @Override
-        protected void onPostExecute(String RideShareInsertRouteResults) {
-            if (RideShareInsertRouteResults != null && !RideShareInsertRouteResults.equals("")) {
-                Log.d(TAG, "RideShareInsertRouteResults is :" + RideShareInsertRouteResults);
-                // put valeus in intent and fire intent
-            }
-        }
-    }
 }
