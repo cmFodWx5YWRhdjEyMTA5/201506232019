@@ -52,8 +52,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 
-import static android.util.TypedValue.TYPE_NULL;
-
 public class StartRide extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapReadyCallback {
@@ -71,7 +69,7 @@ public class StartRide extends AppCompatActivity
             globalPickupLocationSearchResult, globalwhereToSearchResult;
     SharedPreferences SP;
     EditText etPickupLocation, etWhereTo;
-    TextView btnRequest, fare, distance, newRoute,requestRideMain;
+    TextView btnRequest, fare, distance, newRoute, requestRideMain;
     private String pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
             pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
             whereToLat, whereToLocation, whereToLng, distanceOfRoute, pickUpDesc,
@@ -229,14 +227,18 @@ public class StartRide extends AppCompatActivity
         strFare = String.valueOf(fareEstimate);
         strFare = GeneralMethods.toCommaAmount(strFare);
 
-        fare.setText("FARE EST \n" + "N" +strFare);
+        fare.setText("FARE EST \n" + "N" + strFare);
         Log.d(TAG, "Distance double >> " + (double) result[0]);
         Log.d(TAG, "Distance int >> " + (int) result[0]);
         Log.d(TAG, "before makeSaveDataQuery");
+
+
+        CalculateTimeInSeconds(pickUpLat, pickUpLng, whereToLat, whereToLng);
         //--------------------------------
         //save route data
         // --------------------------------
-        makeRideSharemakeSaveDataQuery(pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
+        //TODO --save time
+        makeRideShareSaveDataQuery(pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
                 pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
                 whereToLat, whereToLocation, whereToLng, accountNumber, distanceOfRoute, pickUpDesc, whereToDesc);
 
@@ -245,16 +247,43 @@ public class StartRide extends AppCompatActivity
 
     }
 
+    //TODO -- CalculateTime
+    private void CalculateTimeInSeconds(String pickUpLat, String pickUpLng, String whereToLat, String whereToLng) {
+        Log.d(TAG, "pickUpLat >> " + pickUpLat);
+        Log.d(TAG, "pickUpLng >> " + pickUpLng);
+        Log.d(TAG, "pickUpLat >> " + whereToLat);
+        Log.d(TAG, "pickUpLat >> " + whereToLng);
+
+        makeCalculateTimeInSecondsQuery("en-US", "90", "traffic",
+                "effectiveSettings", "eco", "true",
+                "unpavedRoads", "car", "120",
+                "false", "combustion", "@string/TOM_TOM_KEY");
+    }
+
+    private void makeCalculateTimeInSecondsQuery(String languageValue, String vehicleHeadingValue, String sectionTypeValue,
+                                                 String reportValue, String routeTypeValue, String trafficValue,
+                                                 String avoidValue, String travelModeValue, String vehicleMaxSpeedValue,
+                                                 String vehicleCommercialValue, String vehicleEngineTypeValue, String keyValue) {
+
+        URL TomTomURl = NetworkUtils.buildTomTomRouteTimeUrl(languageValue, vehicleHeadingValue, sectionTypeValue,
+                reportValue, routeTypeValue, trafficValue,
+                avoidValue, travelModeValue, vehicleMaxSpeedValue,
+                vehicleCommercialValue, vehicleEngineTypeValue, keyValue);
+        Log.d(TAG, "TomTomURl Route Url is: " + TomTomURl.toString());
+        // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
+        new StartRide.TomTomURlTask().execute(TomTomURl);
+    }
+
     private void calculateAmounts(int distanceOfRouteint) {
-        int distanceCost = distanceOfRouteint/7;
+        int distanceCost = distanceOfRouteint / 7;
         fareEstimate = 200 + distanceCost;
     }
 
-    private void makeRideSharemakeSaveDataQuery(String pickUpPlaceIdValue, String pickUpGeometryValue, String pickUpLocation_typeValue,
-                                                String pickUpLocationValue, String pickUpLatValue, String pickUpLngValue,
-                                                String whereToPlaceIdValue, String whereToGeometryValue, String whereToLocation_typeValue,
-                                                String whereToLatValue, String whereToLocationValue, String whereToLngValue,
-                                                String accountNo, String distanceValue, String pickUpDescValue, String whereToDescValue) {
+    private void makeRideShareSaveDataQuery(String pickUpPlaceIdValue, String pickUpGeometryValue, String pickUpLocation_typeValue,
+                                            String pickUpLocationValue, String pickUpLatValue, String pickUpLngValue,
+                                            String whereToPlaceIdValue, String whereToGeometryValue, String whereToLocation_typeValue,
+                                            String whereToLatValue, String whereToLocationValue, String whereToLngValue,
+                                            String accountNo, String distanceValue, String pickUpDescValue, String whereToDescValue) {
         URL RideShareSelectUserURl = NetworkUtils.buildInsertRouteUrl(pickUpPlaceIdValue, pickUpGeometryValue, pickUpLocation_typeValue,
                 pickUpLocationValue, pickUpLatValue, pickUpLngValue, whereToPlaceIdValue, whereToGeometryValue, whereToLocation_typeValue,
                 whereToLatValue, whereToLocationValue, whereToLngValue, accountNo, distanceValue, pickUpDescValue, whereToDescValue);
@@ -773,6 +802,31 @@ public class StartRide extends AppCompatActivity
     }
 
     public class RideShareInsertRouteTask extends AsyncTask<URL, Void, String> {
+
+        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String RideShareInsertRouteResults = null;
+            try {
+                RideShareInsertRouteResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return RideShareInsertRouteResults;
+        }
+
+        // COMPLETED (3) Override onPostExecute to display the results
+        @Override
+        protected void onPostExecute(String RideShareInsertRouteResults) {
+            if (RideShareInsertRouteResults != null && !RideShareInsertRouteResults.equals("")) {
+                Log.d(TAG, "RideShareInsertRouteResults is :" + RideShareInsertRouteResults);
+                // put valeus in intent and fire intent
+            }
+        }
+    }
+
+    public class TomTomURlTask extends AsyncTask<URL, Void, String> {
 
         // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
         @Override

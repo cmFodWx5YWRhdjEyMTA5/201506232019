@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RydeShare</string>
+    <string name="app_name">RideShare</string>
     <string name="title_activity_dashboard_pass">Dashboard</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -22,6 +22,7 @@
     <string name="GEO_CODEING_API_KEY">AIzaSyBBENhEE_gGgOxGoz6Z7NgLmhXWoBy-owI</string>
     <string name="card_number">Card number</string>
     <string name="cvv">CVV</string>
+    <string name="TOM_TOM_KEY">rOAA4Dlo5LqDgDkstUT90s3JLHF8QGG6</string>
     <string name="mm">MM</string>
     <string name="yyyy">YYYY</string>
     <string name="create_token">Create token</string>

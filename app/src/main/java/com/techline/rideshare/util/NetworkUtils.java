@@ -18,10 +18,6 @@ package com.techline.rideshare.util;
 import android.net.Uri;
 import android.util.Log;
 
-import com.techline.rideshare.R;
-
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,8 +28,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -42,8 +36,10 @@ import java.util.Scanner;
 public class NetworkUtils {
     private static final String TAG = "NETWORK";
 
-    public static final String BASE_URL = "http://rideshare.com.ng/";
-    public static final String BASE_GEODODE_URL = "https://maps.googleapis.com/maps";
+    static final String BASE_URL = "http://rideshare.com.ng/";
+    static final String BASE_GEODODE_URL = "https://maps.googleapis.com/maps";
+    static final String BASE_TOMTOM_URL = "https://api.tomtom.com/routing/1/calculateRoute/<<LATLONGDATA>>/json/";
+    final static String BASE_ADD_CARD_URL = "https://api.paystack.co/transaction/initialize";
     final static String BASE_INSERT_USER_URL = BASE_URL + "android_api/v1/add_user.php";
     final static String BASE_SELECT_USER_URL = BASE_URL + "android_api/v1/select_user.php";
     final static String BASE_USER_LIST_URL = BASE_URL + "android_api/v1/userlist.php";
@@ -64,7 +60,6 @@ public class NetworkUtils {
     final static String BASE_GEO_CODE_ONE_URL = BASE_GEODODE_URL + "/api/geocode/json";
 
     final static String PARAM_QUERY = "q";
-    final static String BASE_ADD_CARD_URL = "https://api.paystack.co/transaction/initialize";
 
     /*
      * The sort field. One of stars, forks, or updated.
@@ -131,6 +126,19 @@ public class NetworkUtils {
     private static final String PARAM_AUTHOBJ_ON_CARD = "authObjOnCard";
     private static final String PARAM_ACCOUNT_NUMBER = "accountNumber";
     private static final String PARAM_CURRENCY = "currency";
+
+    private static final String PARAM_LANGUAGE = "language";
+    private static final String PARAM_VEHICLEHEADING = "vehicleHeading";
+    private static final String PARAM_SECTIONTYPE = "sectionType";
+    private static final String PARAM_REPORT = "report";
+    private static final String PARAM_ROUTETYPE = "routeType";
+    private static final String PARAM_TRAFFIC = "traffic";
+    private static final String PARAM_AVOID = "avoid";
+    private static final String PARAM_TRAVELMODE = "travelMode";
+    private static final String PARAM_VEHICLEMAXSPEED = "vehicleMaxSpeed";
+    private static final String PARAM_VEHICLECOMMERCIAL = "vehicleCommercial";
+    private static final String PARAM_VEHICLEENGINETYPE = "vehicleEngineType";
+    private static final String PARAM_KEY = "key";
 
     // Message Constants
     // used Write a message to the database
@@ -526,6 +534,37 @@ public class NetworkUtils {
                 .appendQueryParameter(PARAM_CURRENT_CITY, strCityValue)
                 .appendQueryParameter(PARAM_STATUS, statusValue)
                 .appendQueryParameter(PARAM_CURRENCY, strCurrencyValue)
+
+//                .appendQueryParameter(PARAM_SORT, sortBy)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static URL buildTomTomRouteTimeUrl(String language, String vehicleHeading, String sectionType,
+                                              String report, String routeType, String traffic,
+                                              String avoid, String travelMode, String vehicleMaxSpeed,
+                                              String vehicleCommercial, String vehicleEngineType, String key) {
+        Uri builtUri = Uri.parse(BASE_TOMTOM_URL).buildUpon()
+                .appendQueryParameter(PARAM_LANGUAGE, language)
+                .appendQueryParameter(PARAM_VEHICLEHEADING, vehicleHeading)
+                .appendQueryParameter(PARAM_SECTIONTYPE, sectionType)
+                .appendQueryParameter(PARAM_REPORT, report)
+                .appendQueryParameter(PARAM_ROUTETYPE, routeType)
+                .appendQueryParameter(PARAM_TRAFFIC, traffic)
+                .appendQueryParameter(PARAM_AVOID, avoid)
+                .appendQueryParameter(PARAM_TRAVELMODE, travelMode)
+                .appendQueryParameter(PARAM_VEHICLEMAXSPEED, vehicleMaxSpeed)
+                .appendQueryParameter(PARAM_VEHICLECOMMERCIAL, vehicleCommercial)
+                .appendQueryParameter(PARAM_VEHICLEENGINETYPE, vehicleEngineType)
+                .appendQueryParameter(PARAM_KEY, key)
 
 //                .appendQueryParameter(PARAM_SORT, sortBy)
                 .build();
