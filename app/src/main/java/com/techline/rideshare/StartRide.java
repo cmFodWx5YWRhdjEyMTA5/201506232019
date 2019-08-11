@@ -261,7 +261,6 @@ public class StartRide extends AppCompatActivity
 
     }
 
-    //TODO -- extract Calculated Time
     private void CalculateTimeInSeconds(String pickUpLat, String pickUpLng, String whereToLat, String whereToLng) {
         Log.d(TAG, "pickUpLat >> " + pickUpLat);
         Log.d(TAG, "pickUpLng >> " + pickUpLng);
