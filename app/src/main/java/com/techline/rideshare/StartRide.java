@@ -69,16 +69,20 @@ public class StartRide extends AppCompatActivity
             globalPickupLocationSearchResult, globalwhereToSearchResult;
     SharedPreferences SP;
     EditText etPickupLocation, etWhereTo;
-    TextView btnRequest, fare, distance, newRoute, requestRideMain;
+    TextView btnRequest, fare, distance, newRoute, requestRideMain, tripLength;
     private String pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
             pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
             whereToLat, whereToLocation, whereToLng, distanceOfRoute, pickUpDesc,
-            whereToDesc, strFare;
+            whereToDesc, strFare, TomTomRouteResultsMethod;
     private MarkerOptions myPLocationMarker, myWLocationMarker;
     private LatLng pickUp, whereTo;
     LinearLayout llTripData;
     private int fareEstimate;
     private String routeString;
+    private String travelTimeInSeconds;
+    private String travelTime;
+    private int biggyTimeInSeconds;
+    private int[] intArrTime;
 
 
     @Override
@@ -118,6 +122,7 @@ public class StartRide extends AppCompatActivity
         btnRequest = findViewById(R.id.btnRequest);
         fare = findViewById(R.id.fare);
         distance = findViewById(R.id.distance);
+        tripLength = findViewById(R.id.tripLength);
         newRoute = findViewById(R.id.newRoute);
         llTripData = findViewById(R.id.llTripData);
         requestRideMain = findViewById(R.id.requestRideMain);
@@ -229,6 +234,14 @@ public class StartRide extends AppCompatActivity
         strFare = GeneralMethods.toCommaAmount(strFare);
 
         fare.setText("FARE EST \n" + "N" + strFare);
+     /*   Log.d(TAG, "travelTimeInSeconds >> " + travelTimeInSeconds);
+
+         biggyTimeInSeconds = Integer.valueOf(travelTimeInSeconds);
+        intArrTime = splitToComponentTimes(biggyTimeInSeconds);
+
+        travelTime = intArrTime[0] + "hours, " +   intArrTime[1] + " Mins";
+*/
+        Log.d(TAG, "travelTime >> " + travelTime);
         Log.d(TAG, "Distance double >> " + (double) result[0]);
         Log.d(TAG, "Distance int >> " + (int) result[0]);
         Log.d(TAG, "before makeSaveDataQuery");
@@ -248,7 +261,7 @@ public class StartRide extends AppCompatActivity
 
     }
 
-    //TODO -- CalculateTime
+    //TODO -- extract Calculated Time
     private void CalculateTimeInSeconds(String pickUpLat, String pickUpLng, String whereToLat, String whereToLng) {
         Log.d(TAG, "pickUpLat >> " + pickUpLat);
         Log.d(TAG, "pickUpLng >> " + pickUpLng);
@@ -297,10 +310,89 @@ public class StartRide extends AppCompatActivity
         @Override
         protected void onPostExecute(String TomTomRouteResults) {
             if (TomTomRouteResults != null && !TomTomRouteResults.equals("")) {
-                Log.d(TAG, "RideShareInsertRouteResults is :" + TomTomRouteResults);
-                // put valeus in intent and fire intent
+                Log.d(TAG, "TomTomRouteResults is :" + TomTomRouteResults);
+                TomTomRouteResultsMethod = TomTomRouteResults;
+                loadTomTomRouteResults();
             }
         }
+    }
+
+    private void loadTomTomRouteResults() {
+        try {
+            Log.d(TAG, "inside loadTomTomRouteResults");
+            // get JSONObject from JSON file
+            JSONObject obj = new JSONObject(TomTomRouteResultsMethod());
+            String routes_str = obj.getString("routes");
+            Log.d(TAG, "routes_str is: " + routes_str);
+            routes_str = routes_str.substring(1, routes_str.length() - 1);
+            Log.d(TAG, "new routes_str is: " + routes_str);
+            JSONObject obj2 = new JSONObject(routes_str);
+            String summary_str = obj2.getString("summary");
+            Log.d(TAG, "summary_str is: " + summary_str);
+            JSONObject obj3 = new JSONObject(summary_str);
+            travelTimeInSeconds = obj3.getString("travelTimeInSeconds");
+            Log.d(TAG, "travelTimeInSeconds is: " + travelTimeInSeconds);
+            String arrivalTime = obj3.getString("arrivalTime");
+            Log.d(TAG, "arrivalTime is: " + arrivalTime);
+            biggyTimeInSeconds = Integer.valueOf(travelTimeInSeconds);
+
+            intArrTime = splitToComponentTimes(biggyTimeInSeconds);
+
+            travelTime = intArrTime[0] + "hours, " + intArrTime[1] + " Mins";
+
+            Log.d(TAG, "travelTime >> " + travelTime);
+
+            tripLength.setText("TIME EST \n" + travelTime);
+
+/*
+            String results_data2 = summary_data.substring(1, summary_data.length() - 1);
+
+            JSONObject obj2 = new JSONObject(results_data2);
+            Log.d(TAG, "obj2 is: " + obj2);
+           pickUpPlaceId = obj2.getString("place_id");
+            Log.d(TAG, "pickUpPlaceId is: " + pickUpPlaceId);
+
+            pickUpGeometry = obj2.getString("geometry");
+            Log.d(TAG, "pickUpGeometry is: " + pickUpGeometry);
+
+            JSONObject obj3 = new JSONObject(pickUpGeometry);
+            Log.d(TAG, "obj3 is: " + obj3);
+
+            pickUpLocation_type = obj3.getString("location_type");
+            Log.d(TAG, "pickUpLocation_type is: " + pickUpLocation_type);
+
+            pickUpLocation = obj3.getString("location");
+            Log.d(TAG, "pickUpLocation is: " + pickUpLocation);
+
+            JSONObject obj4 = new JSONObject(pickUpLocation);
+            Log.d(TAG, "obj4 is: " + obj4);
+
+            pickUpLat = obj4.getString("lat");
+            Log.d(TAG, "pickUpLat is: " + pickUpLat);
+            pickUpLng = obj4.getString("lng");
+            Log.d(TAG, "pickUpLng is: " + pickUpLng);
+            */
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    private int[] splitToComponentTimes(int biggyTimeInSeconds) {
+        long longVal = biggyTimeInSeconds;
+        int hours = (int) longVal / 3600;
+        int remainder = (int) longVal - hours * 3600;
+        int mins = remainder / 60;
+        remainder = remainder - mins * 60;
+        int secs = remainder;
+
+        int[] ints = {hours, mins, secs};
+        return ints;
+    }
+
+    private String TomTomRouteResultsMethod() {
+        return TomTomRouteResultsMethod;
     }
 
     private void calculateAmounts(int distanceOfRouteint) {
