@@ -83,6 +83,7 @@ public class StartRide extends AppCompatActivity
     private String travelTime;
     private int biggyTimeInSeconds;
     private int[] intArrTime;
+    private String arrivalTime;
 
 
     @Override
@@ -251,10 +252,11 @@ public class StartRide extends AppCompatActivity
         //--------------------------------
         //save route data
         // --------------------------------
-        //TODO --save time
         makeRideShareSaveDataQuery(pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
                 pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
-                whereToLat, whereToLocation, whereToLng, accountNumber, distanceOfRoute, pickUpDesc, whereToDesc);
+                whereToLat, whereToLocation, whereToLng, accountNumber, distanceOfRoute, pickUpDesc, whereToDesc,
+                travelTime, travelTimeInSeconds, arrivalTime, strFare
+        );
 
         Log.d(TAG, "after makeSaveDataQuery");
         Toast.makeText(this, "Requesting Your Ride", Toast.LENGTH_SHORT).show();
@@ -331,7 +333,7 @@ public class StartRide extends AppCompatActivity
             JSONObject obj3 = new JSONObject(summary_str);
             travelTimeInSeconds = obj3.getString("travelTimeInSeconds");
             Log.d(TAG, "travelTimeInSeconds is: " + travelTimeInSeconds);
-            String arrivalTime = obj3.getString("arrivalTime");
+            arrivalTime = obj3.getString("arrivalTime");
             Log.d(TAG, "arrivalTime is: " + arrivalTime);
             biggyTimeInSeconds = Integer.valueOf(travelTimeInSeconds);
 
@@ -403,10 +405,14 @@ public class StartRide extends AppCompatActivity
                                             String pickUpLocationValue, String pickUpLatValue, String pickUpLngValue,
                                             String whereToPlaceIdValue, String whereToGeometryValue, String whereToLocation_typeValue,
                                             String whereToLatValue, String whereToLocationValue, String whereToLngValue,
-                                            String accountNo, String distanceValue, String pickUpDescValue, String whereToDescValue) {
+                                            String accountNo, String distanceValue, String pickUpDescValue, String whereToDescValue,
+                                            String travelTimeValue, String travelTimeInSecondsValue, String arrivalTimeEstValue, String fareEstimateValue
+    ) {
         URL RideShareSelectUserURl = NetworkUtils.buildInsertRouteUrl(pickUpPlaceIdValue, pickUpGeometryValue, pickUpLocation_typeValue,
                 pickUpLocationValue, pickUpLatValue, pickUpLngValue, whereToPlaceIdValue, whereToGeometryValue, whereToLocation_typeValue,
-                whereToLatValue, whereToLocationValue, whereToLngValue, accountNo, distanceValue, pickUpDescValue, whereToDescValue);
+                whereToLatValue, whereToLocationValue, whereToLngValue, accountNo, distanceValue, pickUpDescValue, whereToDescValue,
+                travelTimeValue, travelTimeInSecondsValue, arrivalTimeEstValue, fareEstimateValue
+        );
         Log.d(TAG, "RideShare insert Rout Url is: " + RideShareSelectUserURl.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
         new StartRide.RideShareInsertRouteTask().execute(RideShareSelectUserURl);

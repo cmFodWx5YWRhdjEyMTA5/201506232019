@@ -139,6 +139,10 @@ public class NetworkUtils {
     private static final String PARAM_VEHICLECOMMERCIAL = "vehicleCommercial";
     private static final String PARAM_VEHICLEENGINETYPE = "vehicleEngineType";
     private static final String PARAM_KEY = "key";
+    private static final String PARAM_TRAVEL_TIME = "travelTime";
+    private static final String PARAM_TRAVEL_TIME_INSECONDS = "travelTimeInSeconds";
+    private static final String PARAM_ARRIVAL_TIMEEST = "arrivalTime";
+    private static final String PARAM_FARE_ESTIMATE = "fareEstimate";
 
     // Message Constants
     // used Write a message to the database
@@ -371,7 +375,10 @@ public class NetworkUtils {
                                           String whereToPlaceIdValue, String whereToGeometryValue,
                                           String whereToLocation_typeValue, String whereToLatValue,
                                           String whereToLocationValue, String whereToLngValue, String accountNoValue,
-                                          String distanceValue, String pickUpDescValue, String whereToDescValue) {
+                                          String distanceValue, String pickUpDescValue, String whereToDescValue,
+                                          String travelTimeValue, String travelTimeInSecondsValue, String arrivalTimeEstValue,
+                                          String fareEstimateValue
+    ) {
 
         Uri builtUri = Uri.parse(BASE_ADD_ROUTE_URL).buildUpon()
                 .appendQueryParameter(PARAM_PICKUP_PLACE_ID, pickUpPlaceIdValue)
@@ -390,6 +397,11 @@ public class NetworkUtils {
                 .appendQueryParameter(PARAM_DISTANCE, distanceValue)
                 .appendQueryParameter(PARAM_PICKUP_DESC, pickUpDescValue)
                 .appendQueryParameter(PARAM_WHERETO_DESC, whereToDescValue)
+
+                .appendQueryParameter(PARAM_TRAVEL_TIME, travelTimeValue)
+                .appendQueryParameter(PARAM_TRAVEL_TIME_INSECONDS, travelTimeInSecondsValue)
+                .appendQueryParameter(PARAM_ARRIVAL_TIMEEST, arrivalTimeEstValue)
+                .appendQueryParameter(PARAM_FARE_ESTIMATE, fareEstimateValue)
 
                 .build();
 
