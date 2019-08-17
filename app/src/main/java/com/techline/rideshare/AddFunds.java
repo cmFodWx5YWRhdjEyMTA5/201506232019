@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.techline.rideshare.util.NetworkUtils;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,7 +33,10 @@ public class AddFunds extends AppCompatActivity
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
     SharedPreferences SP;
     TextView btnAddCard;
-    private String globalinitializeCardResults;
+    private String globalinitializeCardResultsMethodString;
+    private String authorization_url;
+    private String access_code;
+    private String reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +64,7 @@ public class AddFunds extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "strEmail >> " + strEmail);
-                makeIniializeCardURL(strEmail, "5000");
+                makeIniializeCardURL(strEmail, "1000");
                 /*Intent it = new Intent(AddFunds.this, AddCard.class);
                 startActivity(it);*/
             }
@@ -97,18 +101,46 @@ public class AddFunds extends AppCompatActivity
         protected void onPostExecute(String initializeCardResults) {
             if (initializeCardResults != null && !initializeCardResults.equals("")) {
                 Log.d(TAG, "initializeCardResults is :" + initializeCardResults);
-                globalinitializeCardResults = initializeCardResults;
-                loadinitializeCardResultsInView();
+                globalinitializeCardResultsMethodString = initializeCardResults;
+                try {
+                    loadinitializeCardResultsInView();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
     }
 
-    private void loadinitializeCardResultsInView() {
-        verifyTransactiononCard();
+    private void loadinitializeCardResultsInView() throws JSONException {
+        Log.d(TAG, "inside loadinitializeCardResultsInView");
+        // get JSONObject from JSON file
+        JSONObject obj = new JSONObject(globalinitializeCardResultsMethod());
+        String status_str = obj.getString("status");
+        Log.d(TAG, "status_str is: " + status_str);
+        if (status_str.equalsIgnoreCase("true")) {
+            String data_str = obj.getString("data");
+            Log.d(TAG, "data_str is: " + data_str);
+            JSONObject dta_obj = new JSONObject(data_str);
+            authorization_url = dta_obj.getString("authorization_url");
+            access_code = dta_obj.getString("access_code");
+            reference = dta_obj.getString("reference");
+
+            //get authorization_url
+            //get access_code
+            //get reference
+            verifyTransactiononCard(reference);
+        } else {
+
+        }
+
     }
 
-    private void verifyTransactiononCard() {
+    private String globalinitializeCardResultsMethod() {
+        return globalinitializeCardResultsMethodString;
+    }
+
+    private void verifyTransactiononCard(String reference) {
 
     }
 
