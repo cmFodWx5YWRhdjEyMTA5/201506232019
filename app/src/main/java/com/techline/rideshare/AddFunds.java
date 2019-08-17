@@ -98,9 +98,17 @@ public class AddFunds extends AppCompatActivity
             if (initializeCardResults != null && !initializeCardResults.equals("")) {
                 Log.d(TAG, "initializeCardResults is :" + initializeCardResults);
                 globalinitializeCardResults = initializeCardResults;
-                //loadafterCardResultInView();
+                loadinitializeCardResultsInView();
             }
         }
+
+    }
+
+    private void loadinitializeCardResultsInView() {
+        verifyTransactiononCard();
+    }
+
+    private void verifyTransactiononCard() {
 
     }
 
