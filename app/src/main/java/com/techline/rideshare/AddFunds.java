@@ -284,7 +284,10 @@ public class AddFunds extends AppCompatActivity
                                        String order_idValue, String customer_first_nameValue, String customer_last_nameValue,
                                        String customer_emailValue, String customer_codeValue, String customer_phoneValue,
                                        String customer_metadataValue, String customer_risk_action) {
-
+//TODO-1: create db table
+//TODO-2: create api
+//TODO-3: make changes on network utils
+//TODO-4: make changes on addFunds
 
     }
 
