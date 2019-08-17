@@ -44,6 +44,7 @@ public class NetworkUtils {
     static final String BASE_TOMTOM_URL = "https://api.tomtom.com/routing/1/calculateRoute/<<LATLONGDATA>>/json/";
     final static String BASE_PASTCK_URL = "https://api.paystack.co/";
     final static String BASE_INITIALIZE_NEW_CARD_URL = BASE_PASTCK_URL + "transaction/initialize";
+    final static String BASE_VERIFY_CARD_URL = BASE_PASTCK_URL+"transaction/verify/reference ";
     final static String BASE_INSERT_USER_URL = BASE_URL + "android_api/v1/add_user.php";
     final static String BASE_SELECT_USER_URL = BASE_URL + "android_api/v1/select_user.php";
     final static String BASE_USER_LIST_URL = BASE_URL + "android_api/v1/userlist.php";
@@ -159,7 +160,7 @@ public class NetworkUtils {
 
     private static String PARAM_GEOCODE_ADDRESS = "address";
     private static String PARAM_GEOCODE_KEY = "key";
-    private static String chrgeAmountValueStore, chrgeEmailValueStore, tokenValueStore;
+    private static String chrgeAmountValueStore, chrgeEmailValueStore, tokenValueStore,cardReferenceValuetore;
 
     /**
      * Builds the URL used to query Database.
@@ -442,7 +443,7 @@ public class NetworkUtils {
         return url;
     }
 
-    public static String getResponseFromPaystackHttpUrl(URL url) throws IOException, JSONException {
+    public static String getResponseFromInitializePaystackHttpUrl(URL url) throws IOException, JSONException {
         StringBuffer response = new StringBuffer();
         JSONObject POST_PARAMS = new JSONObject();
 
@@ -456,8 +457,79 @@ public class NetworkUtils {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Authorization", authorize_header);
-        conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-        conn.setRequestProperty("Accept", "application/json");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setDoOutput(true);
+        //conn.setDoInput(true);
+
+
+        try {
+            OutputStream os = conn.getOutputStream();
+            os.write(POST_PARAMS.toString().getBytes());
+            os.flush();
+            os.close();
+            int responseCode = conn.getResponseCode();
+            Log.d(TAG, "POST Response Code :  " + responseCode);
+            Log.d(TAG, "POST Response Message : " + conn.getResponseMessage());
+
+            if (responseCode == HttpURLConnection.HTTP_OK) { // success
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                // print result
+                Log.d(TAG, response.toString());
+
+                return response.toString();
+
+            } else {
+                return "ERROR";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "e.printStackTrace() >>" + e.toString());
+            Log.d(TAG, "POST DIDN'T WORK");
+
+        } finally {
+            return response.toString();
+
+        }
+
+    }
+
+
+    public static URL buildVerifyCardUrl(String cardReferenceValue, String tokenValue) {
+        cardReferenceValuetore = cardReferenceValue;
+        tokenValueStore = tokenValue;
+        Uri builtUri = Uri.parse(BASE_VERIFY_CARD_URL).buildUpon()
+
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static String getResponseFromVeriyPaystackHttpUrl(URL url) throws IOException, JSONException {
+        StringBuffer response = new StringBuffer();
+        JSONObject POST_PARAMS = new JSONObject();
+
+        POST_PARAMS.put("reference", cardReferenceValuetore);
+        Log.d(TAG, "tokenValueStore :  " + tokenValueStore);
+
+        String authorize_header = "Bearer " + tokenValueStore;
+        Log.d(TAG, "authorize_header :  " + authorize_header);
+        Log.d(TAG, "tokenValueStore :  " + tokenValueStore);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Authorization", authorize_header);
+        conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoOutput(true);
         //conn.setDoInput(true);
 

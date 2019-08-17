@@ -37,6 +37,7 @@ public class AddFunds extends AppCompatActivity
     private String authorization_url;
     private String access_code;
     private String reference;
+    private String globalVerifyCardResultsMethodString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class AddFunds extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "strEmail >> " + strEmail);
-                makeIniializeCardURL(strEmail, "1000");
+                makeIniializeCardURL(strEmail, getString(R.string.CARD_INIT_CHARGE_AMOUNT));
                 /*Intent it = new Intent(AddFunds.this, AddCard.class);
                 startActivity(it);*/
             }
@@ -87,7 +88,7 @@ public class AddFunds extends AppCompatActivity
             URL searchUrl = params[0];
             String initializeCardResults = null;
             try {
-                initializeCardResults = NetworkUtils.getResponseFromPaystackHttpUrl(searchUrl);
+                initializeCardResults = NetworkUtils.getResponseFromInitializePaystackHttpUrl(searchUrl);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
@@ -123,14 +124,15 @@ public class AddFunds extends AppCompatActivity
             Log.d(TAG, "data_str is: " + data_str);
             JSONObject dta_obj = new JSONObject(data_str);
             authorization_url = dta_obj.getString("authorization_url");
+            Log.d(TAG, "authorization_url is: " + authorization_url);
             access_code = dta_obj.getString("access_code");
+            Log.d(TAG, "access_code is: " + access_code);
             reference = dta_obj.getString("reference");
+            Log.d(TAG, "reference is: " + reference);
 
-            //get authorization_url
-            //get access_code
-            //get reference
-            verifyTransactiononCard(reference);
+            makeVerifyCardURL(reference);
         } else {
+            Toast.makeText(getApplicationContext(), "Card Initialization Failed.", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -140,8 +142,75 @@ public class AddFunds extends AppCompatActivity
         return globalinitializeCardResultsMethodString;
     }
 
-    private void verifyTransactiononCard(String reference) {
 
+    private void makeVerifyCardURL(String reference) {
+        Log.d(TAG, "inside makeVerifyCardURL ");
+        URL RideSharemakeIVerifyCardURL = NetworkUtils.buildVerifyCardUrl(reference,"@string/PAY_STACK_SECRET_KEY");
+        Log.d(TAG, "makeVerifyCardURL Url is: " + RideSharemakeIVerifyCardURL.toString());
+        // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
+        new verifyCardQueryTask().execute(RideSharemakeIVerifyCardURL);
+
+    }
+
+    public class verifyCardQueryTask extends AsyncTask<URL, Void, String> {
+
+        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String verifyCardResults = null;
+            try {
+                verifyCardResults = NetworkUtils.getResponseFromVeriyPaystackHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return verifyCardResults;
+        }
+
+        // COMPLETED (3) Override onPostExecute to display the results
+        @Override
+        protected void onPostExecute(String verifyCardResults) {
+            if (verifyCardResults != null && !verifyCardResults.equals("")) {
+                Log.d(TAG, "verifyCardResults is :" + verifyCardResults);
+                globalVerifyCardResultsMethodString = verifyCardResults;
+                try {
+                    loadVerifyCardResultsInView();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    private void loadVerifyCardResultsInView() throws JSONException {
+        Log.d(TAG, "inside loadVerifyCardResultsInView");
+        // get JSONObject from JSON file
+        JSONObject obj = new JSONObject(globalVerifyCardResultsMethod());
+        String status_str = obj.getString("status");
+        Log.d(TAG, "status_str is: " + status_str);
+        if (status_str.equalsIgnoreCase("true")) {
+            String data_str = obj.getString("data");
+            Log.d(TAG, "data_str is: " + data_str);
+            JSONObject dta_obj = new JSONObject(data_str);
+          /*  authorization_url = dta_obj.getString("authorization_url");
+            Log.d(TAG, "authorization_url is: " + authorization_url);
+            access_code = dta_obj.getString("access_code");
+            Log.d(TAG, "access_code is: " + access_code);
+            reference = dta_obj.getString("reference");
+            Log.d(TAG, "reference is: " + reference);*/
+
+        } else {
+            Toast.makeText(getApplicationContext(), "Card Verification Failed.", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    private String globalVerifyCardResultsMethod() {
+        return globalVerifyCardResultsMethodString;
     }
 
     @Override
