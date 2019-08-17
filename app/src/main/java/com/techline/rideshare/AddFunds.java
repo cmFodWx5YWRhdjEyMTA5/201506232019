@@ -29,15 +29,17 @@ public class AddFunds extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static final String MyPREFERENCES = "MyPrefs";
     private static final String TAG = "ADD_FUNDS";
+    public static final String CHARGE_AMOUNT_IN_KOBO = "1000"; //amount in KOBO
     String strUser, strPass, globalSearchResult, strFullName, strEmail, strPhone, strFName,
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
     SharedPreferences SP;
     TextView btnAddCard;
     private String globalinitializeCardResultsMethodString;
-    private String authorization_url;
-    private String access_code;
-    private String reference;
     private String globalVerifyCardResultsMethodString;
+    private String authorization_url, access_code, reference, data_id, domain, data_status, amount_in_kobo, data_message,
+            gateway_response, paid_at, created_at, channel, currency, ip_address, data_metadata, log, fees, fees_split,
+            authorization, customer_data, customer_id, order_id, customer_first_name, customer_last_name, customer_email,
+            customer_code, customer_phone, customer_metadata, customer_risk_action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class AddFunds extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "strEmail >> " + strEmail);
-                makeIniializeCardURL(strEmail, getString(R.string.CARD_INIT_CHARGE_AMOUNT));
+                makeIniializeCardURL(strEmail, CHARGE_AMOUNT_IN_KOBO);
                 /*Intent it = new Intent(AddFunds.this, AddCard.class);
                 startActivity(it);*/
             }
@@ -192,20 +194,97 @@ public class AddFunds extends AppCompatActivity
         String status_str = obj.getString("status");
         Log.d(TAG, "status_str is: " + status_str);
         if (status_str.equalsIgnoreCase("true")) {
+            String message_str = obj.getString("message");
+            Log.d(TAG, "message_str is: " + message_str);
             String data_str = obj.getString("data");
             Log.d(TAG, "data_str is: " + data_str);
             JSONObject dta_obj = new JSONObject(data_str);
-          /*  authorization_url = dta_obj.getString("authorization_url");
-            Log.d(TAG, "authorization_url is: " + authorization_url);
-            access_code = dta_obj.getString("access_code");
-            Log.d(TAG, "access_code is: " + access_code);
-            reference = dta_obj.getString("reference");
-            Log.d(TAG, "reference is: " + reference);*/
+
+            data_id = dta_obj.getString("id");
+            Log.d(TAG, "data_id is: " + data_id);
+            domain = dta_obj.getString("domain");
+            Log.d(TAG, "domain is: " + domain);
+            data_status = dta_obj.getString("status");
+            Log.d(TAG, "data_status is: " + data_status);
+            amount_in_kobo = dta_obj.getString("amount");
+            Log.d(TAG, "amount_in_kobo is: " + amount_in_kobo);
+            data_message = dta_obj.getString("message");
+            Log.d(TAG, "data_message is: " + data_message);
+            gateway_response = dta_obj.getString("gateway_response");
+            Log.d(TAG, "gateway_response is: " + gateway_response);
+            paid_at = dta_obj.getString("paid_at");
+            Log.d(TAG, "paid_at is: " + paid_at);
+            created_at = dta_obj.getString("created_at");
+            Log.d(TAG, "created_at is: " + created_at);
+            channel = dta_obj.getString("channel");
+            Log.d(TAG, "channel is: " + channel);
+            currency = dta_obj.getString("currency");
+            Log.d(TAG, "currency is: " + currency);
+            ip_address = dta_obj.getString("ip_address");
+            Log.d(TAG, "ip_address is: " + ip_address);
+            data_metadata = dta_obj.getString("metadata");
+            Log.d(TAG, "data_metadata is: " + data_metadata);
+            log = dta_obj.getString("log");
+            Log.d(TAG, "log is: " + log);
+            fees = dta_obj.getString("fees");
+            Log.d(TAG, "fees is: " + fees);
+            fees_split = dta_obj.getString("fees_split");
+            Log.d(TAG, "fees_split is: " + fees_split);
+            authorization = dta_obj.getString("authorization");
+            Log.d(TAG, "authorization is: " + authorization);
+            customer_data = dta_obj.getString("customer");
+            Log.d(TAG, "customer_data is: " + customer_data);
+
+            order_id = dta_obj.getString("order_id");
+            Log.d(TAG, "order_id is: " + order_id);
+
+            JSONObject customer_data_obj = new JSONObject(customer_data);
+
+            customer_id = customer_data_obj.getString("id");
+            Log.d(TAG, "customer_id is: " + customer_id);
+
+            customer_first_name = customer_data_obj.getString("first_name");
+            Log.d(TAG, "customer_first_name is: " + customer_first_name);
+
+            customer_last_name = customer_data_obj.getString("last_name");
+            Log.d(TAG, "customer_last_name is: " + customer_last_name);
+
+            customer_email = customer_data_obj.getString("email");
+            Log.d(TAG, "customer_email is: " + customer_email);
+
+            customer_code = customer_data_obj.getString("customer_code");
+            Log.d(TAG, "customer_code is: " + customer_code);
+
+            customer_phone = customer_data_obj.getString("phone");
+            Log.d(TAG, "customer_phone is: " + customer_phone);
+
+            customer_metadata = customer_data_obj.getString("metadata");
+            Log.d(TAG, "customer_metadata is: " + customer_metadata);
+
+            customer_risk_action = customer_data_obj.getString("risk_action");
+            Log.d(TAG, "customer_risk_action is: " + customer_risk_action);
+
+            makeInsertPstkDataUri(authorization_url, access_code, reference, data_id, domain, data_status, amount_in_kobo, data_message,
+                    gateway_response, paid_at, created_at, channel, currency, ip_address, data_metadata, log, fees, fees_split,
+                    authorization, customer_data, customer_id, order_id, customer_first_name, customer_last_name, customer_email,
+                    customer_code, customer_phone, customer_metadata, customer_risk_action);
 
         } else {
             Toast.makeText(getApplicationContext(), "Card Verification Failed.", Toast.LENGTH_SHORT).show();
 
         }
+
+    }
+
+    private void makeInsertPstkDataUri(String authorization_urlValue, String access_codeValue, String referenceValue, String data_idValue,
+                                       String domainValue, String data_statusValue, String amount_in_koboValue, String data_messageValue,
+                                       String gateway_responseValue, String paid_atValue, String created_atValue, String channelValue,
+                                       String currencyValue, String ip_addressValue, String data_metadataValue, String logValue, String feesValue,
+                                       String fees_splitValue, String authorizationValue, String customer_dataValue, String customer_idValue,
+                                       String order_idValue, String customer_first_nameValue, String customer_last_nameValue,
+                                       String customer_emailValue, String customer_codeValue, String customer_phoneValue,
+                                       String customer_metadataValue, String customer_risk_action) {
+
 
     }
 

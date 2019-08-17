@@ -44,7 +44,7 @@ public class NetworkUtils {
     static final String BASE_TOMTOM_URL = "https://api.tomtom.com/routing/1/calculateRoute/<<LATLONGDATA>>/json/";
     final static String BASE_PASTCK_URL = "https://api.paystack.co/";
     final static String BASE_INITIALIZE_NEW_CARD_URL = BASE_PASTCK_URL + "transaction/initialize";
-    final static String BASE_VERIFY_CARD_URL = BASE_PASTCK_URL+"transaction/verify/reference ";
+    final static String BASE_VERIFY_CARD_URL = BASE_PASTCK_URL + "transaction/verify/";
     final static String BASE_INSERT_USER_URL = BASE_URL + "android_api/v1/add_user.php";
     final static String BASE_SELECT_USER_URL = BASE_URL + "android_api/v1/select_user.php";
     final static String BASE_USER_LIST_URL = BASE_URL + "android_api/v1/userlist.php";
@@ -502,7 +502,7 @@ public class NetworkUtils {
     public static URL buildVerifyCardUrl(String cardReferenceValue, String tokenValue) {
         cardReferenceValuetore = cardReferenceValue;
         tokenValueStore = tokenValue;
-        Uri builtUri = Uri.parse(BASE_VERIFY_CARD_URL).buildUpon()
+        Uri builtUri = Uri.parse(BASE_VERIFY_CARD_URL + cardReferenceValuetore).buildUpon()
 
                 .build();
 
@@ -527,21 +527,18 @@ public class NetworkUtils {
         Log.d(TAG, "authorize_header :  " + authorize_header);
         Log.d(TAG, "tokenValueStore :  " + tokenValueStore);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
+        conn.setRequestMethod("GET");
         conn.setRequestProperty("Authorization", authorize_header);
-        conn.setRequestProperty("Content-Type", "application/json");
-        conn.setDoOutput(true);
-        //conn.setDoInput(true);
-
-
+        conn.setDoOutput(false);
+        conn.setUseCaches(false);
+        conn.setReadTimeout(15 * 1000);
+        conn.setDoInput(true);
+        conn.connect();
         try {
-            OutputStream os = conn.getOutputStream();
-            os.write(POST_PARAMS.toString().getBytes());
-            os.flush();
-            os.close();
+
             int responseCode = conn.getResponseCode();
-            Log.d(TAG, "POST Response Code :  " + responseCode);
-            Log.d(TAG, "POST Response Message : " + conn.getResponseMessage());
+            Log.d(TAG, "Response Code :  " + responseCode);
+            Log.d(TAG, "Response Message : " + conn.getResponseMessage());
 
             if (responseCode == HttpURLConnection.HTTP_OK) { // success
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -567,6 +564,7 @@ public class NetworkUtils {
             return response.toString();
 
         }
+
 
     }
 
