@@ -3,19 +3,17 @@ package com.techline.rideshare;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.techline.rideshare.util.NetworkUtils;
-
-import java.io.IOException;
 import java.net.URL;
 
+// page not currently being used
 public class AddCard extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
     private static final String TAG = "ADD_CARD";
@@ -67,12 +65,12 @@ public class AddCard extends AppCompatActivity {
                                                 String emilOnCardValue, String authObjOnCardValue, String accountNumberValue,
                                                 String token) {
 
-        URL RideShareSelectUserURl = NetworkUtils.buildInsertCardUrl(nameOnCardValue, fullNumberOnCardValue, tokenisedCardValue,
+   /*     URL RideShareSelectUserURl = NetworkUtils.buildInsertCardUrl(nameOnCardValue, fullNumberOnCardValue, tokenisedCardValue,
                 pinOnCardValue, otpOnCardValue, tokenisationVerifiedOnCardValue, authorizationCodeOnCardValue, bankOnCardValue,
                 typeOnCardValue, last4DigitsOnCardValue, emilOnCardValue, authObjOnCardValue, accountNumberValue,token);
         Log.d(TAG, "RideShare insert Rout Url is: " + RideShareSelectUserURl.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
-        new AddCard.RideShareInsertCardTask().execute(RideShareSelectUserURl);
+        new AddCard.RideShareInsertCardTask().execute(RideShareSelectUserURl);*/
     }
 
     public class RideShareInsertCardTask extends AsyncTask<URL, Void, String> {
@@ -82,11 +80,9 @@ public class AddCard extends AppCompatActivity {
         protected String doInBackground(URL... params) {
             URL searchUrl = params[0];
             String RideShareSearchResults = null;
-            try {
-                RideShareSearchResults = NetworkUtils.getResponseFromPaystackHttpUrl(searchUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+//                RideShareSearchResults = NetworkUtils.getResponseFromPaystackHttpUrl(searchUrl);
+
             return RideShareSearchResults;
         }
 

@@ -2,23 +2,27 @@ package com.techline.rideshare;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.techline.rideshare.util.NetworkUtils;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class AddFunds extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -28,6 +32,7 @@ public class AddFunds extends AppCompatActivity
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
     SharedPreferences SP;
     TextView btnAddCard;
+    private String globalinitializeCardResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +59,49 @@ public class AddFunds extends AppCompatActivity
         btnAddCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(AddFunds.this, AddCard.class);
-                startActivity(it);
+                Log.d(TAG, "strEmail >> " + strEmail);
+                makeIniializeCardURL(strEmail, "5000");
+                /*Intent it = new Intent(AddFunds.this, AddCard.class);
+                startActivity(it);*/
             }
         });
+    }
+
+    private void makeIniializeCardURL(String chrgeEmail, String chrgeAmount) {
+        URL RideSharemakeIniializeCardURL = NetworkUtils.buildInsertCardUrl(chrgeEmail, chrgeAmount,
+                "@string/PAY_STACK_SECRET_KEY");
+        Log.d(TAG, "RideShare insert Rout Url is: " + RideSharemakeIniializeCardURL.toString());
+        // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
+        new initializeCardQueryTask().execute(RideSharemakeIniializeCardURL);
+    }
+
+    public class initializeCardQueryTask extends AsyncTask<URL, Void, String> {
+
+        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String initializeCardResults = null;
+            try {
+                initializeCardResults = NetworkUtils.getResponseFromPaystackHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return initializeCardResults;
+        }
+
+        // COMPLETED (3) Override onPostExecute to display the results
+        @Override
+        protected void onPostExecute(String initializeCardResults) {
+            if (initializeCardResults != null && !initializeCardResults.equals("")) {
+                Log.d(TAG, "initializeCardResults is :" + initializeCardResults);
+                globalinitializeCardResults = initializeCardResults;
+                //loadafterCardResultInView();
+            }
+        }
+
     }
 
     @Override

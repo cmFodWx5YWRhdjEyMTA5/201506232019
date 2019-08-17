@@ -18,6 +18,9 @@ package com.techline.rideshare.util;
 import android.net.Uri;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +42,8 @@ public class NetworkUtils {
     static final String BASE_URL = "http://rideshare.com.ng/";
     static final String BASE_GEODODE_URL = "https://maps.googleapis.com/maps";
     static final String BASE_TOMTOM_URL = "https://api.tomtom.com/routing/1/calculateRoute/<<LATLONGDATA>>/json/";
-    final static String BASE_ADD_CARD_URL = "https://api.paystack.co/transaction/initialize";
+    final static String BASE_PASTCK_URL = "https://api.paystack.co/";
+    final static String BASE_INITIALIZE_NEW_CARD_URL = BASE_PASTCK_URL + "transaction/initialize";
     final static String BASE_INSERT_USER_URL = BASE_URL + "android_api/v1/add_user.php";
     final static String BASE_SELECT_USER_URL = BASE_URL + "android_api/v1/select_user.php";
     final static String BASE_USER_LIST_URL = BASE_URL + "android_api/v1/userlist.php";
@@ -60,6 +64,9 @@ public class NetworkUtils {
     final static String BASE_GEO_CODE_ONE_URL = BASE_GEODODE_URL + "/api/geocode/json";
 
     final static String PARAM_QUERY = "q";
+
+    //pstck
+
 
     /*
      * The sort field. One of stars, forks, or updated.
@@ -152,7 +159,7 @@ public class NetworkUtils {
 
     private static String PARAM_GEOCODE_ADDRESS = "address";
     private static String PARAM_GEOCODE_KEY = "key";
-    private static String tokenValueStore;
+    private static String chrgeAmountValueStore, chrgeEmailValueStore, tokenValueStore;
 
     /**
      * Builds the URL used to query Database.
@@ -416,27 +423,12 @@ public class NetworkUtils {
 
     }
 
-    public static URL buildInsertCardUrl(String nameOnCardValue, String fullNumberOnCardValue,
-                                         String tokenisedCardValue, String pinOnCardValue, String otpOnCardValue,
-                                         String tokenisationVerifiedOnCardValue, String authorizationCodeOnCardValue,
-                                         String bankOnCardValue, String typeOnCardValue, String last4DigitsOnCardValue,
-                                         String emilOnCardValue, String authObjOnCardValue, String accountNumberValue,
+    public static URL buildInsertCardUrl(String chrgeEmailValue, String chrgeAmountValue,
                                          String tokenValue) {
+        chrgeEmailValueStore = chrgeEmailValue;
+        chrgeAmountValueStore = chrgeAmountValue;
         tokenValueStore = tokenValue;
-        Uri builtUri = Uri.parse(BASE_ADD_CARD_URL).buildUpon()
-                .appendQueryParameter(PARAM_NAME_ON_CARD, nameOnCardValue)
-                .appendQueryParameter(PARAM_FULL_NUMBER_ON_CARD, fullNumberOnCardValue)
-                .appendQueryParameter(PARAM_TOKENISED_CARD, tokenisedCardValue)
-                .appendQueryParameter(PARAM_PIN_ON_CARD, pinOnCardValue)
-                .appendQueryParameter(PARAM_OTP_ON_CARD, otpOnCardValue)
-                .appendQueryParameter(PARAM_TOKENISATION_VERIFIEDONCARD, tokenisationVerifiedOnCardValue)
-                .appendQueryParameter(PARAM_AUTHORIZATION_CODE_ON_CARD, authorizationCodeOnCardValue)
-                .appendQueryParameter(PARAM_BANK_ON_CARD, bankOnCardValue)
-                .appendQueryParameter(PARAM_TYPE_ON_CARD, typeOnCardValue)
-                .appendQueryParameter(PARAM_LAST_4DIGITS_ON_CARD, last4DigitsOnCardValue)
-                .appendQueryParameter(PARAM_EMIL_ON_CARD, emilOnCardValue)
-                .appendQueryParameter(PARAM_AUTHOBJ_ON_CARD, authObjOnCardValue)
-                .appendQueryParameter(PARAM_ACCOUNT_NUMBER, accountNumberValue)
+        Uri builtUri = Uri.parse(BASE_INITIALIZE_NEW_CARD_URL).buildUpon()
 
                 .build();
 
@@ -450,12 +442,12 @@ public class NetworkUtils {
         return url;
     }
 
-    public static String getResponseFromPaystackHttpUrl(URL url) throws IOException {
+    public static String getResponseFromPaystackHttpUrl(URL url) throws IOException, JSONException {
         StringBuffer response = new StringBuffer();
-  /*      JSONObject POST_PARAMS = new JSONObject();
+        JSONObject POST_PARAMS = new JSONObject();
 
-        POST_PARAMS.put("userName", usernameValueStore);
-        POST_PARAMS.put("passWord", passwordValueStore);*/
+        POST_PARAMS.put("amount", chrgeAmountValueStore);
+        POST_PARAMS.put("email", chrgeEmailValueStore);
         Log.d(TAG, "tokenValueStore :  " + tokenValueStore);
 
         String authorize_header = "Bearer " + tokenValueStore;
@@ -472,7 +464,7 @@ public class NetworkUtils {
 
         try {
             OutputStream os = conn.getOutputStream();
-            // os.write(POST_PARAMS.toString().getBytes());
+            os.write(POST_PARAMS.toString().getBytes());
             os.flush();
             os.close();
             int responseCode = conn.getResponseCode();
