@@ -303,10 +303,10 @@ public class AddFunds extends AppCompatActivity
         // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
         @Override
         protected String doInBackground(URL... params) {
-            URL searchUrl = params[0];
+            URL saveCardURL = params[0];
             String saveCardURLResults = null;
             try {
-                saveCardURLResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+                saveCardURLResults = NetworkUtils.getResponseFromHttpUrl(saveCardURL);
             } catch (IOException e) {
                 e.printStackTrace();
             }
