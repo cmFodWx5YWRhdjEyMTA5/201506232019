@@ -738,4 +738,39 @@ public class NetworkUtils {
         return url;
 
     }
+
+    public static URL buildInsertoldRouteUrl(String pickUpPlaceIdValue, String pickUpGeometryValue, String pickUpLocation_typeValue,
+                                             String pickUpLocationValue, String pickUpLatValue, String pickUpLngValue, String whereToPlaceIdValue,
+                                             String whereToGeometryValue, String whereToLocation_typeValue, String whereToLatValue,
+                                             String whereToLocationValue, String whereToLngValue, String accountNo, String distanceValue,
+                                             String pickUpDescValue, String whereToDescValue) {
+        Uri builtUri = Uri.parse(BASE_ADD_ROUTE_URL).buildUpon()
+                .appendQueryParameter(PARAM_PICKUP_PLACE_ID, pickUpPlaceIdValue)
+                .appendQueryParameter(PARAM_PICKUP_GEOMETRY, pickUpGeometryValue)
+                .appendQueryParameter(PARAM_PICKUP_LOCATION_TYPE, pickUpLocation_typeValue)
+                .appendQueryParameter(PARAM_PICKUP_LOCATION, pickUpLocationValue)
+                .appendQueryParameter(PARAM_PICKUP_LAT, pickUpLatValue)
+                .appendQueryParameter(PARAM_PICKUP_LNG, pickUpLngValue)
+                .appendQueryParameter(PARAM_WHERETO_PLACE_ID, whereToPlaceIdValue)
+                .appendQueryParameter(PARAM_WHERETO_GEOMETRY, whereToGeometryValue)
+                .appendQueryParameter(PARAM_WHERETO_LOCATION_TYPE, whereToLocation_typeValue)
+                .appendQueryParameter(PARAM_WHERETO_LAT, whereToLatValue)
+                .appendQueryParameter(PARAM_WHERETO_LOCATION, whereToLocationValue)
+                .appendQueryParameter(PARAM_WHERETO_LNG, whereToLngValue)
+                .appendQueryParameter(PARAM_ACCT_NO, accountNo)
+                .appendQueryParameter(PARAM_DISTANCE, distanceValue)
+                .appendQueryParameter(PARAM_PICKUP_DESC, pickUpDescValue)
+                .appendQueryParameter(PARAM_WHERETO_DESC, whereToDescValue)
+
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
 }

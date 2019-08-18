@@ -209,7 +209,7 @@ public class RegisterRoute1 extends AppCompatActivity
                                                 String whereToPlaceIdValue, String whereToGeometryValue, String whereToLocation_typeValue,
                                                 String whereToLatValue, String whereToLocationValue, String whereToLngValue,
                                                 String accountNo, String distanceValue, String pickUpDescValue, String whereToDescValue) {
-        URL RideShareSelectUserURl = NetworkUtils.buildInsertRouteUrl(pickUpPlaceIdValue, pickUpGeometryValue, pickUpLocation_typeValue,
+        URL RideShareSelectUserURl = NetworkUtils.buildInsertoldRouteUrl(pickUpPlaceIdValue, pickUpGeometryValue, pickUpLocation_typeValue,
                 pickUpLocationValue, pickUpLatValue, pickUpLngValue, whereToPlaceIdValue, whereToGeometryValue, whereToLocation_typeValue,
                 whereToLatValue, whereToLocationValue, whereToLngValue, accountNo, distanceValue, pickUpDescValue, whereToDescValue);
         Log.d(TAG, "RideShare insert Rout Url is: " + RideShareSelectUserURl.toString());
