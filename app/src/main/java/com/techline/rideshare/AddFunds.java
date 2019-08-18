@@ -30,6 +30,7 @@ public class AddFunds extends AppCompatActivity
     public static final String MyPREFERENCES = "MyPrefs";
     private static final String TAG = "ADD_FUNDS";
     public static final String CHARGE_AMOUNT_IN_KOBO = "1000"; //amount in KOBO
+    public static final String PAY_STACK_SECRET_KEY = "sk_live_72cd3be08f1025a6312867f75964fdf16793ead9";
     String strUser, strPass, globalSearchResult, strFullName, strEmail, strPhone, strFName,
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
     SharedPreferences SP;
@@ -77,7 +78,7 @@ public class AddFunds extends AppCompatActivity
 
     private void makeIniializeCardURL(String chrgeEmail, String chrgeAmount) {
         URL RideSharemakeIniializeCardURL = NetworkUtils.buildInsertCardUrl(chrgeEmail, chrgeAmount,
-                "@string/PAY_STACK_SECRET_KEY");
+                PAY_STACK_SECRET_KEY);
         Log.d(TAG, "RideShare insert Rout Url is: " + RideSharemakeIniializeCardURL.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
         new initializeCardQueryTask().execute(RideSharemakeIniializeCardURL);
@@ -148,7 +149,7 @@ public class AddFunds extends AppCompatActivity
 
     private void makeVerifyCardURL(String reference) {
         Log.d(TAG, "inside makeVerifyCardURL ");
-        URL RideSharemakeIVerifyCardURL = NetworkUtils.buildVerifyCardUrl(reference,"@string/PAY_STACK_SECRET_KEY");
+        URL RideSharemakeIVerifyCardURL = NetworkUtils.buildVerifyCardUrl(reference, PAY_STACK_SECRET_KEY);
         Log.d(TAG, "makeVerifyCardURL Url is: " + RideSharemakeIVerifyCardURL.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
         new verifyCardQueryTask().execute(RideSharemakeIVerifyCardURL);
@@ -318,13 +319,26 @@ public class AddFunds extends AppCompatActivity
             if (saveCardURLResults != null && !saveCardURLResults.equals("")) {
                 Log.d(TAG, "saveCardURLResults is :" + saveCardURLResults);
                 globalSaveCardURLResult = saveCardURLResults;
-                loadSaveCardURLResultInView();
+                try {
+                    loadSaveCardURLResultInView();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    private void loadSaveCardURLResultInView() {
+    private void loadSaveCardURLResultInView() throws JSONException {
+        Log.d(TAG, "inside loadSaveCardURLResultInView");
+        // get JSONObject from JSON file
+        JSONObject obj = new JSONObject(globalSaveCardURLResultMethod());
+        Log.d(TAG, "obj is: " + obj);
+//        String status_str = obj.getString("status");
+//        Log.d(TAG, "status_str is: " + status_str);
+    }
 
+    private String globalSaveCardURLResultMethod() {
+        return globalSaveCardURLResult;
     }
 
     private String globalVerifyCardResultsMethod() {
