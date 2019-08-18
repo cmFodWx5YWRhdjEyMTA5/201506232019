@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -148,10 +149,17 @@ public class AddFunds extends AppCompatActivity
 
     private void displayPopUpForm(String authorization_url) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
         alert.setTitle("Add Card here");
 
         WebView wv = new WebView(this);
         wv.loadUrl(authorization_url);
+        wv.getSettings().setSupportMultipleWindows(true);
+        wv.getSettings().setJavaScriptEnabled(true);
+        wv.getSettings().setSupportZoom(true);
+        wv.getSettings().setBuiltInZoomControls(true);
+        wv.getSettings().setPluginState(WebSettings.PluginState.ON);
+        wv.getSettings().setSupportMultipleWindows(true);
         wv.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
