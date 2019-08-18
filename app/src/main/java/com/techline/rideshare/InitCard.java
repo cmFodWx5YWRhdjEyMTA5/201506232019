@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ public class InitCard extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String CHARGE_AMOUNT_IN_KOBO = "1000"; //amount in KOBO
     public static final String PAY_STACK_SECRET_KEY = "sk_live_72cd3be08f1025a6312867f75964fdf16793ead9";
-    private static final String TAG = "ADD_FUNDS";
+    private static final String TAG = "INIT_CARD";
     String strUser, strPass, globalSearchResult, strFullName, strEmail, strPhone, strFName,
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
     SharedPreferences SP;
@@ -36,9 +37,9 @@ public class InitCard extends AppCompatActivity {
             customer_code, customer_phone, customer_metadata, customer_risk_action;
     private Bundle extras;
 
-
+    @JavascriptInterface
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init_card);
         loadDataFromSharedPrefs();
@@ -73,13 +74,18 @@ public class InitCard extends AppCompatActivity {
         });
 
         paystackWebView.getSettings().setJavaScriptEnabled(true);
-        paystackWebView.loadUrl(authorization_url);
+        paystackWebView.getSettings().setSupportMultipleWindows(true);
+        paystackWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         paystackWebView.setWebViewClient(new WebViewClient() {
+
+            @Override
             public boolean shouldOverrideUrlLoading(WebView viewx, String urlx) {
                 viewx.loadUrl(urlx);
-                return false;
+                return true;
             }
         });
+        paystackWebView.loadUrl(authorization_url);
+
 
     }
 
