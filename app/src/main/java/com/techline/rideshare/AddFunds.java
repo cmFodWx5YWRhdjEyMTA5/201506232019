@@ -1,7 +1,5 @@
 package com.techline.rideshare;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -16,7 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,9 +28,9 @@ import java.net.URL;
 public class AddFunds extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static final String MyPREFERENCES = "MyPrefs";
-    private static final String TAG = "ADD_FUNDS";
     public static final String CHARGE_AMOUNT_IN_KOBO = "1000"; //amount in KOBO
     public static final String PAY_STACK_SECRET_KEY = "sk_live_72cd3be08f1025a6312867f75964fdf16793ead9";
+    private static final String TAG = "ADD_FUNDS";
     String strUser, strPass, globalSearchResult, strFullName, strEmail, strPhone, strFName,
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
     SharedPreferences SP;
@@ -87,39 +84,6 @@ public class AddFunds extends AppCompatActivity
         new initializeCardQueryTask().execute(RideSharemakeIniializeCardURL);
     }
 
-    public class initializeCardQueryTask extends AsyncTask<URL, Void, String> {
-
-        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
-        @Override
-        protected String doInBackground(URL... params) {
-            URL searchUrl = params[0];
-            String initializeCardResults = null;
-            try {
-                initializeCardResults = NetworkUtils.getResponseFromInitializePaystackHttpUrl(searchUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return initializeCardResults;
-        }
-
-        // COMPLETED (3) Override onPostExecute to display the results
-        @Override
-        protected void onPostExecute(String initializeCardResults) {
-            if (initializeCardResults != null && !initializeCardResults.equals("")) {
-                Log.d(TAG, "initializeCardResults is :" + initializeCardResults);
-                globalinitializeCardResultsMethodString = initializeCardResults;
-                try {
-                    loadinitializeCardResultsInView();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-    }
-
     private void loadinitializeCardResultsInView() throws JSONException {
         Log.d(TAG, "inside loadinitializeCardResultsInView");
         // get JSONObject from JSON file
@@ -136,7 +100,13 @@ public class AddFunds extends AppCompatActivity
             Log.d(TAG, "access_code is: " + access_code);
             reference = dta_obj.getString("reference");
             Log.d(TAG, "reference is: " + reference);
-            displayPopUpForm(authorization_url);
+            //started displayPopUpForm  of authorization_url);
+            Intent it = new Intent(AddFunds.this, InitCard.class);
+            it.putExtra("authorization_url", authorization_url);
+            it.putExtra("reference", reference);
+            it.putExtra("access_code", access_code);
+
+            startActivity(it);
             //makeVerifyCardURL(reference);
         } else {
             Toast.makeText(getApplicationContext(), "Card Initialization Failed.", Toast.LENGTH_SHORT).show();
@@ -145,233 +115,8 @@ public class AddFunds extends AppCompatActivity
 
     }
 
-    private void displayPopUpForm(final String myAuthorization_url) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        alert.setTitle("Add Card here");
-
-        WebView wv = new WebView(this);
-
-        wv.loadUrl(myAuthorization_url);
-        wv.getSettings().setSupportMultipleWindows(true);
-        wv.getSettings().setJavaScriptEnabled(true);
-        wv.getSettings().setSupportZoom(true);
-        wv.getSettings().setBuiltInZoomControls(true);
-        wv.getSettings().setSupportMultipleWindows(true);
-
-
-        alert.setView(wv);
-        alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                makeVerifyCardURL(reference);
-                dialog.dismiss();
-            }
-        });
-        alert.show();
-    }
-
     private String globalinitializeCardResultsMethod() {
         return globalinitializeCardResultsMethodString;
-    }
-
-
-    private void makeVerifyCardURL(String reference) {
-        Log.d(TAG, "inside makeVerifyCardURL ");
-        URL RideSharemakeIVerifyCardURL = NetworkUtils.buildVerifyCardUrl(reference, PAY_STACK_SECRET_KEY);
-        Log.d(TAG, "makeVerifyCardURL Url is: " + RideSharemakeIVerifyCardURL.toString());
-        // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
-        new verifyCardQueryTask().execute(RideSharemakeIVerifyCardURL);
-
-    }
-
-    public class verifyCardQueryTask extends AsyncTask<URL, Void, String> {
-
-        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
-        @Override
-        protected String doInBackground(URL... params) {
-            URL searchUrl = params[0];
-            String verifyCardResults = null;
-            try {
-                verifyCardResults = NetworkUtils.getResponseFromVeriyPaystackHttpUrl(searchUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return verifyCardResults;
-        }
-
-        // COMPLETED (3) Override onPostExecute to display the results
-        @Override
-        protected void onPostExecute(String verifyCardResults) {
-            if (verifyCardResults != null && !verifyCardResults.equals("")) {
-                Log.d(TAG, "verifyCardResults is :" + verifyCardResults);
-                globalVerifyCardResultsMethodString = verifyCardResults;
-                try {
-                    loadVerifyCardResultsInView();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-    }
-
-    private void loadVerifyCardResultsInView() throws JSONException {
-        Log.d(TAG, "inside loadVerifyCardResultsInView");
-        // get JSONObject from JSON file
-        JSONObject obj = new JSONObject(globalVerifyCardResultsMethod());
-        String status_str = obj.getString("status");
-        Log.d(TAG, "status_str is: " + status_str);
-        if (status_str.equalsIgnoreCase("true")) {
-            String message_str = obj.getString("message");
-            Log.d(TAG, "message_str is: " + message_str);
-            String data_str = obj.getString("data");
-            Log.d(TAG, "data_str is: " + data_str);
-            JSONObject dta_obj = new JSONObject(data_str);
-
-            data_id = dta_obj.getString("id");
-            Log.d(TAG, "data_id is: " + data_id);
-            domain = dta_obj.getString("domain");
-            Log.d(TAG, "domain is: " + domain);
-            data_status = dta_obj.getString("status");
-            Log.d(TAG, "data_status is: " + data_status);
-            amount_in_kobo = dta_obj.getString("amount");
-            Log.d(TAG, "amount_in_kobo is: " + amount_in_kobo);
-            data_message = dta_obj.getString("message");
-            Log.d(TAG, "data_message is: " + data_message);
-            gateway_response = dta_obj.getString("gateway_response");
-            Log.d(TAG, "gateway_response is: " + gateway_response);
-            paid_at = dta_obj.getString("paid_at");
-            Log.d(TAG, "paid_at is: " + paid_at);
-            created_at = dta_obj.getString("created_at");
-            Log.d(TAG, "created_at is: " + created_at);
-            channel = dta_obj.getString("channel");
-            Log.d(TAG, "channel is: " + channel);
-            currency = dta_obj.getString("currency");
-            Log.d(TAG, "currency is: " + currency);
-            ip_address = dta_obj.getString("ip_address");
-            Log.d(TAG, "ip_address is: " + ip_address);
-            data_metadata = dta_obj.getString("metadata");
-            Log.d(TAG, "data_metadata is: " + data_metadata);
-            log = dta_obj.getString("log");
-            Log.d(TAG, "log is: " + log);
-            fees = dta_obj.getString("fees");
-            Log.d(TAG, "fees is: " + fees);
-            fees_split = dta_obj.getString("fees_split");
-            Log.d(TAG, "fees_split is: " + fees_split);
-            authorization = dta_obj.getString("authorization");
-            Log.d(TAG, "authorization is: " + authorization);
-            customer_data = dta_obj.getString("customer");
-            Log.d(TAG, "customer_data is: " + customer_data);
-
-            order_id = dta_obj.getString("order_id");
-            Log.d(TAG, "order_id is: " + order_id);
-
-            JSONObject customer_data_obj = new JSONObject(customer_data);
-
-            customer_id = customer_data_obj.getString("id");
-            Log.d(TAG, "customer_id is: " + customer_id);
-
-            customer_first_name = customer_data_obj.getString("first_name");
-            Log.d(TAG, "customer_first_name is: " + customer_first_name);
-
-            customer_last_name = customer_data_obj.getString("last_name");
-            Log.d(TAG, "customer_last_name is: " + customer_last_name);
-
-            customer_email = customer_data_obj.getString("email");
-            Log.d(TAG, "customer_email is: " + customer_email);
-
-            customer_code = customer_data_obj.getString("customer_code");
-            Log.d(TAG, "customer_code is: " + customer_code);
-
-            customer_phone = customer_data_obj.getString("phone");
-            Log.d(TAG, "customer_phone is: " + customer_phone);
-
-            customer_metadata = customer_data_obj.getString("metadata");
-            Log.d(TAG, "customer_metadata is: " + customer_metadata);
-
-            customer_risk_action = customer_data_obj.getString("risk_action");
-            Log.d(TAG, "customer_risk_action is: " + customer_risk_action);
-
-            makeInsertPstkDataUri(authorization_url, access_code, reference, data_id, domain, data_status, amount_in_kobo, data_message,
-                    gateway_response, paid_at, created_at, channel, currency, ip_address, data_metadata, log, fees, fees_split,
-                    authorization, customer_data, customer_id, order_id, customer_first_name, customer_last_name, customer_email,
-                    customer_code, customer_phone, customer_metadata, customer_risk_action, accountNumber);
-
-        } else {
-            Toast.makeText(getApplicationContext(), "Card Verification Failed.", Toast.LENGTH_SHORT).show();
-
-        }
-
-    }
-
-    private void makeInsertPstkDataUri(String authorization_urlValue, String access_codeValue, String referenceValue, String data_idValue,
-                                       String domainValue, String data_statusValue, String amount_in_koboValue, String data_messageValue,
-                                       String gateway_responseValue, String paid_atValue, String created_atValue, String channelValue,
-                                       String currencyValue, String ip_addressValue, String data_metadataValue, String logValue, String feesValue,
-                                       String fees_splitValue, String authorizationValue, String customer_dataValue, String customer_idValue,
-                                       String order_idValue, String customer_first_nameValue, String customer_last_nameValue,
-                                       String customer_emailValue, String customer_codeValue, String customer_phoneValue,
-                                       String customer_metadataValue, String customer_risk_actionValue, String accountNumberValue) {
-
-        URL saveCardURL = NetworkUtils.buildSaveCardURL(authorization_urlValue, access_codeValue, referenceValue, data_idValue,
-                domainValue, data_statusValue, amount_in_koboValue, data_messageValue, gateway_responseValue, paid_atValue, created_atValue, channelValue,
-                currencyValue, ip_addressValue, data_metadataValue, logValue, feesValue, fees_splitValue, authorizationValue, customer_dataValue, customer_idValue,
-                order_idValue, customer_first_nameValue, customer_last_nameValue, customer_emailValue, customer_codeValue, customer_phoneValue,
-                customer_metadataValue, customer_risk_actionValue, accountNumberValue);
-        Log.d(TAG, "buildSaveCardURL is: " + saveCardURL.toString());
-        // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
-        new AddFunds.saveCardURLQueryTask().execute(saveCardURL);
-
-    }
-
-    public class saveCardURLQueryTask extends AsyncTask<URL, Void, String> {
-
-        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
-        @Override
-        protected String doInBackground(URL... params) {
-            URL saveCardURL = params[0];
-            String saveCardURLResults = null;
-            try {
-                saveCardURLResults = NetworkUtils.getResponseFromHttpUrl(saveCardURL);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return saveCardURLResults;
-        }
-
-        // COMPLETED (3) Override onPostExecute to display the results
-        @Override
-        protected void onPostExecute(String saveCardURLResults) {
-            if (saveCardURLResults != null && !saveCardURLResults.equals("")) {
-                Log.d(TAG, "saveCardURLResults is :" + saveCardURLResults);
-                globalSaveCardURLResult = saveCardURLResults;
-                try {
-                    loadSaveCardURLResultInView();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private void loadSaveCardURLResultInView() throws JSONException {
-        Log.d(TAG, "inside loadSaveCardURLResultInView");
-        // get JSONObject from JSON file
-        JSONObject obj = new JSONObject(globalSaveCardURLResultMethod());
-        Log.d(TAG, "obj is: " + obj);
-//        String status_str = obj.getString("status");
-//        Log.d(TAG, "status_str is: " + status_str);
-    }
-
-    private String globalSaveCardURLResultMethod() {
-        return globalSaveCardURLResult;
-    }
-
-    private String globalVerifyCardResultsMethod() {
-        return globalVerifyCardResultsMethodString;
     }
 
     @Override
@@ -508,6 +253,39 @@ public class AddFunds extends AppCompatActivity
         }
 
         Log.d(TAG, "after loadDataFromSharedPrefs");
+
+    }
+
+    public class initializeCardQueryTask extends AsyncTask<URL, Void, String> {
+
+        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String initializeCardResults = null;
+            try {
+                initializeCardResults = NetworkUtils.getResponseFromInitializePaystackHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return initializeCardResults;
+        }
+
+        // COMPLETED (3) Override onPostExecute to display the results
+        @Override
+        protected void onPostExecute(String initializeCardResults) {
+            if (initializeCardResults != null && !initializeCardResults.equals("")) {
+                Log.d(TAG, "initializeCardResults is :" + initializeCardResults);
+                globalinitializeCardResultsMethodString = initializeCardResults;
+                try {
+                    loadinitializeCardResultsInView();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
     }
 
