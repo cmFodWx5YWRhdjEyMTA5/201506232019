@@ -1,5 +1,7 @@
 package com.techline.rideshare;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -14,6 +16,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -133,13 +137,39 @@ public class AddFunds extends AppCompatActivity
             Log.d(TAG, "access_code is: " + access_code);
             reference = dta_obj.getString("reference");
             Log.d(TAG, "reference is: " + reference);
-
-            makeVerifyCardURL(reference);
+            displayPopUpForm(authorization_url);
+            //makeVerifyCardURL(reference);
         } else {
             Toast.makeText(getApplicationContext(), "Card Initialization Failed.", Toast.LENGTH_SHORT).show();
 
         }
 
+    }
+
+    private void displayPopUpForm(String authorization_url) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Add Card here");
+
+        WebView wv = new WebView(this);
+        wv.loadUrl(authorization_url);
+        wv.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+
+                return true;
+            }
+        });
+
+        alert.setView(wv);
+        alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                makeVerifyCardURL(reference);
+                dialog.dismiss();
+            }
+        });
+        alert.show();
     }
 
     private String globalinitializeCardResultsMethod() {
