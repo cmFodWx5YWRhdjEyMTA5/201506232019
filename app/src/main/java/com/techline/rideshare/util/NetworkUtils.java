@@ -46,6 +46,7 @@ public class NetworkUtils {
     final static String BASE_INITIALIZE_NEW_CARD_URL = BASE_PASTCK_URL + "transaction/initialize";
     final static String BASE_VERIFY_CARD_URL = BASE_PASTCK_URL + "transaction/verify/";
     final static String BASE_INSERT_USER_URL = BASE_URL + "android_api/v1/add_user.php";
+    final static String BASE_INSERT_USER_CARD_DATA = BASE_URL + "android_api/v1/add_card.php";
     final static String BASE_SELECT_USER_URL = BASE_URL + "android_api/v1/select_user.php";
     final static String BASE_USER_LIST_URL = BASE_URL + "android_api/v1/userlist.php";
     final static String BASE_USER_LIST_ONE_URL = BASE_URL + "android_api/v1/userlist_one.php";
@@ -151,6 +152,34 @@ public class NetworkUtils {
     private static final String PARAM_TRAVEL_TIME_INSECONDS = "travelTimeInSeconds";
     private static final String PARAM_ARRIVAL_TIMEEST = "arrivalTime";
     private static final String PARAM_FARE_ESTIMATE = "fareEstimate";
+    private static final String PARAM_AUTHORIZATION_URL = "authorization_url";
+    private static final String PARAM_ACCESS_CODE = "access_code";
+    private static final String PARAM_REFERENCE = "reference";
+    private static final String PARAM_DATA_ID = "data_id";
+    private static final String PARAM_DOMAIN = "domain";
+    private static final String PARAM_DATA_STATUS = "data_status";
+    private static final String PARAM_AMOUNT_IN_KOBO = "amount_in_kobo";
+    private static final String PARAM_DATA_MESSAGE = "data_message";
+    private static final String PARAM_GATEWAY_RESPONSE = "gateway_response";
+    private static final String PARAM_PAID_AT = "paid_at";
+    private static final String PARAM_CREATED_AT = "created_at";
+    private static final String PARAM_CHANNEL = "channel";
+    private static final String PARAM_IP_ADDRESS = "ip_address";
+    private static final String PARAM_DATA_METADATA = "data_metadata";
+    private static final String PARAM_LOG = "log";
+    private static final String PARAM_FEES = "fees";
+    private static final String PARAM_FEES_SPLIT = "fees_split";
+    private static final String PARAM_AUTHORIZATION = "authorization";
+    private static final String PARAM_CUSTOMER_DATA = "customer_data";
+    private static final String PARAM_CUSTOMER_ID = "customer_id";
+    private static final String PARAM_ORDER_ID = "order_id";
+    private static final String PARAM_CUSTOMER_FIRST_NAME = "customer_first_name";
+    private static final String PARAM_CUSTOMER_LAST_NAME = "customer_last_name";
+    private static final String PARAM_CUSTOMER_EMAIL = "customer_email";
+    private static final String PARAM_CUSTOMER_CODE = "customer_code";
+    private static final String PARAM_CUSTOMER_PHONE = "customer_phone";
+    private static final String PARAM_CUSTOMER_METADATA = "customer_metadata";
+    private static final String PARAM_CUSTOMER_RISK_ACTION = "customer_risk_action";
 
     // Message Constants
     // used Write a message to the database
@@ -160,7 +189,7 @@ public class NetworkUtils {
 
     private static String PARAM_GEOCODE_ADDRESS = "address";
     private static String PARAM_GEOCODE_KEY = "key";
-    private static String chrgeAmountValueStore, chrgeEmailValueStore, tokenValueStore,cardReferenceValuetore;
+    private static String chrgeAmountValueStore, chrgeEmailValueStore, tokenValueStore, cardReferenceValuetore;
 
     /**
      * Builds the URL used to query Database.
@@ -653,5 +682,60 @@ public class NetworkUtils {
         }
 
         return url;
+    }
+
+    public static URL buildSaveCardURL(String authorization_urlValue, String access_codeValue, String referenceValue,
+                                       String data_idValue, String domainValue, String data_statusValue, String amount_in_koboValue,
+                                       String data_messageValue, String gateway_responseValue, String paid_atValue,
+                                       String created_atValue, String channelValue, String currencyValue, String ip_addressValue,
+                                       String data_metadataValue, String logValue, String feesValue, String fees_splitValue,
+                                       String authorizationValue, String customer_dataValue, String customer_idValue,
+                                       String order_idValue, String customer_first_nameValue, String customer_last_nameValue,
+                                       String customer_emailValue, String customer_codeValue, String customer_phoneValue,
+                                       String customer_metadataValue, String customer_risk_actionValue, String accountNumberValue) {
+
+        Uri builtUri = Uri.parse(BASE_INSERT_USER_CARD_DATA).buildUpon()
+
+                .appendQueryParameter(PARAM_AUTHORIZATION_URL, authorization_urlValue)
+                .appendQueryParameter(PARAM_ACCESS_CODE, access_codeValue)
+                .appendQueryParameter(PARAM_REFERENCE, referenceValue)
+                .appendQueryParameter(PARAM_DATA_ID, data_idValue)
+                .appendQueryParameter(PARAM_DOMAIN, domainValue)
+                .appendQueryParameter(PARAM_DATA_STATUS, data_statusValue)
+                .appendQueryParameter(PARAM_AMOUNT_IN_KOBO, amount_in_koboValue)
+                .appendQueryParameter(PARAM_DATA_MESSAGE, data_messageValue)
+                .appendQueryParameter(PARAM_GATEWAY_RESPONSE, gateway_responseValue)
+                .appendQueryParameter(PARAM_PAID_AT, paid_atValue)
+                .appendQueryParameter(PARAM_CREATED_AT, created_atValue)
+                .appendQueryParameter(PARAM_CHANNEL, channelValue)
+                .appendQueryParameter(PARAM_CURRENCY, currencyValue)
+                .appendQueryParameter(PARAM_IP_ADDRESS, ip_addressValue)
+                .appendQueryParameter(PARAM_DATA_METADATA, data_metadataValue)
+                .appendQueryParameter(PARAM_LOG, logValue)
+                .appendQueryParameter(PARAM_FEES, feesValue)
+                .appendQueryParameter(PARAM_FEES_SPLIT, fees_splitValue)
+                .appendQueryParameter(PARAM_AUTHORIZATION, authorizationValue)
+                .appendQueryParameter(PARAM_CUSTOMER_DATA, customer_dataValue)
+                .appendQueryParameter(PARAM_CUSTOMER_ID, customer_idValue)
+                .appendQueryParameter(PARAM_ORDER_ID, order_idValue)
+                .appendQueryParameter(PARAM_CUSTOMER_FIRST_NAME, customer_first_nameValue)
+                .appendQueryParameter(PARAM_CUSTOMER_LAST_NAME, customer_last_nameValue)
+                .appendQueryParameter(PARAM_CUSTOMER_EMAIL, customer_emailValue)
+                .appendQueryParameter(PARAM_CUSTOMER_CODE, customer_codeValue)
+                .appendQueryParameter(PARAM_CUSTOMER_PHONE, customer_phoneValue)
+                .appendQueryParameter(PARAM_CUSTOMER_METADATA, customer_metadataValue)
+                .appendQueryParameter(PARAM_CUSTOMER_RISK_ACTION, customer_risk_actionValue)
+                .appendQueryParameter(PARAM_ACCT_NO, accountNumberValue)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+
     }
 }

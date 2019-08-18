@@ -35,11 +35,12 @@ public class AddFunds extends AppCompatActivity
     SharedPreferences SP;
     TextView btnAddCard;
     private String globalinitializeCardResultsMethodString;
-    private String globalVerifyCardResultsMethodString;
+    private String globalVerifyCardResultsMethodString, globalSaveCardURLResult;
     private String authorization_url, access_code, reference, data_id, domain, data_status, amount_in_kobo, data_message,
             gateway_response, paid_at, created_at, channel, currency, ip_address, data_metadata, log, fees, fees_split,
             authorization, customer_data, customer_id, order_id, customer_first_name, customer_last_name, customer_email,
             customer_code, customer_phone, customer_metadata, customer_risk_action;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,7 +268,7 @@ public class AddFunds extends AppCompatActivity
             makeInsertPstkDataUri(authorization_url, access_code, reference, data_id, domain, data_status, amount_in_kobo, data_message,
                     gateway_response, paid_at, created_at, channel, currency, ip_address, data_metadata, log, fees, fees_split,
                     authorization, customer_data, customer_id, order_id, customer_first_name, customer_last_name, customer_email,
-                    customer_code, customer_phone, customer_metadata, customer_risk_action);
+                    customer_code, customer_phone, customer_metadata, customer_risk_action, accountNumber);
 
         } else {
             Toast.makeText(getApplicationContext(), "Card Verification Failed.", Toast.LENGTH_SHORT).show();
@@ -283,11 +284,46 @@ public class AddFunds extends AppCompatActivity
                                        String fees_splitValue, String authorizationValue, String customer_dataValue, String customer_idValue,
                                        String order_idValue, String customer_first_nameValue, String customer_last_nameValue,
                                        String customer_emailValue, String customer_codeValue, String customer_phoneValue,
-                                       String customer_metadataValue, String customer_risk_action) {
-//TODO-1: create db table
-//TODO-2: create api
-//TODO-3: make changes on network utils
-//TODO-4: make changes on addFunds
+                                       String customer_metadataValue, String customer_risk_actionValue, String accountNumberValue) {
+
+        URL saveCardURL = NetworkUtils.buildSaveCardURL(authorization_urlValue, access_codeValue, referenceValue, data_idValue,
+                domainValue, data_statusValue, amount_in_koboValue, data_messageValue, gateway_responseValue, paid_atValue, created_atValue, channelValue,
+                currencyValue, ip_addressValue, data_metadataValue, logValue, feesValue, fees_splitValue, authorizationValue, customer_dataValue, customer_idValue,
+                order_idValue, customer_first_nameValue, customer_last_nameValue, customer_emailValue, customer_codeValue, customer_phoneValue,
+                customer_metadataValue, customer_risk_actionValue, accountNumberValue);
+        Log.d(TAG, "buildSaveCardURL is: " + saveCardURL.toString());
+        // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
+        new AddFunds.saveCardURLQueryTask().execute(saveCardURL);
+
+    }
+
+    public class saveCardURLQueryTask extends AsyncTask<URL, Void, String> {
+
+        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String saveCardURLResults = null;
+            try {
+                saveCardURLResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return saveCardURLResults;
+        }
+
+        // COMPLETED (3) Override onPostExecute to display the results
+        @Override
+        protected void onPostExecute(String saveCardURLResults) {
+            if (saveCardURLResults != null && !saveCardURLResults.equals("")) {
+                Log.d(TAG, "saveCardURLResults is :" + saveCardURLResults);
+                globalSaveCardURLResult = saveCardURLResults;
+                loadSaveCardURLResultInView();
+            }
+        }
+    }
+
+    private void loadSaveCardURLResultInView() {
 
     }
 
