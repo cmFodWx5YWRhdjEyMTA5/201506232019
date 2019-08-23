@@ -18,8 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AddCard"></activity>
-
+        <activity android:name=".InitCard"></activity>
+        <activity android:name=".AddCard" />
 
         <meta-data
             android:name="com.google.android.gms.version"
