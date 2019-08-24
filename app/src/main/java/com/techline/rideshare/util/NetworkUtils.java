@@ -61,6 +61,7 @@ public class NetworkUtils {
     final static String BASE_ADD_ROUTE_URL = BASE_URL + "android_api/v1/add_route.php";
     final static String BASE_EDIT_PROFILE_PASS_URL = BASE_URL + "android_api/v1/edit_profile_pass.php";
     final static String BASE_EDIT_PROFILE_DRIVER_URL = BASE_URL + "android_api/v1/edit_profile_driver.php";
+    final static String BASE_RIDE_REQUEST_URL = BASE_URL + "android_api/v1/ride_request.php";
 
 
     final static String BASE_GEO_CODE_ONE_URL = BASE_GEODODE_URL + "/api/geocode/json";
@@ -180,6 +181,7 @@ public class NetworkUtils {
     private static final String PARAM_CUSTOMER_PHONE = "customer_phone";
     private static final String PARAM_CUSTOMER_METADATA = "customer_metadata";
     private static final String PARAM_CUSTOMER_RISK_ACTION = "customer_risk_action";
+    private static final String PARAM_TIME = "time";
 
     // Message Constants
     // used Write a message to the database
@@ -761,6 +763,50 @@ public class NetworkUtils {
                 .appendQueryParameter(PARAM_DISTANCE, distanceValue)
                 .appendQueryParameter(PARAM_PICKUP_DESC, pickUpDescValue)
                 .appendQueryParameter(PARAM_WHERETO_DESC, whereToDescValue)
+
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static URL buildRideRequestUrl(String pickUpPlaceIdValue, String pickUpGeometryValue, String pickUpLocation_typeValue,
+                                          String pickUpLocationValue, String pickUpLatValue, String pickUpLngValue, String whereToPlaceIdValue,
+                                          String whereToGeometryValue, String whereToLocation_typeValue, String whereToLatValue,
+                                          String whereToLocationValue, String whereToLngValue, String accountNumberValue, String distanceOfRouteValue,
+                                          String pickUpDescValue, String whereToDescValue, String travelTimeValue, String travelTimeInSecondsValue,
+                                          String arrivalTimeValue, String strFareValue, String strFullNameValue, String dateTimeStValue) {
+
+        Uri builtUri = Uri.parse(BASE_RIDE_REQUEST_URL).buildUpon()
+                .appendQueryParameter(PARAM_PICKUP_PLACE_ID, pickUpPlaceIdValue)
+                .appendQueryParameter(PARAM_PICKUP_GEOMETRY, pickUpGeometryValue)
+                .appendQueryParameter(PARAM_PICKUP_LOCATION_TYPE, pickUpLocation_typeValue)
+                .appendQueryParameter(PARAM_PICKUP_LOCATION, pickUpLocationValue)
+                .appendQueryParameter(PARAM_PICKUP_LAT, pickUpLatValue)
+                .appendQueryParameter(PARAM_PICKUP_LNG, pickUpLngValue)
+                .appendQueryParameter(PARAM_WHERETO_PLACE_ID, whereToPlaceIdValue)
+                .appendQueryParameter(PARAM_WHERETO_GEOMETRY, whereToGeometryValue)
+                .appendQueryParameter(PARAM_WHERETO_LOCATION_TYPE, whereToLocation_typeValue)
+                .appendQueryParameter(PARAM_WHERETO_LAT, whereToLatValue)
+                .appendQueryParameter(PARAM_WHERETO_LOCATION, whereToLocationValue)
+                .appendQueryParameter(PARAM_WHERETO_LNG, whereToLngValue)
+                .appendQueryParameter(PARAM_ACCT_NO, accountNumberValue)
+                .appendQueryParameter(PARAM_DISTANCE, distanceOfRouteValue)
+                .appendQueryParameter(PARAM_PICKUP_DESC, pickUpDescValue)
+                .appendQueryParameter(PARAM_WHERETO_DESC, whereToDescValue)
+
+                .appendQueryParameter(PARAM_TRAVEL_TIME, travelTimeValue)
+                .appendQueryParameter(PARAM_TRAVEL_TIME_INSECONDS, travelTimeInSecondsValue)
+                .appendQueryParameter(PARAM_ARRIVAL_TIMEEST, arrivalTimeValue)
+                .appendQueryParameter(PARAM_FARE_ESTIMATE, strFareValue)
+                .appendQueryParameter(PARAM_FULLNAME, strFullNameValue)
+                .appendQueryParameter(PARAM_TIME, dateTimeStValue)
 
                 .build();
 

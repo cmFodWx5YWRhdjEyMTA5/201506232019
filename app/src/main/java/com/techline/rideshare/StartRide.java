@@ -51,6 +51,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 
 public class StartRide extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks,
@@ -140,6 +141,22 @@ public class StartRide extends AppCompatActivity
             }
         });
 
+        requestRideMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date date = new Date();
+                String theDate = date.toString();
+                String dateTimeStr = theDate;
+                makeRequestRide(pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
+                        pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
+                        whereToLat, whereToLocation, whereToLng, accountNumber, distanceOfRoute, pickUpDesc, whereToDesc,
+                        travelTime, travelTimeInSeconds, arrivalTime, strFare,
+                        strFullName, dateTimeStr);
+
+            }
+        });
+
+
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,6 +192,22 @@ public class StartRide extends AppCompatActivity
                 etWhereTo.setEnabled(false);
             }
         });
+    }
+
+
+    private void makeRequestRide(String pickUpPlaceIdValue, String pickUpGeometryValue, String pickUpLocation_typeValue, String pickUpLocationValue,
+                                 String pickUpLatValue, String pickUpLngValue, String whereToPlaceIdValue, String whereToGeometryValue, String whereToLocation_typeValue,
+                                 String whereToLatValue, String whereToLocationValue, String whereToLngValue, String accountNumberValue, String distanceOfRouteValue,
+                                 String pickUpDescValue, String whereToDescValue, String travelTimeValue, String travelTimeInSecondsValue, String arrivalTimeValue,
+                                 String strFareValue, String strFullNameValue, String dateTimeStValue) {
+        URL RideShareSelectUserURl = NetworkUtils.buildRideRequestUrl(pickUpPlaceIdValue, pickUpGeometryValue, pickUpLocation_typeValue,
+                pickUpLocationValue, pickUpLatValue, pickUpLngValue, whereToPlaceIdValue, whereToGeometryValue, whereToLocation_typeValue,
+                whereToLatValue, whereToLocationValue, whereToLngValue, accountNumberValue, distanceOfRouteValue, pickUpDescValue, whereToDescValue,
+                travelTimeValue, travelTimeInSecondsValue, arrivalTimeValue, strFareValue, strFullNameValue, dateTimeStValue
+        );
+        Log.d(TAG, "RideShare insert Rout Url is: " + RideShareSelectUserURl.toString());
+        // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
+        new StartRide.RideRequestQueryTask().execute(RideShareSelectUserURl);
     }
 
     private void finalProcessing() {
@@ -344,35 +377,6 @@ public class StartRide extends AppCompatActivity
             Log.d(TAG, "travelTime >> " + travelTime);
 
             tripLength.setText("TIME EST \n" + travelTime);
-
-/*
-            String results_data2 = summary_data.substring(1, summary_data.length() - 1);
-
-            JSONObject obj2 = new JSONObject(results_data2);
-            Log.d(TAG, "obj2 is: " + obj2);
-           pickUpPlaceId = obj2.getString("place_id");
-            Log.d(TAG, "pickUpPlaceId is: " + pickUpPlaceId);
-
-            pickUpGeometry = obj2.getString("geometry");
-            Log.d(TAG, "pickUpGeometry is: " + pickUpGeometry);
-
-            JSONObject obj3 = new JSONObject(pickUpGeometry);
-            Log.d(TAG, "obj3 is: " + obj3);
-
-            pickUpLocation_type = obj3.getString("location_type");
-            Log.d(TAG, "pickUpLocation_type is: " + pickUpLocation_type);
-
-            pickUpLocation = obj3.getString("location");
-            Log.d(TAG, "pickUpLocation is: " + pickUpLocation);
-
-            JSONObject obj4 = new JSONObject(pickUpLocation);
-            Log.d(TAG, "obj4 is: " + obj4);
-
-            pickUpLat = obj4.getString("lat");
-            Log.d(TAG, "pickUpLat is: " + pickUpLat);
-            pickUpLng = obj4.getString("lng");
-            Log.d(TAG, "pickUpLng is: " + pickUpLng);
-            */
 
         } catch (JSONException e) {
             e.printStackTrace();
