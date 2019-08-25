@@ -29,9 +29,7 @@ public class StartRideDriver extends AppCompatActivity {
     SharedPreferences SP;
     TextView btnAddCard;
     Bundle extras;
-    ArrayList<String> pickUp = new ArrayList<>();
-    ArrayList<String> whereTo = new ArrayList<>();
-    ArrayList<String> request_id = new ArrayList<>();
+
     ArrayList<String> passenger_name = new ArrayList<>();
     ArrayList<String> requested_time = new ArrayList<>();
     ArrayList<String> pickUpDesc = new ArrayList<>();
@@ -113,10 +111,10 @@ public class StartRideDriver extends AppCompatActivity {
         }
 
         //  call the constructor of CustomAdapter to send the reference and data to Adapter
-        CustomMsgAdaptor customAdapter = new CustomMsgAdaptor(StartRideDriver.this, pickUp,
-                whereTo,
+        CustomMsgAdaptor customAdapter = new CustomMsgAdaptor(StartRideDriver.this, pickUpDesc,
+                whereToDesc,
                 passenger_name,
-                request_id,
+                ride_id,
                 requested_time
         );
         recyclerView.setAdapter(customAdapter); // set the Adapter to RecyclerView
