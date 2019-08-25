@@ -54,7 +54,7 @@ public class StartRideDriver extends AppCompatActivity {
     }
 
     private void makeLoadAllRideRequestsQuery() {
-        URL allChatMsgSearchUrl = NetworkUtils.buildSelectRideRequestsUrl();
+        URL allChatMsgSearchUrl = NetworkUtils.buildSelectRideRequestsUrl(strUser);
         Log.d(TAG, "allChatMsgSearchUrl is: " + allChatMsgSearchUrl.toString());
         // COMPLETED (4) Create a new allChatMsgQueryTask and call its execute method, passing in the url to query
         new allChatMsgQueryTask().execute(allChatMsgSearchUrl);

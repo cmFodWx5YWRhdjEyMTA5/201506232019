@@ -48,6 +48,7 @@ public class NetworkUtils {
     final static String BASE_INSERT_USER_URL = BASE_URL + "android_api/v1/add_user.php";
     final static String BASE_INSERT_USER_CARD_DATA = BASE_URL + "android_api/v1/add_card.php";
     final static String BASE_SELECT_USER_URL = BASE_URL + "android_api/v1/select_user.php";
+    final static String BASE_SELECT_ALL_REQUEST_URL = BASE_URL + "android_api/v1/select_all_requests.php";
     final static String BASE_USER_LIST_URL = BASE_URL + "android_api/v1/userlist.php";
     final static String BASE_USER_LIST_ONE_URL = BASE_URL + "android_api/v1/userlist_one.php";
     final static String BASE_INSERT_MSG_URL = BASE_URL + "android_api/v1/add_msg.php";
@@ -820,7 +821,20 @@ public class NetworkUtils {
         return url;
     }
 
-    public static URL buildSelectRideRequestsUrl() {
-        return null;
+    public static URL buildSelectRideRequestsUrl(String usernameValue) {
+        Uri builtUri = Uri.parse(BASE_SELECT_ALL_REQUEST_URL).buildUpon()
+                .appendQueryParameter(PARAM_USERNAME, usernameValue)
+
+//                .appendQueryParameter(PARAM_SORT, sortBy)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
     }
 }
