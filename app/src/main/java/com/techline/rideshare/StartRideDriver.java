@@ -34,6 +34,10 @@ public class StartRideDriver extends AppCompatActivity {
     ArrayList<String> request_id = new ArrayList<>();
     ArrayList<String> passenger_name = new ArrayList<>();
     ArrayList<String> requested_time = new ArrayList<>();
+    ArrayList<String> pickUpDesc = new ArrayList<>();
+    ArrayList<String> whereToDesc = new ArrayList<>();
+    ArrayList<String> ride_id = new ArrayList<>();
+
     private String globalinitializeCardResultsMethodString;
     private String globalVerifyCardResultsMethodString, globalSaveCardURLResult;
     private String authorization_url, access_code, reference, data_id, domain, data_status, amount_in_kobo, data_whereTo,
@@ -80,12 +84,12 @@ public class StartRideDriver extends AppCompatActivity {
                 JSONObject srDetail = usersArray.getJSONObject(i);
                 // fetch email and name and store it in arraylist
 
-                pickUp.add(srDetail.getString("pickUp"));
-                Log.d(TAG, "pickUp is: " + pickUp);
-                whereTo.add(srDetail.getString("whereTo"));
-                Log.d(TAG, "whereTo is: " + whereTo);
-                request_id.add(srDetail.getString("request_id"));
-                Log.d(TAG, "request_id is: " + request_id);
+                pickUpDesc.add(srDetail.getString("pickUpDesc"));
+                Log.d(TAG, "pickUp is: " + pickUpDesc);
+                whereToDesc.add(srDetail.getString("whereToDesc"));
+                Log.d(TAG, "whereTo is: " + whereToDesc);
+                ride_id.add(srDetail.getString("ride_id"));
+                Log.d(TAG, "request_id is: " + ride_id);
                 passenger_name.add(srDetail.getString("passenger_name"));
                 Log.d(TAG, "passenger_name is: " + passenger_name);
                 requested_time.add(srDetail.getString("requested_time"));
