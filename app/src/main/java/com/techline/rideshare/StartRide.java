@@ -152,7 +152,7 @@ public class StartRide extends AppCompatActivity
                         pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
                         whereToLat, whereToLocation, whereToLng, accountNumber, distanceOfRoute, pickUpDesc, whereToDesc,
                         travelTime, travelTimeInSeconds, arrivalTime, strFare,
-                        strFullName, dateTimeStr);
+                        strFName, dateTimeStr);
 
             }
         });
@@ -206,7 +206,7 @@ public class StartRide extends AppCompatActivity
                 whereToLatValue, whereToLocationValue, whereToLngValue, accountNumberValue, distanceOfRouteValue, pickUpDescValue, whereToDescValue,
                 travelTimeValue, travelTimeInSecondsValue, arrivalTimeValue, strFareValue, strFullNameValue, dateTimeStValue
         );
-        Log.d(TAG, "RideShare insert Rout Url is: " + RideShareSelectUserURl.toString());
+        Log.d(TAG, "Request Ride Url is: " + RideShareSelectUserURl.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
         new StartRide.RideRequestQueryTask().execute(RideShareSelectUserURl);
     }
@@ -243,7 +243,6 @@ public class StartRide extends AppCompatActivity
         LatLngBounds bounds = boundsBuilder.build();
 
         m_map.setLatLngBoundsForCameraTarget(bounds);
-//        m_map.moveCamera(CameraUpdateFactory.newCameraPosition(target));
         m_map.addPolyline(new PolylineOptions().geodesic(true)
                 .add(pickUp)
                 .add(whereTo));
@@ -269,13 +268,7 @@ public class StartRide extends AppCompatActivity
         strFare = GeneralMethods.toCommaAmount(strFare);
 
         fare.setText("FARE EST \n" + "N" + strFare);
-     /*   Log.d(TAG, "travelTimeInSeconds >> " + travelTimeInSeconds);
 
-         biggyTimeInSeconds = Integer.valueOf(travelTimeInSeconds);
-        intArrTime = splitToComponentTimes(biggyTimeInSeconds);
-
-        travelTime = intArrTime[0] + "hours, " +   intArrTime[1] + " Mins";
-*/
         Log.d(TAG, "travelTime >> " + travelTime);
         Log.d(TAG, "Distance double >> " + (double) result[0]);
         Log.d(TAG, "Distance int >> " + (int) result[0]);
@@ -966,7 +959,11 @@ public class StartRide extends AppCompatActivity
             URL searchUrl = params[0];
             String RideRequestResults = null;
 
-//                RideRequestResults = NetworkUtils.getResponseFromPaystackHttpUrl(searchUrl);
+            try {
+                RideRequestResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             return RideRequestResults;
         }
@@ -977,7 +974,8 @@ public class StartRide extends AppCompatActivity
             if (RideRequestResults != null && !RideRequestResults.equals("")) {
                 Log.d(TAG, "RideRequestResults is :" + RideRequestResults);
                 globalRideRequestResult = RideRequestResults;
-                //loadafterCardResultInView();
+                Log.d(TAG, "after RideRequestResults");
+
             }
         }
     }

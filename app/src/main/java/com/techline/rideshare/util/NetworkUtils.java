@@ -819,4 +819,8 @@ public class NetworkUtils {
 
         return url;
     }
+
+    public static URL buildSelectRideRequestsUrl() {
+        return null;
+    }
 }

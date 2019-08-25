@@ -119,7 +119,7 @@ public class DashboardDriver extends AppCompatActivity
         tvStartRide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(DashboardDriver.this, StartRide.class);
+                Intent it = new Intent(DashboardDriver.this, StartRideDriver.class);
                 startActivity(it);
             }
         });
@@ -127,7 +127,7 @@ public class DashboardDriver extends AppCompatActivity
         tvAddFunds.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(DashboardDriver.this, AddFunds.class);
+                Intent it = new Intent(DashboardDriver.this, Withdraw.class);
                 startActivity(it);
             }
         });

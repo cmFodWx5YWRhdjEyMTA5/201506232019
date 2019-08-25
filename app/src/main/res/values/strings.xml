@@ -36,4 +36,5 @@
     <string name="amount_in_kobo">Amount in Kobo</string>
     <string name="TOM_TOM_KEY">rOAA4Dlo5LqDgDkstUT90s3JLHF8QGG6</string>
     <string name="CARD_INIT_CHARGE_AMOUNT">1000</string>
+    <string name="go_back"><![CDATA[<< Go Back]]></string>
 </resources>

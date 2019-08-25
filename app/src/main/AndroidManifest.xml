@@ -18,12 +18,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".StartRideDriver"></activity>
-        <activity android:name=".ContactUs" />
-        <activity android:name=".ComingSoonActivity" />
-        <activity android:name=".Withdraw" />
-        <activity android:name=".InitCard" />
-        <activity android:name=".AddCard" />
+        <activity
+            android:name=".RequestDetailActivity"
+            android:label="Request Details">
+
+        </activity>
+        <activity
+            android:name=".StartRideDriver"
+            android:label="Start"></activity>
+        <activity
+            android:name=".ContactUs"
+            android:label="Contact Us"></activity>
+        <activity
+            android:name=".ComingSoonActivity"
+            android:label="Coming Soon"></activity>
+        <activity
+            android:name=".Withdraw"
+            android:label="Withdrawal Settings"></activity>
+        <activity
+            android:name=".InitCard"
+            android:label="Initiate Card"></activity>
+
+        <activity
+            android:name=".AddCard"
+            android:label="Add A Card"></activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
