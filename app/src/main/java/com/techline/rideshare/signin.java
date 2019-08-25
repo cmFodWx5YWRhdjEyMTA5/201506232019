@@ -1,10 +1,12 @@
 package com.techline.rideshare;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -31,6 +33,8 @@ public class signin extends AppCompatActivity {
     String strUser, strPass, globalSearchResult, strFullName, strEmail, strPhone, strFName,
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
     SharedPreferences SP;
+    private MediaPlayer mp;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,16 @@ public class signin extends AppCompatActivity {
                 }
                 strUser = txtUsername.getText().toString();
                 strPass = txtPssword.getText().toString();
-
+                try {
+                    if (mp.isPlaying()) {
+                        mp.stop();
+                        mp.release();
+                        mp = MediaPlayer.create(context, R.raw.click_button);
+                    }
+                    mp.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 //pass values
                 Log.d(TAG, "before fetching from open Users Table");
                 makeRideShareSelectUserQuery(strUser, strPass);
