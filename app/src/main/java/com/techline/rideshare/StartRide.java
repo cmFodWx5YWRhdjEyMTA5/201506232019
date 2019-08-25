@@ -85,6 +85,7 @@ public class StartRide extends AppCompatActivity
     private int biggyTimeInSeconds;
     private int[] intArrTime;
     private String arrivalTime;
+    private String globalRideRequestResult;
 
 
     @Override
@@ -957,4 +958,27 @@ public class StartRide extends AppCompatActivity
     }
 
 
+    public class RideRequestQueryTask extends AsyncTask<URL, Void, String> {
+
+        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String RideRequestResults = null;
+
+//                RideRequestResults = NetworkUtils.getResponseFromPaystackHttpUrl(searchUrl);
+
+            return RideRequestResults;
+        }
+
+        // COMPLETED (3) Override onPostExecute to display the results
+        @Override
+        protected void onPostExecute(String RideRequestResults) {
+            if (RideRequestResults != null && !RideRequestResults.equals("")) {
+                Log.d(TAG, "RideRequestResults is :" + RideRequestResults);
+                globalRideRequestResult = RideRequestResults;
+                //loadafterCardResultInView();
+            }
+        }
+    }
 }

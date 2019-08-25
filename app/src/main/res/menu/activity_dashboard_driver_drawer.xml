@@ -11,11 +11,11 @@
         <item
             android:id="@+id/nav_add_funds"
             android:icon="@drawable/ic_attach_money_black_24dp"
-            android:title="Add Funds" />
+            android:title="Withdraw" />
         <item
             android:id="@+id/nav_start_ride"
             android:icon="@drawable/ic_directions_car_black_24dp"
-            android:title="Start Ride" />
+            android:title="Start" />
         <item
             android:id="@+id/nav_register_route1"
             android:icon="@drawable/ic_edit_location_black_24dp"

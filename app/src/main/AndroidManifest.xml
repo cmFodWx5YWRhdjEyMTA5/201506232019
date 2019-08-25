@@ -18,7 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".InitCard"></activity>
+        <activity android:name=".StartRideDriver"></activity>
+        <activity android:name=".ContactUs" />
+        <activity android:name=".ComingSoonActivity" />
+        <activity android:name=".Withdraw" />
+        <activity android:name=".InitCard" />
         <activity android:name=".AddCard" />
 
         <meta-data

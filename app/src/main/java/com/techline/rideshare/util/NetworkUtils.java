@@ -151,7 +151,7 @@ public class NetworkUtils {
     private static final String PARAM_KEY = "key";
     private static final String PARAM_TRAVEL_TIME = "travelTime";
     private static final String PARAM_TRAVEL_TIME_INSECONDS = "travelTimeInSeconds";
-    private static final String PARAM_ARRIVAL_TIMEEST = "arrivalTime";
+    private static final String PARAM_ARRIVAL_TIMEEST = "arrivalTimeEst";
     private static final String PARAM_FARE_ESTIMATE = "fareEstimate";
     private static final String PARAM_AUTHORIZATION_URL = "authorization_url";
     private static final String PARAM_ACCESS_CODE = "access_code";
