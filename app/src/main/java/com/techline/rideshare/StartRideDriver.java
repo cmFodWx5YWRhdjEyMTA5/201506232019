@@ -61,7 +61,7 @@ public class StartRideDriver extends AppCompatActivity {
     }
 
     private void loadResultView() {
-        // get the reference of RecyclerView
+        Log.d(TAG, "inside loadResultView>> ");
         RecyclerView recyclerView = findViewById(R.id.list);
         // set a LinearLayoutManager with default vertical orientation
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -71,9 +71,10 @@ public class StartRideDriver extends AppCompatActivity {
 
             // get JSONObject from JSON file
             JSONObject obj = new JSONObject(globalSearchResultMethod());
-            // fetch JSONArray named users
+            Log.d(TAG, "obj >> " + obj);
             JSONArray usersArray = obj.getJSONArray("users");
-            // implement for loop for getting users list data
+            Log.d(TAG, "usersArray >> " + usersArray.toString());
+
             for (int i = 0; i < usersArray.length(); i++) {
                 // create a JSONObject for fetching single user data
                 JSONObject srDetail = usersArray.getJSONObject(i);
