@@ -72,7 +72,7 @@ public class StartRideDriver extends AppCompatActivity {
             // get JSONObject from JSON file
             JSONObject obj = new JSONObject(globalSearchResultMethod());
             // fetch JSONArray named users
-            JSONArray usersArray = obj.getJSONArray("whereTos");
+            JSONArray usersArray = obj.getJSONArray("users");
             // implement for loop for getting users list data
             for (int i = 0; i < usersArray.length(); i++) {
                 // create a JSONObject for fetching single user data
