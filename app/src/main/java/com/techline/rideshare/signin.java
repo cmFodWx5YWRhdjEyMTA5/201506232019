@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.techline.rideshare.util.CheckNetwork;
 import com.techline.rideshare.util.NetworkUtils;
 
 import org.json.JSONArray;
@@ -86,10 +87,16 @@ public class signin extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                //pass values
-                Log.d(TAG, "before fetching from open Users Table");
-                makeRideShareSelectUserQuery(strUser, strPass);
-                Log.d(TAG, "after fetching from open Users Table");
+
+                if (CheckNetwork.isInternetAvailable(signin.this)) //returns true if internet available
+                {
+                    //pass values
+                    Log.d(TAG, "before fetching from open Users Table");
+                    makeRideShareSelectUserQuery(strUser, strPass);
+                    Log.d(TAG, "after fetching from open Users Table");
+                } else {
+                    Toast.makeText(signin.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                }
 
             }
         });

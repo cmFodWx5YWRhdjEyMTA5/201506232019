@@ -3,8 +3,8 @@ package com.techline.rideshare;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.techline.rideshare.util.CheckNetwork;
 import com.techline.rideshare.util.NetworkUtils;
 
 import java.io.IOException;
@@ -102,15 +103,22 @@ public class signupDriver extends AppCompatActivity {
 
                 //pass values
                 strFullName = strFName + " " + strLName;
+
+
                 Log.d(TAG, "before saving in open Users Table");
                 makeRideShareInsertUserQuery(strFName, strLName, strFullName, strEmail, strUser, strPhone,
                         strCity, strPass, "LAGOS", "NIGERIA", "DRIVER");
                 Log.d(TAG, "after saving in open Users Table");
-                Log.d(TAG, "before saving in open shared Preferences");
-                accountNumber = generatedAccountNumber();
-                populatePreferences();
-                Log.d(TAG, "after saving in open shared Preferences");
 
+                if (CheckNetwork.isInternetAvailable(signupDriver.this)) //returns true if internet available
+                {
+                    Log.d(TAG, "before saving in open shared Preferences");
+                    accountNumber = generatedAccountNumber();
+                    populatePreferences();
+                    Log.d(TAG, "after saving in open shared Preferences");
+                } else {
+                    Toast.makeText(signupDriver.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
