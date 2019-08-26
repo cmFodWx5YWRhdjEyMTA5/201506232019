@@ -1,15 +1,13 @@
 package com.techline.rideshare;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.webkit.JavascriptInterface;
+import android.webkit.ConsoleMessage;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -32,7 +30,6 @@ public class InitCard extends AppCompatActivity {
     String strUser, strPass, globalSearchResult, strFullName, strEmail, strPhone, strFName,
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
     SharedPreferences SP;
-    private WebView paystackWebView;
     private TextView btnDone;
     private String globalVerifyCardResultsMethodString, globalSaveCardURLResult;
     private String authorization_url, access_code, reference, data_id, domain, data_status, amount_in_kobo, data_message,
@@ -40,18 +37,15 @@ public class InitCard extends AppCompatActivity {
             authorization, customer_data, customer_id, order_id, customer_first_name, customer_last_name, customer_email,
             customer_code, customer_phone, customer_metadata, customer_risk_action;
     private Bundle extras;
-    private TextView myTextView;
-    final Handler myHandler = new Handler();
 
-    @SuppressLint("JavascriptInterface")
-    @JavascriptInterface
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init_card);
         loadDataFromSharedPrefs();
 
-        paystackWebView = findViewById(R.id.paystackWebView);
+        WebView myWebView = findViewById(R.id.paystackWebView);
         btnDone = findViewById(R.id.btnDone);
 
 
@@ -79,52 +73,24 @@ public class InitCard extends AppCompatActivity {
                 makeVerifyCardURL(reference);
             }
         });
-        myTextView = (TextView) findViewById(R.id.textView1);
-        final JavaScriptInterface myJavaScriptInterface
-                = new JavaScriptInterface(this);
+        myWebView.setWebViewClient(new WebViewClient());
+        WebSettings webSettings = myWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setDatabaseEnabled(true);
 
-        paystackWebView.getSettings().setLightTouchEnabled(true);
-        paystackWebView.getSettings().setJavaScriptEnabled(true);
-        paystackWebView.addJavascriptInterface(myJavaScriptInterface, "AndroidFunction");
-        paystackWebView.getSettings().setJavaScriptEnabled(true);
-        paystackWebView.getSettings().setSupportMultipleWindows(true);
-        paystackWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        paystackWebView.getSettings().setAllowFileAccess(true);
-        paystackWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        paystackWebView.getSettings().setPluginState(WebSettings.PluginState.ON);
-        paystackWebView.setWebViewClient(new WebViewClient() {
-
+        myWebView.setWebChromeClient(new WebChromeClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView viewx, String urlx) {
-                viewx.loadUrl(urlx);
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                android.util.Log.d("WebView", consoleMessage.message());
                 return true;
             }
         });
-        paystackWebView.loadUrl(authorization_url);
 
+        myWebView.loadUrl(authorization_url);
 
     }
 
-    public class JavaScriptInterface {
-        Context mContext;
-
-        JavaScriptInterface(Context c) {
-            mContext = c;
-        }
-
-        public void showToast(String webMessage) {
-            final String msgeToast = webMessage;
-            myHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    // This gets executed on the UI thread so it can safely modify Views
-                    myTextView.setText(msgeToast);
-                }
-            });
-
-            Toast.makeText(mContext, webMessage, Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void loadDataFromSharedPrefs() {
         Log.d(TAG, "Inside loadDataFromSharedPrefs");
