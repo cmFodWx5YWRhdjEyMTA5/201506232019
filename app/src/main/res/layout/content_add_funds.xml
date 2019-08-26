@@ -39,7 +39,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_10db"
-                    android:text="Card"
+                    android:text="Add Funds"
+                    android:textSize="22dp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -73,14 +74,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_10db"
                     android:text="Cash"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_10db"
-                    android:text="Defauls"
-                    android:textColor="@color/greenColor"
                     android:textStyle="bold" />
 
             </LinearLayout>

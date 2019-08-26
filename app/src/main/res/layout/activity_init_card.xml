@@ -7,30 +7,13 @@
 
     <WebView
         android:id="@+id/paystackWebView"
-        android:layout_width="395dp"
-        android:layout_height="400dp"
+        android:layout_width="331dp"
+        android:layout_height="519dp"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="32dp"
         android:layout_marginRight="40dp"
-        android:layout_marginBottom="28dp"
         android:scrollbarAlwaysDrawHorizontalTrack="false" />
 
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="166dp"
-        android:background="@drawable/angle"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="textView1"
-        android:textColor="#fff"
-        android:textSize="16dp" />
 
     <TextView
         android:id="@+id/btnDone"
@@ -40,7 +23,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="32dp"
         android:layout_marginRight="40dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/angle"
         android:gravity="center"
         android:padding="16dp"

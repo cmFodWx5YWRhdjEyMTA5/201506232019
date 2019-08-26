@@ -1,5 +1,7 @@
 package com.techline.rideshare;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -10,10 +12,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +33,7 @@ import java.net.URL;
 public class AddFunds extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static final String MyPREFERENCES = "MyPrefs";
-    public static final String CHARGE_AMOUNT_IN_KOBO = "1000"; //amount in KOBO
+    public static String CHARGE_AMOUNT_IN_KOBO = ""; //amount in KOBO
     public static final String PAY_STACK_SECRET_KEY = "sk_live_72cd3be08f1025a6312867f75964fdf16793ead9";
     private static final String TAG = "ADD_FUNDS";
     String strUser, strPass, globalSearchResult, strFullName, strEmail, strPhone, strFName,
@@ -69,11 +74,58 @@ public class AddFunds extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "strEmail >> " + strEmail);
-                makeIniializeCardURL(strEmail, CHARGE_AMOUNT_IN_KOBO);
+                alertEditTextKeyboardShown();
+
                 /*Intent it = new Intent(AddFunds.this, AddCard.class);
                 startActivity(it);*/
             }
         });
+    }
+
+    public void alertEditTextKeyboardShown() {
+
+        // creating the EditText widget programatically
+        final EditText myEditText = new EditText(AddFunds.this);
+        myEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        // create the AlertDialog as final
+        final AlertDialog dialog = new AlertDialog.Builder(AddFunds.this)
+                .setMessage("You are ready to type")
+                .setTitle("Enter Amount")
+                .setView(myEditText)
+
+                // Set the action buttons
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        CHARGE_AMOUNT_IN_KOBO = myEditText.getText().toString();
+                        CHARGE_AMOUNT_IN_KOBO = CHARGE_AMOUNT_IN_KOBO + "00";
+                        makeIniializeCardURL(strEmail, CHARGE_AMOUNT_IN_KOBO);
+
+                    }
+                })
+
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        // removes the AlertDialog in the screen
+                    }
+                })
+                .create();
+
+        // set the focus change listener of the EditText
+        // this part will make the soft keyboard automaticall visible
+        myEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
+        });
+
+        dialog.show();
+
     }
 
     private void makeIniializeCardURL(String chrgeEmail, String chrgeAmount) {
