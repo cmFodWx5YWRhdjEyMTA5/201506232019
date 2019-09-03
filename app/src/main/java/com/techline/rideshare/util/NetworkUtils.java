@@ -837,4 +837,22 @@ public class NetworkUtils {
 
         return url;
     }
+
+    public static URL buildStartRideUrl(String driverId, String driverName) {
+        Uri builtUri = Uri.parse(BASE_START_RIDE_URL).buildUpon()
+                .appendQueryParameter(PARAM_ACCOUNT_NUMBER, driverId)
+                .appendQueryParameter(PARAM_FULLNAME, driverName)
+
+//                .appendQueryParameter(PARAM_SORT, sortBy)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
 }

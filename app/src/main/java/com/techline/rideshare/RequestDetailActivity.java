@@ -2,12 +2,19 @@ package com.techline.rideshare;
 
 import android.content.SharedPreferences;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.techline.rideshare.util.NetworkUtils;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class RequestDetailActivity extends AppCompatActivity {
 
@@ -17,8 +24,8 @@ public class RequestDetailActivity extends AppCompatActivity {
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
     SharedPreferences SP;
     Bundle extras;
-    TextView tvPickUp;
-    TextView tvWhereTo, tvPassenger_name, tvRequested_time, tvRequest_id, tvmDate;
+    TextView btnStartRide, btnStopRide;
+    TextView tvPickUp, tvWhereTo, tvPassenger_name, tvRequested_time, tvRequest_id, tvmDate;
     Image imgBack;
 
     @Override
@@ -61,9 +68,45 @@ public class RequestDetailActivity extends AppCompatActivity {
             return;
         }
 
+        btnStartRide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "starting Ride >> ");
+                startRide(accountNumber, strFullName);
+            }
+        });
     }
 
+    private void startRide(String driverId, String driverName) {
+        URL startRideURl = NetworkUtils.buildStartRideUrl(driverId, driverName);
+        Log.d(TAG, "startRideURl Url is: " + startRideURl.toString());
+        new RequestDetailActivity.RideShareStartRideTask().execute(startRideURl);
+    }
 
+    public class RideShareStartRideTask extends AsyncTask<URL, Void, String> {
+
+        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String RideShareInsertRouteResults = null;
+            try {
+                RideShareInsertRouteResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return RideShareInsertRouteResults;
+        }
+
+        // COMPLETED (3) Override onPostExecute to display the results
+        @Override
+        protected void onPostExecute(String RideShareInsertRouteResults) {
+            if (RideShareInsertRouteResults != null && !RideShareInsertRouteResults.equals("")) {
+                Log.d(TAG, "RideShareInsertRouteResults is :" + RideShareInsertRouteResults);
+                // put valeus in intent and fire intent
+            }
+        }
+    }
     private void loadDataFromSharedPrefs() {
         Log.d(TAG, "Inside loadDataFromSharedPrefs");
         SP = getApplicationContext().getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
