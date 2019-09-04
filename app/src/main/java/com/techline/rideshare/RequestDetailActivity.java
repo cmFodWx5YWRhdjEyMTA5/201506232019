@@ -21,7 +21,7 @@ public class RequestDetailActivity extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
     private static final String TAG = "REQUEST_DETAILS";
     String strUser, strPass, globalSearchResult, strFullName, strEmail, strPhone, strFName,
-            strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
+            strLName, strBalance, strUserType, strCurrentCity, accountNumber, status, ride_id;
     SharedPreferences SP;
     Bundle extras;
     TextView btnStartRide, btnStopRide;
@@ -42,6 +42,12 @@ public class RequestDetailActivity extends AppCompatActivity {
         tvRequested_time = findViewById(R.id.etRequested_time);
         tvPassenger_name = findViewById(R.id.etPassenger_name);
         tvRequest_id = findViewById(R.id.etRequest_id);
+        btnStartRide = findViewById(R.id.btnStartRide);
+        btnStopRide = findViewById(R.id.btnStopRide);
+
+        btnStopRide.setVisibility(View.INVISIBLE);
+        btnStartRide.setVisibility(View.VISIBLE);
+
         extras = getIntent().getExtras();
         if (extras != null) {
             String pickUp = extras.getString("pickUp");
@@ -54,6 +60,7 @@ public class RequestDetailActivity extends AppCompatActivity {
             Log.d(TAG, "passenger_name is :" + passenger_name);
 
             String request_id = extras.getString("request_id");
+            ride_id = request_id;
             Log.d(TAG, "request_id is :" + request_id);
 
             String requested_time = extras.getString("requested_time");
@@ -72,13 +79,22 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "starting Ride >> ");
-                startRide(accountNumber, strFullName);
+                startRide(accountNumber, strFullName, ride_id);
+                btnStartRide.setVisibility(View.INVISIBLE);
+                btnStopRide.setVisibility(View.VISIBLE);
+            }
+        });
+        btnStopRide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "stoping Ride >> ");
+                stopRide(ride_id);
             }
         });
     }
 
-    private void startRide(String driverId, String driverName) {
-        URL startRideURl = NetworkUtils.buildStartRideUrl(driverId, driverName);
+    private void startRide(String driverId, String driverName, String rideIdValue) {
+        URL startRideURl = NetworkUtils.buildStartRideUrl(driverId, driverName, rideIdValue);
         Log.d(TAG, "startRideURl Url is: " + startRideURl.toString());
         new RequestDetailActivity.RideShareStartRideTask().execute(startRideURl);
     }
@@ -89,20 +105,52 @@ public class RequestDetailActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(URL... params) {
             URL searchUrl = params[0];
-            String RideShareInsertRouteResults = null;
+            String RideShareStartRideResults = null;
             try {
-                RideShareInsertRouteResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+                RideShareStartRideResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return RideShareInsertRouteResults;
+            return RideShareStartRideResults;
         }
 
         // COMPLETED (3) Override onPostExecute to display the results
         @Override
-        protected void onPostExecute(String RideShareInsertRouteResults) {
-            if (RideShareInsertRouteResults != null && !RideShareInsertRouteResults.equals("")) {
-                Log.d(TAG, "RideShareInsertRouteResults is :" + RideShareInsertRouteResults);
+        protected void onPostExecute(String RideShareStartRideResults) {
+            if (RideShareStartRideResults != null && !RideShareStartRideResults.equals("")) {
+                Log.d(TAG, "RideShareStartRideResults is :" + RideShareStartRideResults);
+                // put valeus in intent and fire intent
+            }
+        }
+    }
+
+
+    private void stopRide(String rideIdValue) {
+        URL stopRideURl = NetworkUtils.buildStopRideUrl(rideIdValue);
+        Log.d(TAG, "stopRideURl Url is: " + stopRideURl.toString());
+        new RequestDetailActivity.RideShareStopRideTask().execute(stopRideURl);
+    }
+
+    public class RideShareStopRideTask extends AsyncTask<URL, Void, String> {
+
+        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String RideShareStopRideResults = null;
+            try {
+                RideShareStopRideResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return RideShareStopRideResults;
+        }
+
+        // COMPLETED (3) Override onPostExecute to display the results
+        @Override
+        protected void onPostExecute(String RideShareStopRideResults) {
+            if (RideShareStopRideResults != null && !RideShareStopRideResults.equals("")) {
+                Log.d(TAG, "RideShareStopRideResults is :" + RideShareStopRideResults);
                 // put valeus in intent and fire intent
             }
         }

@@ -55,6 +55,8 @@ public class NetworkUtils {
 
     final static String BASE_INSERT_ENTRY_ID_URL = BASE_URL + "android_api/v1/generate_entry_id.php";
     //final static String BASE_INSERT_PAY_CODE_URL = BASE_URL + "android_api/v1/pay_success.php";
+    private static final String BASE_START_RIDE_URL = BASE_URL + "android_api/v1/startRide.php";
+    private static final String BASE_STOP_RIDE_URL = BASE_URL + "android_api/v1/stopRide.php";
 
     final static String BASE_INSERT_CONTACT_US_URL = BASE_URL + "android_api/v1/contact_us.php";
     final static String BASE_CHANGE_PASS_URL = BASE_URL + "android_api/v1/change_pass.php";
@@ -77,6 +79,7 @@ public class NetworkUtils {
      * Default: results are sorted by best match if no field is specified.
      */
     final static String PARAM_FULLNAME = "fullname";
+    final static String PARAM_RIDE_ID = "ride_id";
     final static String PARAM_EMAIL = "email";
     final static String PARAM_USERNAME = "username";
     final static String PARAM_PHONE = "phone";
@@ -838,10 +841,29 @@ public class NetworkUtils {
         return url;
     }
 
-    public static URL buildStartRideUrl(String driverId, String driverName) {
+    public static URL buildStartRideUrl(String driverId, String driverName, String rideId) {
         Uri builtUri = Uri.parse(BASE_START_RIDE_URL).buildUpon()
                 .appendQueryParameter(PARAM_ACCOUNT_NUMBER, driverId)
                 .appendQueryParameter(PARAM_FULLNAME, driverName)
+                .appendQueryParameter(PARAM_RIDE_ID, rideId)
+
+//                .appendQueryParameter(PARAM_SORT, sortBy)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static URL buildStopRideUrl(String rideIdValue) {
+        Uri builtUri = Uri.parse(BASE_STOP_RIDE_URL).buildUpon()
+
+                .appendQueryParameter(PARAM_RIDE_ID, rideIdValue)
 
 //                .appendQueryParameter(PARAM_SORT, sortBy)
                 .build();
