@@ -1,10 +1,13 @@
 package com.techline.rideshare;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class Withdraw extends AppCompatActivity {
@@ -13,6 +16,7 @@ public class Withdraw extends AppCompatActivity {
     String strUser, strPass, globalSearchResult, strFullName, strEmail, strPhone, strFName,
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status;
     SharedPreferences SP;
+    ImageView imgBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,14 @@ public class Withdraw extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         loadDataFromSharedPrefs();
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(Withdraw.this, DashboardDriver.class);
+                startActivity(it);
+            }
+        });
     }
 
 

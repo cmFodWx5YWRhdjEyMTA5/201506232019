@@ -1,5 +1,6 @@
 package com.techline.rideshare;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.techline.rideshare.custom.CustomMsgAdaptor;
@@ -31,6 +34,7 @@ public class StartRideDriver extends AppCompatActivity {
     SharedPreferences SP;
     Button logout_button;
     Bundle extras;
+    ImageView imgBack;
 
     ArrayList<String> passenger_name = new ArrayList<>();
     ArrayList<String> requested_time = new ArrayList<>();
@@ -60,7 +64,13 @@ public class StartRideDriver extends AppCompatActivity {
 
         Log.d(TAG, "after makeLoadAllRideRequestsQuery");
 
-
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(StartRideDriver.this, DashboardDriver.class);
+                startActivity(it);
+            }
+        });
     }
 
 

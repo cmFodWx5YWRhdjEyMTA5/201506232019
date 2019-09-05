@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".StartRide"
     tools:showIn="@layout/content_start_ride">
 
     <android.support.v4.widget.NestedScrollView
@@ -100,8 +99,6 @@
                             android:paddingRight="6dp"
                             tools:ignore="ExtraText">
 
-                            <requestFocus />
-
                         </EditText>
 
                     </LinearLayout>
@@ -147,7 +144,7 @@
                             android:background="@drawable/angle"
                             android:gravity="center"
                             android:padding="16dp"
-                            android:text="Request  Ride"
+                            android:text="Request Ride"
                             android:textColor="#fff"
                             android:textSize="16dp" />
                         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -246,7 +243,7 @@
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="650dp"
                         android:layout_gravity="top"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="500dp"
@@ -279,9 +276,37 @@
                             android:background="#fff"
                             android:gravity="center"
                             android:padding="16dp"
-                            android:textColor="#fff"
+                            android:textColor="#4B0082"
                             android:text="0"
                             android:textSize="16sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="30dp"
+                        android:gravity="start"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/etrendezvous"
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_weight="1.0"
+                            android:background="@null"
+                            android:ems="10"
+                            android:fontFamily="sans-serif-light"
+                            android:gravity="center"
+                            android:hint="Rendezvous Point"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="6dp"
+                            tools:ignore="ExtraText">
+
+                        </EditText>
 
                         <TextView
                             android:id="@+id/riders"
@@ -294,7 +319,7 @@
                             android:background="#fff"
                             android:gravity="center"
                             android:padding="16dp"
-                            android:textColor="#fff"
+                            android:textColor="#0000ff"
                             android:text="Additional Riders"
                             android:textSize="16sp" />
 
@@ -302,7 +327,7 @@
                             android:id="@+id/newRoute"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="40dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="40dp"
                             android:layout_marginBottom="10dp"
@@ -312,16 +337,6 @@
                             android:textColor="#fff"
                             android:text="New Route"
                             android:textSize="16sp" />
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="start"
-                        android:layout_marginTop="380dp"
-                        android:orientation="vertical">
-
-
                     </LinearLayout>
 
                     <View

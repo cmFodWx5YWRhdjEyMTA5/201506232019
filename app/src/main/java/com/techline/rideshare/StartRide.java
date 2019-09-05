@@ -75,8 +75,9 @@ public class StartRide extends AppCompatActivity
             strLName, strBalance, strUserType, strCurrentCity, accountNumber, status,
             globalPickupLocationSearchResult, globalwhereToSearchResult;
     SharedPreferences SP;
-    EditText etPickupLocation, etWhereTo;
-    TextView btnRequest, fare, distance, newRoute, requestRideMain, tripLength, splitFare, ridersValue;
+    EditText etPickupLocation, etWhereTo, etrendezvous;
+    TextView btnRequest, fare, distance, newRoute, requestRideMain, tripLength, splitFare,
+            ridersValue, riders;
     private String pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
             pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
             whereToLat, whereToLocation, whereToLng, distanceOfRoute, pickUpDesc,
@@ -137,11 +138,15 @@ public class StartRide extends AppCompatActivity
         requestRideMain = findViewById(R.id.requestRideMain);
         splitFare = findViewById(R.id.splitFare);
         ridersValue = findViewById(R.id.ridersValue);
+        etrendezvous = findViewById(R.id.etrendezvous);
+        riders = findViewById(R.id.riders);
 
         llTripData.setVisibility(View.INVISIBLE);
         newRoute.setVisibility(View.INVISIBLE);
         requestRideMain.setVisibility(View.INVISIBLE);
         splitFare.setVisibility(View.INVISIBLE);
+        etrendezvous.setVisibility(View.INVISIBLE);
+        riders.setVisibility(View.INVISIBLE);
 
         newRoute.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,8 +167,6 @@ public class StartRide extends AppCompatActivity
                         whereToLat, whereToLocation, whereToLng, accountNumber, distanceOfRoute, pickUpDesc, whereToDesc,
                         travelTime, travelTimeInSeconds, arrivalTime, strFare,
                         strFName, dateTimeStr);
-                showStartedRideDialogue();
-
             }
         });
 
@@ -200,6 +203,8 @@ public class StartRide extends AppCompatActivity
                 newRoute.setVisibility(View.VISIBLE);
                 requestRideMain.setVisibility(View.VISIBLE);
                 splitFare.setVisibility(View.VISIBLE);
+                etrendezvous.setVisibility(View.VISIBLE);
+                riders.setVisibility(View.VISIBLE);
                 etPickupLocation.setEnabled(false);
                 etWhereTo.setEnabled(false);
             }
@@ -250,14 +255,16 @@ public class StartRide extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int id) {
                         String splitNumber = myEditText.getText().toString();
                         if (Integer.parseInt(splitNumber) > 3) {
-
+                            Toast.makeText(getApplicationContext(), "Cannot exceed 3.", Toast.LENGTH_SHORT).show();
                             return;
-                        } else if (Integer.parseInt(splitNumber) < 0) {
-
+                        } else if (Integer.parseInt(splitNumber) < 1) {
+                            Toast.makeText(getApplicationContext(), "Cannot be less than 1.", Toast.LENGTH_SHORT).show();
                             return;
                         } else {
+                            Toast.makeText(getApplicationContext(), "Perfect Number.", Toast.LENGTH_SHORT).show();
+                            ridersValue.setText(splitNumber);
                         }
-                        ridersValue.setText(splitNumber);
+
                     }
                 })
 
@@ -1063,7 +1070,7 @@ public class StartRide extends AppCompatActivity
                 Log.d(TAG, "RideRequestResults is :" + RideRequestResults);
                 globalRideRequestResult = RideRequestResults;
                 Log.d(TAG, "after RideRequestResults");
-
+                showStartedRideDialogue();
             }
         }
     }
