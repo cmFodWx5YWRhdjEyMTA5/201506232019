@@ -26,6 +26,8 @@ public class Withdraw extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         loadDataFromSharedPrefs();
+        imgBack = findViewById(R.id.imgBack);
+
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override

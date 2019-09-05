@@ -63,6 +63,7 @@ public class StartRideDriver extends AppCompatActivity {
         makeLoadAllRideRequestsQuery();
 
         Log.d(TAG, "after makeLoadAllRideRequestsQuery");
+        imgBack = findViewById(R.id.imgBack);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override

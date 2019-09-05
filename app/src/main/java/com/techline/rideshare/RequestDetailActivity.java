@@ -1,8 +1,8 @@
 package com.techline.rideshare;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,7 @@ public class RequestDetailActivity extends AppCompatActivity {
     Bundle extras;
     TextView btnStartRide, btnStopRide;
     TextView tvPickUp, tvWhereTo, tvPassenger_name, tvRequested_time, tvRequest_id, tvmDate;
-    Image imgBack;
+    ImageView imgBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,8 @@ public class RequestDetailActivity extends AppCompatActivity {
         tvRequest_id = findViewById(R.id.etRequest_id);
         btnStartRide = findViewById(R.id.btnStartRide);
         btnStopRide = findViewById(R.id.btnStopRide);
+        imgBack = findViewById(R.id.imgBack);
+
 
         btnStopRide.setVisibility(View.INVISIBLE);
         btnStartRide.setVisibility(View.VISIBLE);
@@ -95,6 +98,14 @@ public class RequestDetailActivity extends AppCompatActivity {
                 showCustomCompletedRideDialog();
             /*    Intent it = new Intent(RequestDetailActivity.this, StartRideDriver.class);
                 startActivity(it);*/
+            }
+        });
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(RequestDetailActivity.this, StartRideDriver.class);
+                startActivity(it);
             }
         });
     }

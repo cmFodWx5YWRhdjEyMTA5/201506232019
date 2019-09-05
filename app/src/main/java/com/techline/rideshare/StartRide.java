@@ -203,8 +203,7 @@ public class StartRide extends AppCompatActivity
                 newRoute.setVisibility(View.VISIBLE);
                 requestRideMain.setVisibility(View.VISIBLE);
                 splitFare.setVisibility(View.VISIBLE);
-                etrendezvous.setVisibility(View.VISIBLE);
-                riders.setVisibility(View.VISIBLE);
+
                 etPickupLocation.setEnabled(false);
                 etWhereTo.setEnabled(false);
             }
@@ -214,7 +213,8 @@ public class StartRide extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 showSplitFareDialogue();
-
+                etrendezvous.setVisibility(View.VISIBLE);
+                riders.setVisibility(View.VISIBLE);
             }
         });
     }
