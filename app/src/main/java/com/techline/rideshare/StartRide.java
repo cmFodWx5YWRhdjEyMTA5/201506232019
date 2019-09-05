@@ -141,7 +141,7 @@ public class StartRide extends AppCompatActivity
         ridersValue = findViewById(R.id.ridersValue);
         etrendezvous = findViewById(R.id.etrendezvous);
         riders = findViewById(R.id.riders);
-        riders2 = findViewById(R.id.riders);
+        riders2 = findViewById(R.id.riders2);
 
         llTripData.setVisibility(View.INVISIBLE);
         newRoute.setVisibility(View.INVISIBLE);
