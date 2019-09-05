@@ -93,6 +93,7 @@ public class StartRide extends AppCompatActivity
     private int[] intArrTime;
     private String arrivalTime;
     private String globalRideRequestResult;
+    private String newRidersValue;
 
 
     @Override
@@ -215,6 +216,7 @@ public class StartRide extends AppCompatActivity
                 showSplitFareDialogue();
                 etrendezvous.setVisibility(View.VISIBLE);
                 riders.setVisibility(View.VISIBLE);
+                ridersValue.setText(newRidersValue);
             }
         });
     }
@@ -262,7 +264,7 @@ public class StartRide extends AppCompatActivity
                             return;
                         } else {
                             Toast.makeText(getApplicationContext(), "Perfect Number.", Toast.LENGTH_SHORT).show();
-                            ridersValue.setText(splitNumber);
+                            newRidersValue = splitNumber;
                         }
 
                     }
