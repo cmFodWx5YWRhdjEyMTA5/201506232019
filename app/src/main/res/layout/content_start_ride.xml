@@ -269,8 +269,6 @@
                             android:textSize="16sp" />
 
 
-
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -280,35 +278,21 @@
                         android:gravity="start"
                         android:orientation="vertical">
 
-                        <EditText
-                            android:id="@+id/etrendezvous"
-                            android:layout_width="match_parent"
-                            android:layout_height="55dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:background="@null"
-                            android:ems="10"
-                            android:fontFamily="sans-serif-light"
-                            android:gravity="center"
-                            android:hint="Rendezvous Point"
-                            android:paddingLeft="8dp"
-                            android:paddingRight="6dp"
-                            tools:ignore="ExtraText">
-
-                        </EditText>
 
                         <TextView
                             android:id="@+id/ridersValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:text=""
                             android:textColor="#4B0082"
                             android:textSize="16sp" />
+
                         <TextView
                             android:id="@+id/riders"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-
+                            android:gravity="center"
                             android:text="Additional Riders"
                             android:textColor="#0000ff"
                             android:textSize="16sp" />
@@ -327,8 +311,24 @@
                             android:text="New Route"
                             android:textColor="#fff"
                             android:textSize="16sp" />
-                    </LinearLayout>
 
+                        <EditText
+                            android:id="@+id/etrendezvous"
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:background="@null"
+                            android:ems="10"
+                            android:fontFamily="sans-serif-light"
+                            android:gravity="center"
+                            android:hint="Suggest Rendezvous Point"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="6dp"
+                            tools:ignore="ExtraText">
+
+                        </EditText>
+                    </LinearLayout>
 
 
                 </android.support.v7.widget.CardView>
