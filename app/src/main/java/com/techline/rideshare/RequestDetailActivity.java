@@ -1,5 +1,6 @@
 package com.techline.rideshare;
 
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.AsyncTask;
@@ -7,7 +8,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,8 +92,30 @@ public class RequestDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "stoping Ride >> ");
                 stopRide(ride_id);
+                showCustomCompletedRideDialog();
+            /*    Intent it = new Intent(RequestDetailActivity.this, StartRideDriver.class);
+                startActivity(it);*/
             }
         });
+    }
+
+    private void showCustomCompletedRideDialog() {
+        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.driver_ride_completed_dialog, viewGroup, false);
+
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        //finally creating the alert dialog and displaying it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void startRide(String driverId, String driverName, String rideIdValue) {

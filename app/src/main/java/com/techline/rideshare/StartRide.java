@@ -1,7 +1,9 @@
 package com.techline.rideshare;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -18,10 +20,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -70,7 +76,7 @@ public class StartRide extends AppCompatActivity
             globalPickupLocationSearchResult, globalwhereToSearchResult;
     SharedPreferences SP;
     EditText etPickupLocation, etWhereTo;
-    TextView btnRequest, fare, distance, newRoute, requestRideMain, tripLength;
+    TextView btnRequest, fare, distance, newRoute, requestRideMain, tripLength, splitFare, ridersValue;
     private String pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
             pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
             whereToLat, whereToLocation, whereToLng, distanceOfRoute, pickUpDesc,
@@ -129,10 +135,13 @@ public class StartRide extends AppCompatActivity
         newRoute = findViewById(R.id.newRoute);
         llTripData = findViewById(R.id.llTripData);
         requestRideMain = findViewById(R.id.requestRideMain);
+        splitFare = findViewById(R.id.splitFare);
+        ridersValue = findViewById(R.id.ridersValue);
 
         llTripData.setVisibility(View.INVISIBLE);
         newRoute.setVisibility(View.INVISIBLE);
         requestRideMain.setVisibility(View.INVISIBLE);
+        splitFare.setVisibility(View.INVISIBLE);
 
         newRoute.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +162,7 @@ public class StartRide extends AppCompatActivity
                         whereToLat, whereToLocation, whereToLng, accountNumber, distanceOfRoute, pickUpDesc, whereToDesc,
                         travelTime, travelTimeInSeconds, arrivalTime, strFare,
                         strFName, dateTimeStr);
+                showStartedRideDialogue();
 
             }
         });
@@ -189,10 +199,88 @@ public class StartRide extends AppCompatActivity
                 llTripData.setVisibility(View.VISIBLE);
                 newRoute.setVisibility(View.VISIBLE);
                 requestRideMain.setVisibility(View.VISIBLE);
+                splitFare.setVisibility(View.VISIBLE);
                 etPickupLocation.setEnabled(false);
                 etWhereTo.setEnabled(false);
             }
         });
+
+        splitFare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSplitFareDialogue();
+
+            }
+        });
+    }
+
+    private void showStartedRideDialogue() {
+        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.passenger_ride_requested_dialog, viewGroup, false);
+
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        //finally creating the alert dialog and displaying it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void showSplitFareDialogue() {
+        // creating the EditText widget programatically
+        final EditText myEditText = new EditText(StartRide.this);
+        myEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        // create the AlertDialog as final
+        final AlertDialog dialog = new AlertDialog.Builder(StartRide.this)
+                .setMessage("Enter A number of people to split with")
+                .setTitle("Split this fare (Max 3)")
+                .setView(myEditText)
+
+                // Set the action buttons
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        String splitNumber = myEditText.getText().toString();
+                        if (Integer.parseInt(splitNumber) > 3) {
+
+                            return;
+                        } else if (Integer.parseInt(splitNumber) < 0) {
+
+                            return;
+                        } else {
+                        }
+                        ridersValue.setText(splitNumber);
+                    }
+                })
+
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        // removes the AlertDialog in the screen
+                    }
+                })
+                .create();
+
+        // set the focus change listener of the EditText
+        // this part will make the soft keyboard automaticall visible
+        myEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
+        });
+
+        dialog.show();
     }
 
 
