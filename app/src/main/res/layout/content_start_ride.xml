@@ -278,7 +278,14 @@
                         android:gravity="start"
                         android:orientation="vertical">
 
-
+                        <TextView
+                            android:id="@+id/riders"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="I want to split the fare of this ride with "
+                            android:textColor="#0000ff"
+                            android:textSize="16sp" />
                         <TextView
                             android:id="@+id/ridersValue"
                             android:layout_width="match_parent"
@@ -289,29 +296,13 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/riders"
+                            android:id="@+id/riders2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="Additional Riders"
                             android:textColor="#0000ff"
                             android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/newRoute"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginRight="40dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/angle"
-                            android:gravity="center"
-                            android:padding="16dp"
-                            android:text="New Route"
-                            android:textColor="#fff"
-                            android:textSize="16sp" />
-
                         <EditText
                             android:id="@+id/etrendezvous"
                             android:layout_width="match_parent"
@@ -328,6 +319,23 @@
                             tools:ignore="ExtraText">
 
                         </EditText>
+
+                        <TextView
+                            android:id="@+id/newRoute"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/angle"
+                            android:gravity="center"
+                            android:padding="16dp"
+                            android:text="Discard and Start A New Ride Request"
+                            android:textColor="#fff"
+                            android:textSize="16sp" />
+
+
                     </LinearLayout>
 
 

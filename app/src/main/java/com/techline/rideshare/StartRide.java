@@ -77,7 +77,7 @@ public class StartRide extends AppCompatActivity
     SharedPreferences SP;
     EditText etPickupLocation, etWhereTo, etrendezvous;
     TextView btnRequest, fare, distance, newRoute, requestRideMain, tripLength, splitFare,
-            ridersValue, riders;
+            ridersValue, riders, riders2;
     private String pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
             pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
             whereToLat, whereToLocation, whereToLng, distanceOfRoute, pickUpDesc,
@@ -141,6 +141,7 @@ public class StartRide extends AppCompatActivity
         ridersValue = findViewById(R.id.ridersValue);
         etrendezvous = findViewById(R.id.etrendezvous);
         riders = findViewById(R.id.riders);
+        riders2 = findViewById(R.id.riders);
 
         llTripData.setVisibility(View.INVISIBLE);
         newRoute.setVisibility(View.INVISIBLE);
@@ -148,6 +149,7 @@ public class StartRide extends AppCompatActivity
         splitFare.setVisibility(View.INVISIBLE);
         etrendezvous.setVisibility(View.INVISIBLE);
         riders.setVisibility(View.INVISIBLE);
+        riders2.setVisibility(View.INVISIBLE);
 
         newRoute.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,6 +218,7 @@ public class StartRide extends AppCompatActivity
                 showSplitFareDialogue();
                 etrendezvous.setVisibility(View.VISIBLE);
                 riders.setVisibility(View.VISIBLE);
+                riders2.setVisibility(View.VISIBLE);
                 ridersValue.setText(newRidersValue);
             }
         });
@@ -262,6 +265,11 @@ public class StartRide extends AppCompatActivity
                         } else if (Integer.parseInt(splitNumber) < 1) {
                             Toast.makeText(getApplicationContext(), "Cannot be less than 1.", Toast.LENGTH_SHORT).show();
                             return;
+                        } else if (Integer.parseInt(splitNumber) == 1) {
+                            Toast.makeText(getApplicationContext(), "Perfect Number.", Toast.LENGTH_SHORT).show();
+                            newRidersValue = splitNumber;
+                            ridersValue.setText(newRidersValue);
+                            riders2.setText("Additional Rider");
                         } else {
                             Toast.makeText(getApplicationContext(), "Perfect Number.", Toast.LENGTH_SHORT).show();
                             newRidersValue = splitNumber;
