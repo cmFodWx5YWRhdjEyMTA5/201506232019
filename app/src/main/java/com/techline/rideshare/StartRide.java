@@ -265,6 +265,7 @@ public class StartRide extends AppCompatActivity
                         } else {
                             Toast.makeText(getApplicationContext(), "Perfect Number.", Toast.LENGTH_SHORT).show();
                             newRidersValue = splitNumber;
+                            ridersValue.setText(newRidersValue);
                         }
 
                     }
