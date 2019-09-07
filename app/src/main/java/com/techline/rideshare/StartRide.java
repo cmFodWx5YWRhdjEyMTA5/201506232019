@@ -22,11 +22,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -57,7 +56,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 
 public class StartRide extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks,
@@ -162,14 +160,12 @@ public class StartRide extends AppCompatActivity
         requestRideMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date date = new Date();
-                String theDate = date.toString();
-                String dateTimeStr = theDate;
+
                 makeRequestRide(pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
                         pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
                         whereToLat, whereToLocation, whereToLng, accountNumber, distanceOfRoute, pickUpDesc, whereToDesc,
                         travelTime, travelTimeInSeconds, arrivalTime, strFare,
-                        strFName, dateTimeStr);
+                        strFName, "", "", "", "");
             }
         });
 
@@ -220,45 +216,38 @@ public class StartRide extends AppCompatActivity
                 riders.setVisibility(View.VISIBLE);
                 riders2.setVisibility(View.VISIBLE);
                 ridersValue.setText(newRidersValue);
+
             }
         });
     }
 
-    private void showStartedRideDialogue() {
-        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
-        ViewGroup viewGroup = findViewById(android.R.id.content);
 
-        //then we will inflate the custom alert dialog xml that we created
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.passenger_ride_requested_dialog, viewGroup, false);
-
-
-        //Now we need an AlertDialog.Builder object
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        //setting the view of the builder to our custom view that we already inflated
-        builder.setView(dialogView);
-
-        //finally creating the alert dialog and displaying it
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
 
     private void showSplitFareDialogue() {
         // creating the EditText widget programatically
-        final EditText myEditText = new EditText(StartRide.this);
-        myEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-
+        LinearLayout layout = new LinearLayout(StartRide.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        final EditText myEditText1 = new EditText(StartRide.this);
+        myEditText1.setInputType(InputType.TYPE_CLASS_NUMBER);
+        myEditText1.setHint("1, 2, or 3");
+        myEditText1.setGravity(Gravity.CENTER_HORIZONTAL);
+        layout.addView(myEditText1);
+        final EditText myEditText2 = new EditText(StartRide.this);
+        myEditText2.setHint("suggest Meet-up point");
+        myEditText2.setGravity(Gravity.CENTER_HORIZONTAL);
+        layout.addView(myEditText2);
         // create the AlertDialog as final
         final AlertDialog dialog = new AlertDialog.Builder(StartRide.this)
-                .setMessage("Enter A number of people to split with")
-                .setTitle("Split this fare (Max 3)")
-                .setView(myEditText)
+                .setMessage("Enter A number of people to split with (Max 3)")
+                .setTitle("Split this fare ")
+                .setView(layout)
 
                 // Set the action buttons
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        String splitNumber = myEditText.getText().toString();
+                        String splitNumber = myEditText1.getText().toString();
+                        String meetUpAt = myEditText2.getText().toString();
                         if (Integer.parseInt(splitNumber) > 3) {
                             Toast.makeText(getApplicationContext(), "Cannot exceed 3.", Toast.LENGTH_SHORT).show();
                             return;
@@ -270,12 +259,23 @@ public class StartRide extends AppCompatActivity
                             newRidersValue = splitNumber;
                             ridersValue.setText(newRidersValue);
                             riders2.setText("Additional Rider");
+                            makeRequestRide(pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
+                                    pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
+                                    whereToLat, whereToLocation, whereToLng, accountNumber, distanceOfRoute, pickUpDesc, whereToDesc,
+                                    travelTime, travelTimeInSeconds, arrivalTime, strFare,
+                                    strFName, "", "1", "yes", "");
                         } else {
                             Toast.makeText(getApplicationContext(), "Perfect Number.", Toast.LENGTH_SHORT).show();
                             newRidersValue = splitNumber;
                             ridersValue.setText(newRidersValue);
                             riders2.setText("Additional Riders");
+                            makeRequestRide(pickUpPlaceId, pickUpGeometry, pickUpLocation_type, pickUpLocation,
+                                    pickUpLat, pickUpLng, whereToPlaceId, whereToGeometry, whereToLocation_type,
+                                    whereToLat, whereToLocation, whereToLng, accountNumber, distanceOfRoute, pickUpDesc, whereToDesc,
+                                    travelTime, travelTimeInSeconds, arrivalTime, strFare,
+                                    strFName, "", splitNumber, "yes", meetUpAt);
                         }
+
 
                     }
                 })
@@ -290,7 +290,7 @@ public class StartRide extends AppCompatActivity
 
         // set the focus change listener of the EditText
         // this part will make the soft keyboard automaticall visible
-        myEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        myEditText1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
@@ -307,11 +307,13 @@ public class StartRide extends AppCompatActivity
                                  String pickUpLatValue, String pickUpLngValue, String whereToPlaceIdValue, String whereToGeometryValue, String whereToLocation_typeValue,
                                  String whereToLatValue, String whereToLocationValue, String whereToLngValue, String accountNumberValue, String distanceOfRouteValue,
                                  String pickUpDescValue, String whereToDescValue, String travelTimeValue, String travelTimeInSecondsValue, String arrivalTimeValue,
-                                 String strFareValue, String strFullNameValue, String dateTimeStValue) {
+                                 String strFareValue, String strFullNameValue, String dateTimeStValue, String splitInto,
+                                 String splitThisRide, String meetupAt) {
         URL RideShareSelectUserURl = NetworkUtils.buildRideRequestUrl(pickUpPlaceIdValue, pickUpGeometryValue, pickUpLocation_typeValue,
                 pickUpLocationValue, pickUpLatValue, pickUpLngValue, whereToPlaceIdValue, whereToGeometryValue, whereToLocation_typeValue,
                 whereToLatValue, whereToLocationValue, whereToLngValue, accountNumberValue, distanceOfRouteValue, pickUpDescValue, whereToDescValue,
-                travelTimeValue, travelTimeInSecondsValue, arrivalTimeValue, strFareValue, strFullNameValue, dateTimeStValue
+                travelTimeValue, travelTimeInSecondsValue, arrivalTimeValue, strFareValue, strFullNameValue, dateTimeStValue, splitInto,
+                splitThisRide, meetupAt
         );
         Log.d(TAG, "Request Ride Url is: " + RideShareSelectUserURl.toString());
         // COMPLETED (4) Create a new RideShareQueryTask and call its execute method, passing in the url to query
@@ -1082,7 +1084,12 @@ public class StartRide extends AppCompatActivity
                 Log.d(TAG, "RideRequestResults is :" + RideRequestResults);
                 globalRideRequestResult = RideRequestResults;
                 Log.d(TAG, "after RideRequestResults");
-                showStartedRideDialogue();
+                //showStartedRideDialogue();
+                Intent intent = new Intent(StartRide.this, SearchingActivity.class);
+                intent.putExtra("pickUp", pickUpDesc);
+                intent.putExtra("whereTo", whereToDesc);
+                intent.putExtra("fullName", strFullName);
+                startActivity(intent);
             }
         }
     }

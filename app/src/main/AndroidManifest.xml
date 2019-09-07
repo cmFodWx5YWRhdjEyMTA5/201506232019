@@ -18,7 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".RideCompleted"></activity>
+        <activity
+            android:name=".SearchingActivity"
+            android:label="Searching"
+            android:parentActivityName=".DashboardPass"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".RideCompleted" />
         <activity
             android:name=".RequestDetailActivity"
             android:label="Request Details"
@@ -42,7 +47,7 @@
         <activity
             android:name=".Withdraw"
             android:label="Withdrawal Settings"
-            android:parentActivityName=".DashboardPass"
+            android:parentActivityName=".DashboardDriver"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".InitCard"

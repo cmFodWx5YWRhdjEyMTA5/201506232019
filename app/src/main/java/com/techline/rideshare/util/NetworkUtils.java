@@ -186,6 +186,9 @@ public class NetworkUtils {
     private static final String PARAM_CUSTOMER_METADATA = "customer_metadata";
     private static final String PARAM_CUSTOMER_RISK_ACTION = "customer_risk_action";
     private static final String PARAM_TIME = "time";
+    private static final String PARAM_SPLIT_INTO = "splitInto";
+    private static final String PARAM_SPLIT_THIS_RIDE = "splitThisRide";
+    private static final String PARAM_MEETUP_AT = "meetupAt";
 
     // Message Constants
     // used Write a message to the database
@@ -785,7 +788,9 @@ public class NetworkUtils {
                                           String whereToGeometryValue, String whereToLocation_typeValue, String whereToLatValue,
                                           String whereToLocationValue, String whereToLngValue, String accountNumberValue, String distanceOfRouteValue,
                                           String pickUpDescValue, String whereToDescValue, String travelTimeValue, String travelTimeInSecondsValue,
-                                          String arrivalTimeValue, String strFareValue, String strFullNameValue, String dateTimeStValue) {
+                                          String arrivalTimeValue, String strFareValue, String strFullNameValue, String dateTimeStValue, String splitIntoValue,
+                                          String splitThisRideValue, String meetupAtValue
+    ) {
 
         Uri builtUri = Uri.parse(BASE_RIDE_REQUEST_URL).buildUpon()
                 .appendQueryParameter(PARAM_PICKUP_PLACE_ID, pickUpPlaceIdValue)
@@ -811,6 +816,10 @@ public class NetworkUtils {
                 .appendQueryParameter(PARAM_FARE_ESTIMATE, strFareValue)
                 .appendQueryParameter(PARAM_FULLNAME, strFullNameValue)
                 .appendQueryParameter(PARAM_TIME, dateTimeStValue)
+
+                .appendQueryParameter(PARAM_SPLIT_INTO, splitIntoValue)
+                .appendQueryParameter(PARAM_SPLIT_THIS_RIDE, splitThisRideValue)
+                .appendQueryParameter(PARAM_MEETUP_AT, meetupAtValue)
 
                 .build();
 
